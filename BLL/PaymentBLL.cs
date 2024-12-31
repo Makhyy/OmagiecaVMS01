@@ -15,14 +15,14 @@ namespace BLL
            paymentDAL = new PaymentDAL();
         }
 
-        public bool AddPayment(string visitorType, decimal paymentAmount, DateTime paymentDate)
+        public bool AddPayment(string visitorType, decimal paymentAmount)
         {
             if (paymentAmount <= 0)
             {
                 throw new ArgumentException("Payment amount must be greater than zero.");
             }
 
-            int result = paymentDAL.InsertPayment(visitorType, paymentAmount, paymentDate);
+            int result = paymentDAL.InsertPayment(visitorType, paymentAmount);
             return result > 0;
         }
       

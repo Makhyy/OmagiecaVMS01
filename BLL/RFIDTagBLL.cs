@@ -56,7 +56,7 @@ namespace BLL
             }
 
             rfidTag.RfidStatus = RFIDTagStatus.InUse;
-            rfidTag.VisitorId = visitorId;
+            
 
             rfidDal.UpdateRFIDTag(rfidTag);
         }

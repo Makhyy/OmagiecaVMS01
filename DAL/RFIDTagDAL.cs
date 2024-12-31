@@ -26,7 +26,7 @@ namespace DAL
                     command.Parameters.AddWithValue("@RfidTagUID", rfidTag.RfidTagUID);
                     command.Parameters.AddWithValue("@RfidTagNumber", rfidTag.RfidTagNumber);
                     command.Parameters.AddWithValue("@RfidStatus", rfidTag.RfidStatus.ToString());
-                    command.Parameters.AddWithValue("@VisitorId", rfidTag.VisitorId ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@VisitorId", DBNull.Value);  // Assuming new tags aren't assigned to a visitor.
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -37,6 +37,7 @@ namespace DAL
                 throw new Exception("An error occurred while adding the RFID tag: " + ex.Message, ex);
             }
         }
+
 
 
 
@@ -64,6 +65,7 @@ namespace DAL
             }
         }
 
+
         public void UpdateRFIDTag(RFIDTag rfidTag)
         {
             try
@@ -74,7 +76,7 @@ namespace DAL
                 UPDATE RFIDTag 
                 SET RfidTagUID = @RfidTagUID, 
                     RfidTagNumber = @RfidTagNumber, 
-                    RfidStatus = @RfidStatus, 
+                    RfidStatus = @RfidStatus,
                     VisitorId = @VisitorId
                 WHERE RfidTagNumberId = @RfidTagNumberId";
 
@@ -82,7 +84,7 @@ namespace DAL
                     command.Parameters.AddWithValue("@RfidTagUID", rfidTag.RfidTagUID);
                     command.Parameters.AddWithValue("@RfidTagNumber", rfidTag.RfidTagNumber);
                     command.Parameters.AddWithValue("@RfidStatus", rfidTag.RfidStatus.ToString());
-                    command.Parameters.AddWithValue("@VisitorId", rfidTag.VisitorId.HasValue ? (object)rfidTag.VisitorId : DBNull.Value);
+                    command.Parameters.AddWithValue("@VisitorId", rfidTag.VisitorId ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@RfidTagNumberId", rfidTag.RfidTagNumberId);
 
                     connection.Open();
@@ -94,6 +96,7 @@ namespace DAL
                 throw new Exception("An error occurred while updating the RFID tag: " + ex.Message, ex);
             }
         }
+
 
 
         public void DeleteRFIDTag(int rfidTagNumberId)
@@ -123,7 +126,7 @@ namespace DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     string query = @"
-                SELECT RfidTagNumberId, RfidTagUID, RfidTagNumber, RfidStatus, VisitorId
+                SELECT RfidTagNumberId, RfidTagUID, RfidTagNumber, RfidStatus
                 FROM RFIDTag
                 WHERE RfidTagNumber = @RfidTagNumber";
 
@@ -141,7 +144,7 @@ namespace DAL
                             RfidTagUID = reader["RfidTagUID"].ToString(),
                             RfidTagNumber = (int)reader["RfidTagNumber"],
                             RfidStatus = (RFIDTagStatus)Enum.Parse(typeof(RFIDTagStatus), reader["RfidStatus"].ToString()),
-                            VisitorId = reader.IsDBNull(reader.GetOrdinal("VisitorId")) ? null : (int?)reader["VisitorId"]
+                            
                         };
                     }
                     else
@@ -183,7 +186,7 @@ namespace DAL
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT RfidTagNumberId, RfidTagUID, RfidTagNumber, RfidStatus, VisitorId
+                    string query = @"SELECT RfidTagNumberId, RfidTagUID, RfidTagNumber, RfidStatus
                              FROM RFIDTag
                              WHERE RfidTagUID LIKE @Keyword OR RfidTagNumber LIKE @Keyword";
 
@@ -201,7 +204,7 @@ namespace DAL
                             RfidTagUID = reader["RfidTagUID"].ToString(),
                             RfidTagNumber = (int)reader["RfidTagNumber"],
                             RfidStatus = Enum.TryParse(reader["RfidStatus"].ToString(), out RFIDTagStatus status) ? status : RFIDTagStatus.Available,
-                            VisitorId = reader.IsDBNull(reader.GetOrdinal("VisitorId")) ? null : (int?)reader["VisitorId"]
+                           
                         });
                     }
 

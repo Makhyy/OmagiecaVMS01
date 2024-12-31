@@ -31,6 +31,10 @@ namespace BLL
             {
                 throw new ArgumentException("Total payment amount must be greater than zero.");
             }
+            if (groupRegistration.DateRegistered < new DateTime(1753, 1, 1))
+            {
+                throw new ArgumentOutOfRangeException(nameof(groupRegistration.DateRegistered), "DateRegistered must be after 1/1/1753.");
+            }
 
             try
             {
@@ -41,6 +45,7 @@ namespace BLL
                 throw new Exception("An error occurred while adding the group registration: " + ex.Message, ex);
             }
         }
+
 
         // Update an Existing Group Registration
         public void UpdateGroupRegistration(GroupRegistration groupRegistration)

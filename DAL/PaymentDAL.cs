@@ -10,20 +10,20 @@ namespace DAL
     {
         private string connectionString = Properties.Settings.Default.ConnectionString;
 
-        public int InsertPayment(string visitorType, decimal paymentAmount, DateTime paymentDate)
+        public int InsertPayment(string visitorType, decimal paymentAmount)
         {
             int rowsAffected = 0;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO Payment (VisitorType, PaymentAmount, PaymentDate)
-                         VALUES (@VisitorType, @PaymentAmount, @PaymentDate)";
+                string query = @"INSERT INTO Payment (VisitorType, PaymentAmount )
+                         VALUES (@VisitorType, @PaymentAmount)";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@VisitorType", visitorType);
                     cmd.Parameters.AddWithValue("@PaymentAmount", paymentAmount);
-                    cmd.Parameters.AddWithValue("@PaymentDate", paymentDate);
+                    
 
                     conn.Open();
                     rowsAffected = cmd.ExecuteNonQuery();
@@ -37,16 +37,18 @@ namespace DAL
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = @"SELECT PaymentId, VisitorType, PaymentAmount, PaymentDate FROM Payment";
-
+                string query = @"SELECT * FROM Payment";
+               
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                   
+                  
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     conn.Open();
                     adapter.Fill(dt);
                 }
             }
-
+            
             return dt;
         }
         public bool DeletePayment(int paymentId)

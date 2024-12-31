@@ -21,13 +21,13 @@ namespace DAL
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT v.VisitorId, vt.VisitorTypeName, v.FirstName, v.LastName, v.Age, 
-                                    v.IsPWD, v.Gender, v.CityMunicipality, v.ForeignCountry, v.DateRegistered,
-                                    p.PaymentAmount, p.PaymentDate, r.RfidTagNumber
-                             FROM Visitors v
-                             INNER JOIN VisitorType vt ON v.VisitorTypeId = vt.VisitorTypeId
-                             LEFT JOIN Payment p ON v.VisitorId = p.VisitorId
-                             LEFT JOIN RFIDTag r ON v.VisitorId = r.VisitorId";
+                    string query = @"SELECT VisitorId,  FirstName, LastName, Age, VisitorType,
+                                    IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, RfidTagNumberId, DateRegistered
+                                      
+                             FROM Visitors ";
+                             
+                             
+                            
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable visitorTable = new DataTable();
@@ -46,38 +46,60 @@ namespace DAL
 
 
 
+
         // Inserts visitor information into the database
+
         public int AddVisitor(Visitor visitor)
         {
-            int visitorId;
-            string query = @"
-            INSERT INTO Visitors 
-            (VisitorTypeId, FirstName, LastName, Age, IsPWD, Gender, CityMunicipality, ForeignCountry, DateRegistered)
-            OUTPUT INSERTED.VisitorId
-            VALUES 
-            (@VisitorTypeId, @FirstName, @LastName, @Age, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @DateRegistered)";
+            string query = @"INSERT INTO Visitors 
+        (FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, DateRegistered, RfidTagNumberId)
+        OUTPUT INSERTED.VisitorId
+        VALUES 
+        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @DateRegistered, @RfidTagNumberId)";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlTransaction transaction = null;  // Initialize transaction to null
+
+            try
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
+                transaction = connection.BeginTransaction(); // Start a new transaction
+
+                using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
-                    command.Parameters.AddWithValue("@VisitorTypeId", visitor.VisitorTypeId);
                     command.Parameters.AddWithValue("@FirstName", visitor.FirstName);
                     command.Parameters.AddWithValue("@LastName", visitor.LastName);
                     command.Parameters.AddWithValue("@Age", visitor.Age);
+                    command.Parameters.AddWithValue("@VisitorType", visitor.VisitorType);
                     command.Parameters.AddWithValue("@IsPWD", visitor.IsPWD);
                     command.Parameters.AddWithValue("@Gender", visitor.Gender);
                     command.Parameters.AddWithValue("@CityMunicipality", visitor.CityMunicipality ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@ForeignCountry", visitor.ForeignCountry ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
+                    command.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
                     command.Parameters.AddWithValue("@DateRegistered", visitor.DateRegistered);
 
-                    visitorId = (int)command.ExecuteScalar();
+                    int visitorId = (int)command.ExecuteScalar();
+                    transaction.Commit();  // Commit the transaction
+                    return visitorId;
                 }
             }
-
-            return visitorId;
+            catch (Exception)
+            {
+                if (transaction != null) transaction.Rollback();  // Rollback the transaction on error
+                throw;  // Re-throw the exception to the caller
+            }
+            finally
+            {
+                if (connection != null) connection.Close();  // Ensure the connection is closed
+            }
         }
+
+
+
+
+
+
 
 
 
@@ -93,41 +115,44 @@ namespace DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     string query = @"UPDATE Visitors 
-                                    SET VisitorTypeId = @VisitorTypeId, 
-                                        FirstName = @FirstName, 
-                                        LastName = @LastName, 
-                                        Age = @Age, 
-                                        IsPWD = @IsPWD, 
-                                        Gender = @Gender, 
-                                        CityMunicipality = @CityMunicipality, 
-                                        ForeignCountry = @ForeignCountry, 
-                                        PaymentAmount = @PaymentAmount, 
-                                        RfidTagNumber = @RfidTagNumber 
-                                    WHERE VisitorId = @VisitorId";
+                             SET FirstName = @FirstName, 
+                                 LastName = @LastName, 
+                                 Age = @Age, 
+                                 VisitorType = @VisitorType,  
+                                 IsPWD = @IsPWD, 
+                                 Gender = @Gender, 
+                                 CityMunicipality = @CityMunicipality, 
+                                 ForeignCountry = @ForeignCountry, 
+                                 PaymentAmount = @PaymentAmount, 
+                                 RfidTagNumberId = @RfidTagNumberId  
+                             WHERE VisitorId = @VisitorId";
 
-                    SqlCommand command = new SqlCommand(query, connection);
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.Add("@VisitorId", SqlDbType.Int).Value = visitor.VisitorId;
+                        command.Parameters.Add("@FirstName", SqlDbType.VarChar).Value = visitor.FirstName;
+                        command.Parameters.Add("@LastName", SqlDbType.VarChar).Value = visitor.LastName;
+                        command.Parameters.Add("@Age", SqlDbType.Int).Value = visitor.Age;
+                        command.Parameters.Add("@VisitorType", SqlDbType.VarChar).Value = visitor.VisitorType;
+                        command.Parameters.Add("@IsPWD", SqlDbType.Bit).Value = visitor.IsPWD;
+                        command.Parameters.Add("@Gender", SqlDbType.VarChar).Value = visitor.Gender;
+                        command.Parameters.Add("@CityMunicipality", SqlDbType.VarChar).Value = visitor.CityMunicipality ?? (object)DBNull.Value;
+                        command.Parameters.Add("@ForeignCountry", SqlDbType.VarChar).Value = visitor.ForeignCountry ?? (object)DBNull.Value;
+                        command.Parameters.Add("@PaymentAmount", SqlDbType.Decimal).Value = visitor.PaymentAmount;
+                        command.Parameters.Add("@RfidTagNumberId", SqlDbType.Int).Value = (visitor.RfidTagNumberId > 0) ? (object)visitor.RfidTagNumberId : DBNull.Value;
 
-                    command.Parameters.AddWithValue("@VisitorId", visitor.VisitorId);
-                    command.Parameters.AddWithValue("@VisitorTypeId", visitor.VisitorTypeId);
-                    command.Parameters.AddWithValue("@FirstName", visitor.FirstName);
-                    command.Parameters.AddWithValue("@LastName", visitor.LastName);
-                    command.Parameters.AddWithValue("@Age", visitor.Age);
-                    command.Parameters.AddWithValue("@IsPWD", visitor.IsPWD);
-                    command.Parameters.AddWithValue("@Gender", visitor.Gender);
-                    command.Parameters.AddWithValue("@CityMunicipality", visitor.CityMunicipality ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@ForeignCountry", visitor.ForeignCountry ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
-                    command.Parameters.AddWithValue("@RfidTagNumber", visitor.RfidTagNumber > 0 ? (object)visitor.RfidTagNumber : DBNull.Value);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)  // Catch more specific exceptions if possible
             {
-                throw new Exception("Error updating a visitor: " + ex.Message);
+                // Log the exception here
+                throw new ApplicationException("Failed to update visitor information.", ex);
             }
         }
+
         public List<Visitor> SearchVisitors(string keyword)
         {
             List<Visitor> visitors = new List<Visitor>();
@@ -152,7 +177,7 @@ namespace DAL
                         visitors.Add(new Visitor
                         {
                             VisitorId = (int)reader["VisitorId"],
-                            VisitorTypeId = (int)reader["VisitorTypeId"],
+                            VisitorType = (string)reader["VisitorType"],
                             FirstName = reader["FirstName"].ToString(),
                             LastName = reader["LastName"].ToString(),
                             Age = (int)reader["Age"],
@@ -161,7 +186,7 @@ namespace DAL
                             CityMunicipality = reader["CityMunicipality"].ToString(),
                             ForeignCountry = reader["ForeignCountry"].ToString(),
                             PaymentAmount = (decimal)reader["PaymentAmount"],
-                            RfidTagNumber = reader.IsDBNull(reader.GetOrdinal("RfidTagNumber")) ? 0 : (int)reader["RfidTagNumber"],
+                            RfidTagNumberId = reader.IsDBNull(reader.GetOrdinal("RfidTagNumberId")) ? 0 : (int)reader["RfidTagNumberId"],
                             DateRegistered = (DateTime)reader["DateRegistered"]
                         });
                     }
@@ -181,88 +206,37 @@ namespace DAL
 
         public void DeleteVisitor(int visitorId)
         {
-            try
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    string query = "DELETE FROM Visitors WHERE VisitorId = @VisitorId";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@VisitorId", visitorId);
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
+                try
+                {
+                    // Attempt to unassign RFID tags, but do not fail if none are found
+                    UnassignRFIDTags(visitorId);
+
+                    // Proceed to delete the visitor
+                    string deleteQuery = "DELETE FROM Visitors WHERE VisitorId = @VisitorId";
+                    SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection, transaction);
+                    deleteCommand.Parameters.AddWithValue("@VisitorId", visitorId);
+                    int affectedRows = deleteCommand.ExecuteNonQuery();
+                    if (affectedRows == 0)
+                    {
+                        throw new KeyNotFoundException("No visitor found with ID " + visitorId);
+                    }
+
+                    transaction.Commit();
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error deleting a visitor: " + ex.Message, ex);
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new ApplicationException("Failed to delete visitor with ID " + visitorId + ". Error: " + ex.Message, ex);
+                }
             }
         }
 
 
-        public void ArchiveVisitor(int visitorId)
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    SqlTransaction transaction = connection.BeginTransaction();
-
-                    try
-                    {
-                        // Archive Visitor
-                        string archiveVisitorQuery = @"
-                    INSERT INTO ArchivedVisitors (VisitorId, VisitorTypeId, FirstName, LastName, Age, IsPWD, Gender,
-                                                  CityMunicipality, ForeignCountry, DateRegistered, ArchivedDate)
-                    SELECT VisitorId, VisitorTypeId, FirstName, LastName, Age, IsPWD, Gender,
-                           CityMunicipality, ForeignCountry, DateRegistered, GETDATE()
-                    FROM Visitors
-                    WHERE VisitorId = @VisitorId;
-
-                    DELETE FROM Visitors WHERE VisitorId = @VisitorId;
-                ";
-                        SqlCommand archiveVisitorCommand = new SqlCommand(archiveVisitorQuery, connection, transaction);
-                        archiveVisitorCommand.Parameters.AddWithValue("@VisitorId", visitorId);
-                        archiveVisitorCommand.ExecuteNonQuery();
-
-                        // Archive Payments
-                        string archivePaymentsQuery = @"
-                    INSERT INTO ArchivedPayments (PaymentId, VisitorId, PaymentAmount, PaymentDate, ArchivedDate)
-                    SELECT PaymentId, VisitorId, PaymentAmount, PaymentDate, GETDATE()
-                    FROM Payment
-                    WHERE VisitorId = @VisitorId;
-
-                    DELETE FROM Payment WHERE VisitorId = @VisitorId;
-                ";
-                        SqlCommand archivePaymentsCommand = new SqlCommand(archivePaymentsQuery, connection, transaction);
-                        archivePaymentsCommand.Parameters.AddWithValue("@VisitorId", visitorId);
-                        archivePaymentsCommand.ExecuteNonQuery();
-
-                        // Update RFID Tag to Make It Available
-                        string updateRFIDTagQuery = @"
-                    UPDATE RFIDTag
-                    SET RfidStatus = 'Available', VisitorId = NULL
-                    WHERE VisitorId = @VisitorId;
-                ";
-                        SqlCommand updateRFIDTagCommand = new SqlCommand(updateRFIDTagQuery, connection, transaction);
-                        updateRFIDTagCommand.Parameters.AddWithValue("@VisitorId", visitorId);
-                        updateRFIDTagCommand.ExecuteNonQuery();
-
-                        transaction.Commit(); // Commit transaction
-                    }
-                    catch
-                    {
-                        transaction.Rollback(); // Rollback transaction on error
-                        throw;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while archiving the visitor: " + ex.Message, ex);
-            }
-        }
 
 
 
@@ -303,35 +277,28 @@ namespace DAL
         public List<RFIDTag> GetAvailableRFIDTags()
         {
             List<RFIDTag> rfidTags = new List<RFIDTag>();
-            try
-            {   
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    string query = "SELECT RfidTagNumberId, RfidTagNumber FROM RFIDTag WHERE RfidStatus = 'Available'";
-                    SqlCommand command = new SqlCommand(query, connection);
-
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        rfidTags.Add(new RFIDTag
-                        {
-                            RfidTagNumberId = (int)reader["RfidTagNumberId"],
-                            RfidTagNumber = (int)reader["RfidTagNumber"]
-                        });
-                    }
-
-                    reader.Close();
-                }
-            }
-            catch (Exception ex)
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                throw new Exception("An error occurred while retrieving available RFID tags: " + ex.Message, ex);
-            }
+                string query = "SELECT RfidTagNumberId, RfidTagNumber FROM RFIDTag WHERE RfidStatus = 'Available' AND VisitorId IS NULL";
+                SqlCommand command = new SqlCommand(query, connection);
 
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    rfidTags.Add(new RFIDTag
+                    {
+                        RfidTagNumberId = (int)reader["RfidTagNumberId"],
+                        RfidTagNumber = (int)reader["RfidTagNumber"]
+                    });
+                }
+
+                reader.Close();
+            }
             return rfidTags;
         }
+
         public List<RFIDTag> GetRFIDTags()
         {
             List<RFIDTag> rfidTags = new List<RFIDTag>();
@@ -339,7 +306,7 @@ namespace DAL
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT RfidTagNumberId, RfidTagNumber, RfidStatus, VisitorId FROM RFIDTag";
+                    string query = "SELECT RfidTagNumberId, RfidTagNumber, RfidStatus FROM RFIDTag";
                     SqlCommand command = new SqlCommand(query, connection);
 
                     connection.Open();
@@ -351,7 +318,8 @@ namespace DAL
                         {
                             RfidTagNumberId = (int)reader["RfidTagNumberId"],
                             RfidTagNumber = (int)reader["RfidTagNumber"],
-                            VisitorId = reader.IsDBNull(reader.GetOrdinal("VisitorId")) ? null : (int?)reader["VisitorId"]
+
+                           
                         };
 
                         // Safe parsing for RFIDStatus
@@ -374,7 +342,18 @@ namespace DAL
 
             return rfidTags;
         }
-
+        public bool IsRfidTagValid(int rfidTagNumber)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM RFIDTag WHERE RfidTagNumberId = @RfidTagNumberId AND RfidStatus = 'Available'";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@RfidTagNumberId", rfidTagNumber);
+                connection.Open();
+                int result = (int)command.ExecuteScalar();
+                return result > 0;
+            }
+        }
 
 
         public void AddPayment(int visitorId, decimal paymentAmount)
@@ -406,15 +385,21 @@ namespace DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     string query = @"UPDATE RFIDTag 
-                             SET VisitorId = @VisitorId, RfidStatus = 'In Use'
-                             WHERE RfidTagNumber = @RfidTagNumber";
+                             SET VisitorId = @VisitorId, 
+                                 RfidStatus = @RfidStatus
+                             WHERE RfidTagNumberId = @RfidTagNumberId AND RfidStatus = 'Available'"; // Ensuring current status allows update
 
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@VisitorId", visitorId);
-                    command.Parameters.AddWithValue("@RfidTagNumber", rfidTagNumber);
+                    command.Parameters.AddWithValue("@RfidStatus", "In Use"); // Set to a valid status
+                    command.Parameters.AddWithValue("@RfidTagNumberId", rfidTagNumber);
 
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new InvalidOperationException("RFID tag is not available for assignment or does not exist.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -422,6 +407,25 @@ namespace DAL
                 throw new Exception("An error occurred while assigning the RFID tag: " + ex.Message, ex);
             }
         }
+
+        public void UnassignRFIDTags(int visitorId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = @"UPDATE RFIDTag SET VisitorId = NULL WHERE VisitorId = @VisitorId";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@VisitorId", visitorId);
+
+                int rowsAffected = command.ExecuteNonQuery();
+                if (rowsAffected == 0)
+                {
+                    // Log this information but do not throw an error
+                    Console.WriteLine("No RFID tags found or already unassigned for the specified visitor.");
+                }
+            }
+        }
+
 
 
 

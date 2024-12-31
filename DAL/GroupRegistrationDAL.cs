@@ -13,6 +13,12 @@ namespace DAL
         // Add a new group registration with its members
         public int AddGroupRegistration(GroupRegistration groupRegistration)
         {
+            Console.WriteLine("Group Registration:");
+            Console.WriteLine($"Representative Age: {groupRegistration.RepresentativeVisitor.Age}");
+            foreach (var member in groupRegistration.Members)
+            {
+                Console.WriteLine($"Member Age: {member.Age}, VisitorType: {member.VisitorType}, PaymentAmount: {member.PaymentAmount}");
+            }
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -20,14 +26,35 @@ namespace DAL
                     connection.Open();
                     SqlTransaction transaction = connection.BeginTransaction();
 
+                    // Insert into Visitors for the representative
+                    string visitorQuery = @"
+                INSERT INTO Visitors (FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, RfidTagNumberId, DateRegistered)
+                OUTPUT INSERTED.VisitorId
+                VALUES (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @RfidTagNumberId, @DateRegistered)";
+
+                    SqlCommand visitorCommand = new SqlCommand(visitorQuery, connection, transaction);
+                    visitorCommand.Parameters.AddWithValue("@FirstName", groupRegistration.RepresentativeVisitor.FirstName);
+                    visitorCommand.Parameters.AddWithValue("@LastName", groupRegistration.RepresentativeVisitor.LastName);
+                    visitorCommand.Parameters.AddWithValue("@Age", groupRegistration.RepresentativeVisitor.Age);
+                    visitorCommand.Parameters.AddWithValue("@VisitorType", groupRegistration.RepresentativeVisitor.VisitorType);
+                    visitorCommand.Parameters.AddWithValue("@IsPWD", groupRegistration.RepresentativeVisitor.IsPWD);
+                    visitorCommand.Parameters.AddWithValue("@Gender", groupRegistration.RepresentativeVisitor.Gender);
+                    visitorCommand.Parameters.AddWithValue("@CityMunicipality", groupRegistration.RepresentativeVisitor.CityMunicipality ?? (object)DBNull.Value);
+                    visitorCommand.Parameters.AddWithValue("@ForeignCountry", groupRegistration.RepresentativeVisitor.ForeignCountry ?? (object)DBNull.Value);
+                    visitorCommand.Parameters.AddWithValue("@PaymentAmount", groupRegistration.RepresentativeVisitor.PaymentAmount);
+                    visitorCommand.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);
+                    visitorCommand.Parameters.AddWithValue("@DateRegistered", groupRegistration.RepresentativeVisitor.DateRegistered);
+
+                    int representativeVisitorId = (int)visitorCommand.ExecuteScalar();
+
                     // Insert into GroupRegistration
                     string groupQuery = @"
-                        INSERT INTO GroupRegistration (RepresentativeVisitorId, GroupName, TotalMembers, TotalPaymentAmount, DateRegistered)
-                        OUTPUT INSERTED.GroupId
-                        VALUES (@RepresentativeVisitorId, @GroupName, @TotalMembers, @TotalPaymentAmount, @DateRegistered)";
+                INSERT INTO GroupRegistration (RepresentativeVisitorId, GroupName, TotalMembers, TotalPaymentAmount, DateRegistered)
+                OUTPUT INSERTED.GroupId
+                VALUES (@RepresentativeVisitorId, @GroupName, @TotalMembers, @TotalPaymentAmount, @DateRegistered)";
 
                     SqlCommand groupCommand = new SqlCommand(groupQuery, connection, transaction);
-                    groupCommand.Parameters.AddWithValue("@RepresentativeVisitorId", groupRegistration.RepresentativeVisitorId);
+                    groupCommand.Parameters.AddWithValue("@RepresentativeVisitorId", representativeVisitorId);
                     groupCommand.Parameters.AddWithValue("@GroupName", groupRegistration.GroupName ?? (object)DBNull.Value);
                     groupCommand.Parameters.AddWithValue("@TotalMembers", groupRegistration.TotalMembers);
                     groupCommand.Parameters.AddWithValue("@TotalPaymentAmount", groupRegistration.TotalPaymentAmount);
@@ -37,16 +64,18 @@ namespace DAL
 
                     // Insert into GroupMember
                     string memberQuery = @"
-                        INSERT INTO GroupMember (GroupId, Age, VisitorTypeId, PaymentAmount)
-                        VALUES (@GroupId, @Age, @VisitorTypeId, @PaymentAmount)";
+                INSERT INTO GroupMember (GroupId, Age, VisitorType, PaymentAmount, RfidTagNumberId)
+                VALUES (@GroupId, @Age, @VisitorType, @PaymentAmount, @RfidTagNumberId)";
 
                     foreach (var member in groupRegistration.Members)
                     {
                         SqlCommand memberCommand = new SqlCommand(memberQuery, connection, transaction);
                         memberCommand.Parameters.AddWithValue("@GroupId", groupId);
+                        
+                        memberCommand.Parameters.AddWithValue("@VisitorType", member.VisitorType);
                         memberCommand.Parameters.AddWithValue("@Age", member.Age);
-                        memberCommand.Parameters.AddWithValue("@VisitorTypeId", member.VisitorTypeId);
                         memberCommand.Parameters.AddWithValue("@PaymentAmount", member.PaymentAmount);
+                        memberCommand.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId);
                         memberCommand.ExecuteNonQuery();
                     }
 
@@ -59,6 +88,7 @@ namespace DAL
                 throw new Exception("An error occurred while adding the group registration: " + ex.Message, ex);
             }
         }
+
 
         // Retrieve a group registration with its members
         public GroupRegistration GetGroupRegistrationById(int groupId)
@@ -110,8 +140,9 @@ namespace DAL
                                     GroupMemberId = (int)reader["GroupMemberId"],
                                     GroupId = (int)reader["GroupId"],
                                     Age = (int)reader["Age"],
-                                    VisitorTypeId = reader["VisitorType"].ToString(),
-                                    PaymentAmount = (decimal)reader["PaymentAmount"]
+                                    VisitorType = reader["VisitorType"].ToString(),
+                                    PaymentAmount = (decimal)reader["PaymentAmount"],
+                                    RfidTagNumberId = (int)reader["RfidTagNumberId"]
                                 });
                             }
                         }
@@ -164,16 +195,17 @@ namespace DAL
 
                     // Insert updated GroupMember entries
                     string memberQuery = @"
-                        INSERT INTO GroupMember (GroupId, Age, VisitorType, PaymentAmount)
-                        VALUES (@GroupId, @Age, @VisitorType, @PaymentAmount)";
+                        INSERT INTO GroupMember (GroupId, Age, VisitorType, PaymentAmount, RfidTagNumberId)
+                        VALUES (@GroupId, @Age, @VisitorType, @PaymentAmount, @RfidTagNumberId)";
 
                     foreach (var member in groupRegistration.Members)
                     {
                         SqlCommand memberCommand = new SqlCommand(memberQuery, connection, transaction);
                         memberCommand.Parameters.AddWithValue("@GroupId", groupRegistration.GroupId);
                         memberCommand.Parameters.AddWithValue("@Age", member.Age);
-                        memberCommand.Parameters.AddWithValue("@VisitorTypeId", member.VisitorTypeId);
+                        memberCommand.Parameters.AddWithValue("@VisitorTypeId", member.VisitorType);
                         memberCommand.Parameters.AddWithValue("@PaymentAmount", member.PaymentAmount);
+                        memberCommand.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId);
                         memberCommand.ExecuteNonQuery();
                     }
 
@@ -266,6 +298,7 @@ namespace DAL
 
                 return groups;
             }
+
         
     }
 }

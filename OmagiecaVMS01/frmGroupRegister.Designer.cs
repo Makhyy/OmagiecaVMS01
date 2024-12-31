@@ -28,17 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblTotalMembers = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.lblTotalPayment = new System.Windows.Forms.Label();
             this.txtTotalPayment = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.btnAddMember = new System.Windows.Forms.Button();
             this.dgvMembers = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.txtGroupName = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.cboRFIDTag = new System.Windows.Forms.ComboBox();
             this.txtAge = new System.Windows.Forms.TextBox();
@@ -58,10 +57,17 @@
             this.lblName = new System.Windows.Forms.Label();
             this.txtFirstName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkIsPWD = new System.Windows.Forms.CheckBox();
             this.cboGender = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnSubmitRegistration = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
+            this.Age = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VisitorType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsPWD = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.PaymentAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RfidTagNumberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.remove_btn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMembers)).BeginInit();
             this.panel4.SuspendLayout();
@@ -70,9 +76,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblTotalMembers);
+            this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.lblTotalPayment);
             this.groupBox2.Controls.Add(this.txtTotalPayment);
-            this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.btnAddMember);
             this.groupBox2.Controls.Add(this.dgvMembers);
             this.groupBox2.Location = new System.Drawing.Point(12, 225);
@@ -82,41 +89,48 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Members";
             // 
+            // lblTotalMembers
+            // 
+            this.lblTotalMembers.AutoSize = true;
+            this.lblTotalMembers.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalMembers.Location = new System.Drawing.Point(837, 267);
+            this.lblTotalMembers.Name = "lblTotalMembers";
+            this.lblTotalMembers.Size = new System.Drawing.Size(24, 25);
+            this.lblTotalMembers.TabIndex = 304;
+            this.lblTotalMembers.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(682, 267);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(143, 25);
+            this.label10.TabIndex = 303;
+            this.label10.Text = "Total Visitors:";
+            // 
             // lblTotalPayment
             // 
             this.lblTotalPayment.AutoSize = true;
             this.lblTotalPayment.BackColor = System.Drawing.Color.Transparent;
-            this.lblTotalPayment.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPayment.Location = new System.Drawing.Point(923, 267);
+            this.lblTotalPayment.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPayment.Location = new System.Drawing.Point(887, 267);
             this.lblTotalPayment.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTotalPayment.Name = "lblTotalPayment";
-            this.lblTotalPayment.Size = new System.Drawing.Size(114, 20);
+            this.lblTotalPayment.Size = new System.Drawing.Size(156, 25);
             this.lblTotalPayment.TabIndex = 301;
             this.lblTotalPayment.Text = "Total Payment:";
             // 
             // txtTotalPayment
             // 
             this.txtTotalPayment.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalPayment.Location = new System.Drawing.Point(1051, 260);
+            this.txtTotalPayment.Location = new System.Drawing.Point(1065, 265);
             this.txtTotalPayment.Margin = new System.Windows.Forms.Padding(2);
             this.txtTotalPayment.Name = "txtTotalPayment";
-            this.txtTotalPayment.Size = new System.Drawing.Size(171, 27);
+            this.txtTotalPayment.Size = new System.Drawing.Size(113, 27);
             this.txtTotalPayment.TabIndex = 297;
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.Sienna;
-            this.button3.FlatAppearance.BorderSize = 2;
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOliveGreen;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Location = new System.Drawing.Point(183, 272);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(183, 51);
-            this.button3.TabIndex = 271;
-            this.button3.Text = "Remove Member";
-            this.button3.UseVisualStyleBackColor = false;
             // 
             // btnAddMember
             // 
@@ -139,44 +153,37 @@
             this.dgvMembers.BackgroundColor = System.Drawing.Color.DarkGray;
             this.dgvMembers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMembers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
+            this.Age,
+            this.VisitorType,
+            this.IsPWD,
+            this.PaymentAmount,
+            this.RfidTagNumberId,
+            this.remove_btn});
             this.dgvMembers.Location = new System.Drawing.Point(6, 19);
             this.dgvMembers.Name = "dgvMembers";
             this.dgvMembers.Size = new System.Drawing.Size(1216, 221);
             this.dgvMembers.TabIndex = 0;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Age";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "VisitorType";
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Payment Amount";
-            this.Column3.Name = "Column3";
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "RFID Tag Number";
-            this.Column4.Name = "Column4";
+            this.dgvMembers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMembers_CellContentClick);
+            this.dgvMembers.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMembers_CellValueChanged);
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.panel4.Controls.Add(this.txtGroupName);
             this.panel4.Controls.Add(this.label8);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1245, 48);
             this.panel4.TabIndex = 274;
+            // 
+            // txtGroupName
+            // 
+            this.txtGroupName.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtGroupName.Location = new System.Drawing.Point(12, 12);
+            this.txtGroupName.Name = "txtGroupName";
+            this.txtGroupName.Size = new System.Drawing.Size(189, 27);
+            this.txtGroupName.TabIndex = 306;
             // 
             // label8
             // 
@@ -210,7 +217,7 @@
             "13",
             "14",
             "15"});
-            this.cboRFIDTag.Location = new System.Drawing.Point(892, 111);
+            this.cboRFIDTag.Location = new System.Drawing.Point(900, 110);
             this.cboRFIDTag.Name = "cboRFIDTag";
             this.cboRFIDTag.Size = new System.Drawing.Size(126, 29);
             this.cboRFIDTag.TabIndex = 304;
@@ -218,10 +225,11 @@
             // txtAge
             // 
             this.txtAge.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAge.Location = new System.Drawing.Point(521, 14);
+            this.txtAge.Location = new System.Drawing.Point(521, 15);
             this.txtAge.Name = "txtAge";
             this.txtAge.Size = new System.Drawing.Size(100, 27);
             this.txtAge.TabIndex = 303;
+            this.txtAge.TextChanged += new System.EventHandler(this.txtAge_TextChanged);
             // 
             // label4
             // 
@@ -284,7 +292,7 @@
             "13",
             "14",
             "15"});
-            this.txtPaymentAmount.Location = new System.Drawing.Point(495, 100);
+            this.txtPaymentAmount.Location = new System.Drawing.Point(521, 119);
             this.txtPaymentAmount.Name = "txtPaymentAmount";
             this.txtPaymentAmount.Size = new System.Drawing.Size(126, 29);
             this.txtPaymentAmount.TabIndex = 298;
@@ -294,7 +302,7 @@
             this.label9.AutoSize = true;
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(340, 100);
+            this.label9.Location = new System.Drawing.Point(350, 119);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(150, 20);
@@ -311,7 +319,7 @@
             "Adult",
             "Child",
             "Senior Citizen"});
-            this.cboVisitorType.Location = new System.Drawing.Point(495, 58);
+            this.cboVisitorType.Location = new System.Drawing.Point(521, 55);
             this.cboVisitorType.Margin = new System.Windows.Forms.Padding(2);
             this.cboVisitorType.Name = "cboVisitorType";
             this.cboVisitorType.Size = new System.Drawing.Size(126, 29);
@@ -322,7 +330,7 @@
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(399, 64);
+            this.label6.Location = new System.Drawing.Point(409, 64);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(91, 20);
@@ -367,7 +375,7 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(795, 120);
+            this.label2.Location = new System.Drawing.Point(769, 119);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 20);
@@ -409,6 +417,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkIsPWD);
             this.groupBox1.Controls.Add(this.cboRFIDTag);
             this.groupBox1.Controls.Add(this.txtAge);
             this.groupBox1.Controls.Add(this.label4);
@@ -433,6 +442,17 @@
             this.groupBox1.TabIndex = 273;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Group Representattive";
+            // 
+            // chkIsPWD
+            // 
+            this.chkIsPWD.AutoSize = true;
+            this.chkIsPWD.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkIsPWD.Location = new System.Drawing.Point(521, 89);
+            this.chkIsPWD.Name = "chkIsPWD";
+            this.chkIsPWD.Size = new System.Drawing.Size(74, 24);
+            this.chkIsPWD.TabIndex = 305;
+            this.chkIsPWD.Text = "IsPWD";
+            this.chkIsPWD.UseVisualStyleBackColor = true;
             // 
             // cboGender
             // 
@@ -475,7 +495,7 @@
             this.btnSubmitRegistration.Name = "btnSubmitRegistration";
             this.btnSubmitRegistration.Size = new System.Drawing.Size(170, 45);
             this.btnSubmitRegistration.TabIndex = 270;
-            this.btnSubmitRegistration.Text = "Submit";
+            this.btnSubmitRegistration.Text = "Register";
             this.btnSubmitRegistration.UseVisualStyleBackColor = false;
             this.btnSubmitRegistration.Click += new System.EventHandler(this.btnSubmitRegistration_Click_1);
             // 
@@ -494,6 +514,51 @@
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = false;
             // 
+            // Age
+            // 
+            this.Age.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Age.HeaderText = "Age";
+            this.Age.Name = "Age";
+            this.Age.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Age.Width = 150;
+            // 
+            // VisitorType
+            // 
+            this.VisitorType.HeaderText = "VisitorType";
+            this.VisitorType.Name = "VisitorType";
+            // 
+            // IsPWD
+            // 
+            this.IsPWD.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.IsPWD.HeaderText = "IsPWD";
+            this.IsPWD.Name = "IsPWD";
+            this.IsPWD.Width = 50;
+            // 
+            // PaymentAmount
+            // 
+            this.PaymentAmount.HeaderText = "Payment Amount";
+            this.PaymentAmount.Name = "PaymentAmount";
+            // 
+            // RfidTagNumberId
+            // 
+            this.RfidTagNumberId.HeaderText = "RFID Tag Number";
+            this.RfidTagNumberId.Name = "RfidTagNumberId";
+            // 
+            // remove_btn
+            // 
+            this.remove_btn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            this.remove_btn.DefaultCellStyle = dataGridViewCellStyle1;
+            this.remove_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.remove_btn.HeaderText = "Remove_Visitor";
+            this.remove_btn.Name = "remove_btn";
+            this.remove_btn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.remove_btn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.remove_btn.Text = "Remove";
+            this.remove_btn.UseColumnTextForButtonValue = true;
+            // 
             // frmGroupRegister
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -507,7 +572,9 @@
             this.Controls.Add(this.btnSubmitRegistration);
             this.Controls.Add(this.btnClear);
             this.Name = "frmGroupRegister";
-            this.Text = "frmGroupRegister";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Group Registration";
+            this.Load += new System.EventHandler(this.frmGroupRegister_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMembers)).EndInit();
@@ -524,7 +591,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lblTotalPayment;
         private System.Windows.Forms.TextBox txtTotalPayment;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnAddMember;
         private System.Windows.Forms.DataGridView dgvMembers;
         private System.Windows.Forms.Panel panel4;
@@ -551,9 +617,15 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnSubmitRegistration;
         private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.CheckBox chkIsPWD;
+        private System.Windows.Forms.TextBox txtGroupName;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblTotalMembers;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Age;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VisitorType;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsPWD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PaymentAmount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RfidTagNumberId;
+        private System.Windows.Forms.DataGridViewButtonColumn remove_btn;
     }
 }

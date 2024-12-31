@@ -28,7 +28,7 @@ namespace OmagiecaVMS01
                 DataTable paymentData = paymentBLL.GetAllPayments();
                 dgvPayments.DataSource = paymentData;
                 dgvPayments.Columns["PaymentId"].Visible = false;
-                dgvPayments.Columns["PaymentDate"].Visible = false;
+                
             }
             catch (Exception ex)
             {
@@ -42,9 +42,9 @@ namespace OmagiecaVMS01
             {
                 string visitorType = cmbPaymentAmountName.SelectedItem.ToString();
                 decimal paymentAmount = decimal.Parse(txtPaymentAmount.Text);
-                DateTime paymentDate = DateTime.Now; // Set the current date and time
+                
 
-                bool isAdded = paymentBLL.AddPayment(visitorType, paymentAmount, paymentDate);
+                bool isAdded = paymentBLL.AddPayment(visitorType, paymentAmount);
                 ClearFields();
                 if (isAdded)
                 {
@@ -66,6 +66,7 @@ namespace OmagiecaVMS01
             LoadPaymentData();
             PaymentId.Visible = false;
             txtPaymentId.Visible = false;
+
 
         }
 

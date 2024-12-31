@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucfrmRFIDTagManagement));
             this.omagiecaVMS01DBDataSet2 = new OmagiecaVMS01.OmagiecaVMS01DBDataSet2();
             this.rfidTagBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -52,11 +52,17 @@
             this.dgvRFIDTags = new System.Windows.Forms.DataGridView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnClear = new System.Windows.Forms.Button();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rfidTagBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRFIDTags)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // omagiecaVMS01DBDataSet2
@@ -93,7 +99,7 @@
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.txtSearch);
             this.panel1.Controls.Add(this.btnSearch);
-            this.panel1.Location = new System.Drawing.Point(883, 20);
+            this.panel1.Location = new System.Drawing.Point(883, 69);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(354, 41);
             this.panel1.TabIndex = 221;
@@ -144,7 +150,7 @@
             this.btnSaveTag.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSaveTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveTag.ForeColor = System.Drawing.Color.White;
-            this.btnSaveTag.Location = new System.Drawing.Point(7, 534);
+            this.btnSaveTag.Location = new System.Drawing.Point(15, 534);
             this.btnSaveTag.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveTag.Name = "btnSaveTag";
             this.btnSaveTag.Size = new System.Drawing.Size(100, 45);
@@ -159,7 +165,7 @@
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnUpdate.Location = new System.Drawing.Point(127, 534);
+            this.btnUpdate.Location = new System.Drawing.Point(130, 534);
             this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(116, 45);
@@ -176,7 +182,7 @@
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(254, 532);
+            this.btnDelete.Location = new System.Drawing.Point(258, 532);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(136, 47);
@@ -257,23 +263,23 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvRFIDTags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvRFIDTags.BackgroundColor = System.Drawing.Color.LightCyan;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Crimson;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Century Gothic", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRFIDTags.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Crimson;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Century Gothic", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRFIDTags.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvRFIDTags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRFIDTags.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRFIDTags.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvRFIDTags.Location = new System.Drawing.Point(521, 116);
             this.dgvRFIDTags.Name = "dgvRFIDTags";
             this.dgvRFIDTags.Size = new System.Drawing.Size(716, 465);
@@ -308,11 +314,64 @@
             this.btnClear.UseVisualStyleBackColor = false;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.panel4.Controls.Add(this.label1);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1261, 48);
+            this.panel4.TabIndex = 277;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(467, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(344, 36);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "RFID Tags Management";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(0, 48);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(10, 651);
+            this.panel2.TabIndex = 278;
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel5.Location = new System.Drawing.Point(10, 689);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1251, 10);
+            this.panel5.TabIndex = 279;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel3.Location = new System.Drawing.Point(1251, 48);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(10, 641);
+            this.panel3.TabIndex = 280;
+            // 
             // ucfrmRFIDTagManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel5);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.dgvRFIDTags);
@@ -335,6 +394,8 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRFIDTags)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -362,5 +423,10 @@
         private System.Windows.Forms.DataGridView dgvRFIDTags;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel panel3;
     }
 }

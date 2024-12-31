@@ -34,6 +34,37 @@ namespace BLL
             }
         }
 
+        public void RegisterVisitor(Visitor visitor,  int rfidTagNumber)
+        {
+            try
+            {
+                // Validate if the visitor object is not null
+                if (visitor == null)
+                {
+                    throw new ArgumentNullException(nameof(visitor), "Visitor object cannot be null.");
+                }
+
+                // Check if RFID tag is valid before registering the visitor
+                if (!_visitorDAL.IsRfidTagValid(rfidTagNumber))
+                {
+                    throw new ArgumentException("Invalid RFID Tag Number. The tag does not exist or is not available.");
+                }
+
+                // Add visitor to the database and get the visitor ID
+                int visitorId = _visitorDAL.AddVisitor(visitor);
+
+               
+
+                // Assign the RFID tag to the visitor
+                _visitorDAL.AssignRFIDTag(visitorId, rfidTagNumber);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while registering the visitor: " + ex.Message, ex);
+            }
+        }
+
+
 
         public int AddVisitor(Visitor visitor)
         {
@@ -106,19 +137,7 @@ namespace BLL
                 throw new Exception("An error occurred while searching for visitors.", ex);
             }
         }
-        public void RegisterVisitor(Visitor visitor, decimal paymentAmount, int rfidTagNumber)
-        {
-            try
-            {
-                int visitorId = _visitorDAL.AddVisitor(visitor); // Insert visitor and get ID
-                _visitorDAL.AddPayment(visitorId, paymentAmount); // Insert payment
-                _visitorDAL.AssignRFIDTag(visitorId, rfidTagNumber); // Assign RFID tag
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while registering the visitor: " + ex.Message, ex);
-            }
-        }
+        
 
 
 
@@ -153,7 +172,7 @@ namespace BLL
                     throw new Exception("Gender must be 'Male' or 'Female'.");
                 }
 
-                if (visitor.RfidTagNumber < 0)
+                if (visitor.RfidTagNumberId < 0)
                 {
                     throw new Exception("Invalid RFID Tag Number.");
                 }
@@ -233,22 +252,7 @@ namespace BLL
         }
             
         private VisitorDAL visitorDAL = new VisitorDAL();
-        public void ArchiveVisitor(int visitorId)
-        {
-            if (visitorId <= 0)
-            {
-                throw new ArgumentException("Invalid Visitor ID.");
-            }
-
-            try
-            {
-                visitorDAL.ArchiveVisitor(visitorId);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error occurred in BLL while archiving the visitor: " + ex.Message, ex);
-            }
-        }
+       
         public List<RFIDTag> GetAvailableRFIDTags()
         {
             try

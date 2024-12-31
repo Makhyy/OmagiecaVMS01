@@ -39,7 +39,7 @@ namespace OmagiecaVMS01
                         LastName = txtLastName.Text.Trim(),
                         Age = int.Parse(txtAge.Text),
                         Gender = cboGender.Text,
-                        VisitorTypeId = (int)cboVisitorType.SelectedValue
+                        VisitorType = cboVisitorType.SelectedItem.ToString(),
                     },
                     Members = GetGroupMembersFromGrid(),
                     TotalPaymentAmount = decimal.Parse(txtTotalPayment.Text),
@@ -64,17 +64,50 @@ namespace OmagiecaVMS01
             {
                 if (!row.IsNewRow)
                 {
+                    // Parsing Age, ensuring it's a valid integer
+                    if (!int.TryParse(row.Cells["Age"].Value.ToString(), out int age))
+                    {
+                        MessageBox.Show("Invalid age format.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;  // Skip this row or handle the error appropriately
+                    }
+
+                    // Parsing PaymentAmount, ensuring it's a valid decimal
+                    if (!decimal.TryParse(row.Cells["PaymentAmount"].Value.ToString(), out decimal paymentAmount))
+                    {
+                        MessageBox.Show("Invalid payment format.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;  // Skip this row or handle the error appropriately
+                    }
+
+                    // Parsing IsPWD, ensuring it's a valid boolean
+                    bool isPWD = false;  // Default to false if parsing fails or if it's null
+                    if (row.Cells["IsPWD"].Value != null && !bool.TryParse(row.Cells["IsPWD"].Value.ToString(), out isPWD))
+                    {
+                        MessageBox.Show("Invalid PWD format.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;  // Optional: You may choose to continue or default to false
+                    }
+
+                    // Parsing RfidTagNumber, ensuring it's a valid integer
+                    if (!int.TryParse(row.Cells["RfidTagNumberId"].Value?.ToString(), out int rfidTagNumber))
+                    {
+                        MessageBox.Show("Invalid RFID tag number format.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;  // Skip this row or handle the error appropriately
+                    }
+
+                    // Add validated member to the list
                     members.Add(new GroupMember
                     {
-                        Age = int.Parse(row.Cells["Age"].Value.ToString()),
-                        VisitorTypeId = row.Cells["VisitorType"].Value.ToString(),
-                        PaymentAmount = decimal.Parse(row.Cells["PaymentAmount"].Value.ToString())
-                    }); 
+                        Age = age,
+                        VisitorType = row.Cells["VisitorType"].Value.ToString(),
+                        IsPWD = isPWD,
+                        PaymentAmount = paymentAmount,
+                        RfidTagNumberId = rfidTagNumber  // Ensure this is included and validated
+                    });
                 }
             }
 
             return members;
         }
+
 
     }
 }

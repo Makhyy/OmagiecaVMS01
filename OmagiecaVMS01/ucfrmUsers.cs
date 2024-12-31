@@ -390,5 +390,10 @@ namespace OmagiecaVMS01
         {
             ClearInputs();
         }
+
+        private void dgvUserAccounts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

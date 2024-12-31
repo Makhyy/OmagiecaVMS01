@@ -136,11 +136,9 @@ namespace OmagiecaVMS01
                 if (dgvRFIDTags.Columns["RfidStatus"] != null)
                     dgvRFIDTags.Columns["RfidStatus"].HeaderText = "Status";
 
-                if (dgvRFIDTags.Columns["VisitorId"] != null)
-                    dgvRFIDTags.Columns["VisitorId"].HeaderText = "Assigned Visitor ID";
+                
 
-                // Hide unnecessary columns
-                dgvRFIDTags.Columns["VisitorId"].Visible = false;
+               
 
             }
             catch (Exception ex)

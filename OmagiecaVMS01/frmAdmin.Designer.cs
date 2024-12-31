@@ -285,9 +285,9 @@
             // 
             this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(206, 3);
+            this.pictureBox2.Location = new System.Drawing.Point(199, -2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(55, 56);
+            this.pictureBox2.Size = new System.Drawing.Size(63, 65);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 48;
             this.pictureBox2.TabStop = false;
@@ -313,9 +313,9 @@
             this.label1.Location = new System.Drawing.Point(209, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(939, 56);
+            this.label1.Size = new System.Drawing.Size(954, 56);
             this.label1.TabIndex = 46;
-            this.label1.Text = "Omagieca Visitor Management System";
+            this.label1.Text = "OMAGIECA Visitor Management System";
             // 
             // frmAdmin
             // 
@@ -329,6 +329,7 @@
             this.Name = "frmAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Admin";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.mainPanel.ResumeLayout(false);

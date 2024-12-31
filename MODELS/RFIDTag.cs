@@ -13,6 +13,7 @@ namespace MODELS
         public string RfidTagUID { get; set; }   // Unique Identifier
         public int RfidTagNumber { get; set; }  // RFID Number
         public RFIDTagStatus RfidStatus { get; set; }
-        public int? VisitorId { get; set; }     // Nullable Foreign Key to Visitors table
+        public int? VisitorId { get; set;   } // Foreign Key
+
     }
 }
