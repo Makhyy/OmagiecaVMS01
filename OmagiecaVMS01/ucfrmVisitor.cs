@@ -14,11 +14,13 @@
 
     namespace OmagiecaVMS01
     {
+
         public partial class ucfrmVisitor : UserControl
         {
+        private PaymentBLL paymentBLL;
 
-        
-            private List<VisitorType> VisitorTypes;
+
+        private List<VisitorType> VisitorTypes;
             public ucfrmVisitor()
             {
                 InitializeComponent();
@@ -27,7 +29,8 @@
                 LoadRFIDTags();
                 RefreshRFIDTags();
                 ClearInputs();
-            }
+            chkIsPWD.CheckedChanged += chkIsPWD_CheckedChanged;
+        }
 
             private void visitorBindingNavigatorSaveItem_Click(object sender, EventArgs e)
             {
@@ -234,64 +237,63 @@
                     MessageBox.Show("An error occurred while searching for visitors: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            private void PopulateVisitorTypeAndPayment()
+        private void PopulateVisitorTypeAndPayment()
+        {
+            try
             {
-                try
+                PaymentBLL paymentBLL = new PaymentBLL();
+                DataTable payments = paymentBLL.GetAllPayments(); // Fetch all payments
+
+                if (!int.TryParse(txtAge.Text, out int age) || age <= 0)
                 {
-                    PaymentBLL paymentBLL = new PaymentBLL();
-                    var payments = paymentBLL.GetAllPayments(); // Assuming this returns a DataTable
-
-                    if (!int.TryParse(txtAge.Text, out int age) || age <= 0)
-                    {
-                        // Invalid age, reset the fields
-                        cboVisitorType.SelectedIndex = -1;
-                        txtPaymentAmount.Text = string.Empty;
-                        return;
-                    }
-
-                    string visitorType;
-                    decimal paymentAmount;
-
-                    // Determine visitor type
-                    if (age <= 12)
-                    {
-                        visitorType = "Child";
-                    }
-                    else if (age >= 13 && age <= 59)
-                    {
-                        visitorType = "Adult";
-                    }
-                    else
-                    {
-                        visitorType = "Senior Citizen";
-                    }
-
-                    // Fetch payment amount based on visitor type
-                    var paymentRecord = payments.AsEnumerable()
-                                                .FirstOrDefault(row => row["VisitorType"].ToString() == visitorType);
-
-                    if (paymentRecord != null)
-                    {
-                        paymentAmount = Convert.ToDecimal(paymentRecord["PaymentAmount"]);
-                    }
-                    else
-                    {
-                        throw new Exception("Payment record not found for visitor type: " + visitorType);
-                    }
-
-                    // Set Visitor Type and Payment Amount
-                    cboVisitorType.Text = visitorType;
-                    txtPaymentAmount.Text = paymentAmount.ToString("F2");
+                    cboVisitorType.SelectedIndex = -1;
+                    txtPaymentAmount.Text = string.Empty;
+                    return;
                 }
-                catch (Exception ex)
+
+                string visitorType;
+                decimal paymentAmount = 0;
+
+                // Determine visitor type based on age
+                if (age <= 12)
                 {
-                    MessageBox.Show("An error occurred while populating visitor type and payment amount: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    visitorType = "Child";
                 }
+                else if (age >= 13 && age <= 59)
+                {
+                    visitorType = "Adult";
+                }
+                else
+                {
+                    visitorType = "Senior Citizen";
+                }
+
+                // Fetch payment amount for the visitor type
+                var paymentRecord = payments.AsEnumerable()
+                                            .FirstOrDefault(row => row["VisitorType"].ToString() == visitorType);
+
+                if (paymentRecord != null)
+                {
+                    paymentAmount = Convert.ToDecimal(paymentRecord["PaymentAmount"]);
+                }
+                else
+                {
+                    throw new Exception($"Payment record not found for visitor type: {visitorType}");
+                }
+
+                // Update the UI
+                cboVisitorType.Text = visitorType;
+                txtPaymentAmount.Text = paymentAmount.ToString("F2");
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while populating visitor type and payment amount: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
 
 
-            private void ClearInputs()
+        private void ClearInputs()
             {
                 txtFirstName.Clear();
                 txtLastName.Clear();
@@ -308,8 +310,53 @@
 
             private void txtAge_TextChanged(object sender, EventArgs e)
             {
-                PopulateVisitorTypeAndPayment();
+            try
+            {
+                if (int.TryParse(txtAge.Text, out int age) && age > 0)
+                {
+                    PaymentBLL paymentBLL = new PaymentBLL();
+                    DataTable payments = paymentBLL.GetAllPayments();
+
+                    string visitorType;
+                    decimal basePaymentAmount = 0;
+
+                    // Determine visitor type
+                    if (age <= 12)
+                    {
+                        visitorType = "Child";
+                    }
+                    else if (age >= 13 && age <= 59)
+                    {
+                        visitorType = "Adult";
+                    }
+                    else
+                    {
+                        visitorType = "Senior Citizen";
+                    }
+
+                    // Fetch payment amount for the visitor type
+                    DataRow paymentRecord = payments.AsEnumerable()
+                                                    .FirstOrDefault(row => row["VisitorType"].ToString() == visitorType);
+                    if (paymentRecord != null)
+                    {
+                        basePaymentAmount = Convert.ToDecimal(paymentRecord["PaymentAmount"]);
+                    }
+
+                    // Update UI
+                    cboVisitorType.Text = visitorType;
+                    txtPaymentAmount.Text = basePaymentAmount.ToString("F2");
+                }
+                else
+                {
+                    cboVisitorType.SelectedIndex = -1;
+                    txtPaymentAmount.Text = string.Empty;
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while updating payment amount: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
             private bool ValidateInputs()
             {
@@ -364,8 +411,9 @@
             {
                 LoadVisitors();
                 ClearInputs();
-            
-            }
+            txtPaymentAmount.Text = "0.00"; // Default value for Payment Amount
+
+        }
             private void RefreshRFIDTags()
             {
                 try
@@ -452,5 +500,48 @@
             {
                
             }
+        private void chkIsPWD_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (decimal.TryParse(txtPaymentAmount.Text, out decimal originalAmount))
+                {
+                    string visitorType = cboVisitorType.SelectedItem?.ToString();
+
+                    if (string.IsNullOrEmpty(visitorType))
+                    {
+                        MessageBox.Show("Please select a visitor type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Call the BLL to get the PWD discount for the selected visitor type
+                    PaymentBLL paymentBLL = new PaymentBLL();
+                    decimal pwdDiscount = paymentBLL.GetPWDDiscount(visitorType);
+
+                    // Debug the fetched discount
+                    MessageBox.Show($"PWD Discount fetched: {pwdDiscount}", "Debug");
+
+                    if (chkIsPWD.Checked)
+                    {
+                        decimal discountedAmount = originalAmount - pwdDiscount;
+                        if (discountedAmount < 0) discountedAmount = 0;
+                        txtPaymentAmount.Text = discountedAmount.ToString("F2");
+                    }
+                    else
+                    {
+                        PopulateVisitorTypeAndPayment(); // Restore original amount if unchecked
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Invalid payment amount.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while applying the PWD discount: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
     }
+}

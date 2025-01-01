@@ -47,6 +47,19 @@ namespace BLL
 
             return paymentDAL.GetPaymentByVisitorType(visitorType);
         }
+        public decimal GetPWDDiscount(string visitorType)
+        {
+            try
+            {
+                PaymentDAL paymentDAL = new PaymentDAL();
+                return paymentDAL.FetchPWDDiscount(visitorType); // Call DAL to fetch discount
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching PWD Discount from DAL.", ex);
+            }
+        }
+
 
 
         // Delete Payment by ID

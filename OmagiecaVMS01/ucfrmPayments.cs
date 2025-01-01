@@ -371,6 +371,7 @@ namespace OmagiecaVMS01
                         MessageBoxIcon.Information
                     );
                     LoadPaymentData(); // Refresh the DataGridView
+                    ClearFields();     // Clear input fields
                 }
                 else
                 {

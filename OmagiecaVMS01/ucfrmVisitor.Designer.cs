@@ -212,6 +212,7 @@
             this.chkIsPWD.TabIndex = 206;
             this.chkIsPWD.Text = "IsPWD";
             this.chkIsPWD.UseVisualStyleBackColor = true;
+            this.chkIsPWD.CheckedChanged += new System.EventHandler(this.chkIsPWD_CheckedChanged);
             // 
             // label9
             // 

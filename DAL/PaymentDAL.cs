@@ -73,6 +73,41 @@ namespace DAL
             return dt;
         }
 
+
+
+        public decimal FetchPWDDiscount(string visitorType)
+        {
+            try
+            {
+                string query = "SELECT PWDDiscount FROM Payment WHERE VisitorType = @VisitorType";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@VisitorType", visitorType); // Pass VisitorType parameter
+                        conn.Open();
+
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            return Convert.ToDecimal(result); // Return fetched discount
+                        }
+                        else
+                        {
+                            return 0; // Default to 0 if no discount is found
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching PWD Discount from the database.", ex);
+            }
+        }
+
+
         // Delete Payment by ID
         public bool DeletePayment(int paymentId)
         {
