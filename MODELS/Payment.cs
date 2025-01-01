@@ -11,6 +11,6 @@ namespace MODELS
         public int PaymentId { get; set; }
         public string VisitorType{ get; set; }
         public decimal PaymentAmount { get; set; }
-       
+        public decimal PWDDiscount { get; set; }
     }
 }
