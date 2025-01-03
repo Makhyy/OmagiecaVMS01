@@ -20,18 +20,7 @@ namespace OmagiecaVMS01
 
         private void btnGenerateReport_Click(object sender, EventArgs e)
         {
-            string reportType = cmbReportType.SelectedItem.ToString();
-            DateTime startDate = dtpStartDate.Value;
-            DateTime endDate = dtpEndDate.Value;
-
-            if (endDate < startDate)
-            {
-                MessageBox.Show("End date must be after start date.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Call the method to generate the report
-            GenerateReport(reportType, startDate, endDate);
+           
         }
         private void GenerateReport(string reportType, DateTime startDate, DateTime endDate)
         {

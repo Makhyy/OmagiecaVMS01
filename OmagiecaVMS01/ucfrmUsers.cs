@@ -28,7 +28,7 @@ namespace OmagiecaVMS01
                 dgvUserAccounts.DataSource = userAccountBLL.GetAllUserAccounts();
 
                 // Customize DataGridView columns
-                dgvUserAccounts.Columns["Password"].Visible = false; // Hide sensitive data
+                dgvUserAccounts.Columns["Password"].Visible = true; // Hide sensitive data
                 dgvUserAccounts.Columns["SecurityQuestion"].Visible = false;
                 dgvUserAccounts.Columns["SecurityAnswer"].Visible = false;
 

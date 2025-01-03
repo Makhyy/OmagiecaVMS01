@@ -46,8 +46,10 @@
     <Compile Include="GroupRegistration.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report.cs" />
     <Compile Include="RFIDTag.cs" />
     <Compile Include="UserAccount.cs" />
+    <Compile Include="UserContext.cs" />
     <Compile Include="Visit.cs" />
     <Compile Include="Visitor.cs" />
     <Compile Include="VisitorType.cs" />

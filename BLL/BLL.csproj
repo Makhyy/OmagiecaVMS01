@@ -44,8 +44,10 @@
     <Compile Include="GroupRegistrationBLL.cs" />
     <Compile Include="PaymentBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportBLL.cs" />
     <Compile Include="RFIDTagBLL.cs" />
     <Compile Include="UserAccountBLL.cs" />
+    <Compile Include="VisitBLL.cs" />
     <Compile Include="VisitorBLL.cs" />
     <Compile Include="VisitorStatusBLL.cs" />
   </ItemGroup>

@@ -25,9 +25,9 @@ namespace DAL
                                     IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, RfidTagNumberId, DateRegistered
                                       
                              FROM Visitors ";
-                             
-                             
-                            
+
+
+
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable visitorTable = new DataTable();
@@ -319,7 +319,7 @@ namespace DAL
                             RfidTagNumberId = (int)reader["RfidTagNumberId"],
                             RfidTagNumber = (int)reader["RfidTagNumber"],
 
-                           
+
                         };
 
                         // Safe parsing for RFIDStatus
@@ -413,7 +413,13 @@ namespace DAL
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string query = @"UPDATE RFIDTag SET VisitorId = NULL WHERE VisitorId = @VisitorId";
+                // Include an update for the RFIDTagStatus in the query
+                string query = @"
+            UPDATE RFIDTag 
+            SET VisitorId = NULL, 
+                RfidStatus = 'Available' 
+            WHERE VisitorId = @VisitorId AND RfidStatus = 'In Use'"; // Ensure only tags that are in use are updated
+
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@VisitorId", visitorId);
 
@@ -425,6 +431,7 @@ namespace DAL
                 }
             }
         }
+
 
 
 

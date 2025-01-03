@@ -9,12 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace OmagiecaVMS01
 {
     public partial class frmLogin : Form
     {
         private readonly UserAccountBLL userAccountBLL;
+        public string UserRole { get; private set; }
+
         public frmLogin()
         {
             InitializeComponent();
@@ -40,34 +43,22 @@ namespace OmagiecaVMS01
                     return;
                 }
 
-                // Authenticate user
+                // Assign the username and password from the text boxes
                 string username = txtUsername.Text.Trim();
                 string password = txtPassword.Text.Trim();
 
+                // Authenticate user
                 UserAccount userAccount = userAccountBLL.AuthenticateUser(username, password);
 
                 if (userAccount != null)
                 {
-                    // Successful login
                     MessageBox.Show($"Welcome, {userAccount.FirstName} {userAccount.LastName}!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Redirect based on role
-                    if (userAccount.UserRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var adminForm = new frmAdmin();
-                        adminForm.Show();
-                    }
-                    else if (userAccount.UserRole.Equals("Receptionist", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var receptionistForm = new frmReceptionist();
-                        receptionistForm.Show();
-                    }
-
-                    this.Hide(); // Hide login form
+                    UserRole = userAccount.UserRole; // Assuming you have a public property UserRole defined in this form
+                    this.DialogResult = DialogResult.OK; // Indicate success
+                    this.Close(); // Close the login form
                 }
                 else
                 {
-                    // Invalid credentials
                     MessageBox.Show("Invalid username or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     txtPassword.Clear();
                     txtPassword.Focus();
@@ -75,10 +66,11 @@ namespace OmagiecaVMS01
             }
             catch (Exception ex)
             {
-                // Handle unexpected errors
                 MessageBox.Show("An error occurred while attempting to log in: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         private void loginShowPassword_CheckedChanged(object sender, EventArgs e)
         {
@@ -87,10 +79,17 @@ namespace OmagiecaVMS01
 
         private void fogotPassword_Click(object sender, EventArgs e)
         {
-            
-            frmForgotPassword frmverifypassword = new frmForgotPassword();
-            frmverifypassword.Show();
-            this.Hide();
+            using (frmForgotPassword frmverifypassword = new frmForgotPassword())
+            {
+               
+                frmverifypassword.ShowDialog(); // Show the Forgot Password form as a modal dialog
+                this.Show(); // Re-show the login form after the Forgot Password form is closed
+            }
+        }
+
+        private void frmLogin_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

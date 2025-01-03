@@ -34,7 +34,7 @@ namespace BLL
             }
         }
 
-        public void RegisterVisitor(Visitor visitor,  int rfidTagNumber)
+        public void RegisterVisitor(Visitor visitor, int rfidTagNumber)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace BLL
                 // Add visitor to the database and get the visitor ID
                 int visitorId = _visitorDAL.AddVisitor(visitor);
 
-               
+
 
                 // Assign the RFID tag to the visitor
                 _visitorDAL.AssignRFIDTag(visitorId, rfidTagNumber);
@@ -137,7 +137,7 @@ namespace BLL
                 throw new Exception("An error occurred while searching for visitors.", ex);
             }
         }
-        
+
 
 
 
@@ -250,9 +250,9 @@ namespace BLL
                 throw new Exception("An error occurred while assigning RFID tag: " + ex.Message, ex);
             }
         }
-            
+
         private VisitorDAL visitorDAL = new VisitorDAL();
-       
+
         public List<RFIDTag> GetAvailableRFIDTags()
         {
             try

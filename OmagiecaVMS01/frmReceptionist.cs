@@ -110,10 +110,8 @@ namespace OmagiecaVMS01
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            frmLogin frmlogin = new frmLogin();
-            frmlogin.Show();
-            this.Close();
+            this.DialogResult = DialogResult.OK; // Set the DialogResult to OK to indicate a logout
+            this.Close(); // Close the receptionist form
         }
     }
 }

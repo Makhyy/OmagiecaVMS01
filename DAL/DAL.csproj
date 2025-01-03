@@ -50,8 +50,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ReportDAL.cs" />
     <Compile Include="RFIDTagDAL.cs" />
     <Compile Include="UserAccountDAL.cs" />
+    <Compile Include="VisitDAL.cs" />
     <Compile Include="VisitorDAL.cs" />
     <Compile Include="VisitorStatusDAL.cs" />
   </ItemGroup>

@@ -60,7 +60,14 @@ namespace BLL
             }
         }
 
+        public int GetPaymentIdByVisitorId(int visitorId)
+        {
+            if (visitorId <= 0)
+                throw new ArgumentException("Invalid VisitorId.");
 
+            // Use the DAL to fetch PaymentId
+            return paymentDAL.GetPaymentIdByVisitorId(visitorId);
+        }
 
         // Delete Payment by ID
         public bool DeletePayment(int paymentId)

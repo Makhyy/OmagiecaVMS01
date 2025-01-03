@@ -105,6 +105,7 @@
             this.button1.TabIndex = 22;
             this.button1.Text = "Cancel";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnVerifyUsername
             // 
@@ -176,6 +177,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtSecurityAnswer);
             this.Controls.Add(this.txtUsername);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmForgotPassword";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Verify Account";

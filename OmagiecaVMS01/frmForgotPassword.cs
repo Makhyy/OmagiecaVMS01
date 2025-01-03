@@ -146,6 +146,10 @@ namespace OmagiecaVMS01
         {
             this.Close(); // Close the form
         }
-    
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close(); // Close the form
+        }
     }
 }

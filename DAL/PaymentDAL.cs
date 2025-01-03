@@ -52,6 +52,7 @@ namespace DAL
 
             return dt;
         }
+
         public DataTable GetPaymentByVisitorType(string visitorType)
         {
             DataTable dt = new DataTable();
@@ -158,5 +159,31 @@ namespace DAL
 
             return isUpdated;
         }
+        // Method to get PaymentId by VisitorId
+        public int GetPaymentIdByVisitorId(int visitorId)
+        {
+            string query = "SELECT PaymentId FROM Payment WHERE VisitorId = @VisitorId";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@VisitorId", visitorId);
+                    connection.Open();
+
+                    object result = command.ExecuteScalar();
+                    if (result != null && int.TryParse(result.ToString(), out int paymentId))
+                    {
+                        return paymentId; // Return existing PaymentId
+                    }
+                    else
+                    {
+                       
+                        return visitorId;
+                    }
+                }
+            }
+        }
+        
     }
 }
