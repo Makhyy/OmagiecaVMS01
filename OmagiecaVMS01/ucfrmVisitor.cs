@@ -489,6 +489,7 @@ namespace OmagiecaVMS01
         {
             frmGroupRegister groupRegister = new frmGroupRegister();
             groupRegister.ShowDialog();
+            
 
         }
 
