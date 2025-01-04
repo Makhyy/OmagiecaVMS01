@@ -489,7 +489,7 @@ namespace OmagiecaVMS01
         {
             frmGroupRegister groupRegister = new frmGroupRegister();
             groupRegister.ShowDialog();
-            
+
 
         }
 
@@ -520,7 +520,7 @@ namespace OmagiecaVMS01
                     PaymentBLL paymentBLL = new PaymentBLL();
                     decimal pwdDiscount = paymentBLL.GetPWDDiscount(visitorType);
 
-                   
+
 
                     if (chkIsPWD.Checked)
                     {

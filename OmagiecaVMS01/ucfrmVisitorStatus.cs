@@ -51,19 +51,11 @@ namespace OmagiecaVMS01
                 MessageBox.Show("An error occurred while loading visitors: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }*/
-        private void LoadActiveVisits()
-        {
-            try
-            {
-                VisitBLL visitBLL = new VisitBLL();
-                var activeVisits = visitBLL.GetActiveVisits();
-                dgvActiveVisits.DataSource = activeVisits; // Assuming `dgvActiveVisits` is your DataGridView
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while loading active visits: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+       
 
+        private void dgvActiveVisits_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

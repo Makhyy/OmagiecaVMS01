@@ -92,6 +92,18 @@
     <Compile Include="frmReceptionist.Designer.cs">
       <DependentUpon>frmReceptionist.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmRFID.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRFID.Designer.cs">
+      <DependentUpon>frmRFID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmVisit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVisit.Designer.cs">
+      <DependentUpon>frmVisit.cs</DependentUpon>
+    </Compile>
     <Compile Include="OmagiecaVMS01DBDataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -203,6 +215,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmReceptionist.resx">
       <DependentUpon>frmReceptionist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRFID.resx">
+      <DependentUpon>frmRFID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVisit.resx">
+      <DependentUpon>frmVisit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

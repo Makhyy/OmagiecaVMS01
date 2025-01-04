@@ -23,6 +23,9 @@ namespace MODELS
         public DateTime DateRegistered { get; set; }
         public int? GroupId { get; set; }
 
+        public string VisitorStatus { get; set; }
+        public int UserAccountId { get; set; }
+
         public GroupRegistration Group { get; set; }
         public RFIDTag RFIDTag { get; set; }
     }

@@ -171,9 +171,6 @@ namespace BLL
             UserAccountDAL userAccountDAL = new UserAccountDAL();
             UserAccount userAccount = userAccountDAL.AuthenticateUser(username, password);
 
-            // Set the logged-in user globally
-            UserContext.CurrentUser = userAccount;
-
             if (userAccount == null)
             {
                 throw new Exception("Invalid username or password.");
@@ -183,6 +180,10 @@ namespace BLL
             {
                 throw new Exception("Your account is not active. Please contact the administrator.");
             }
+
+            // Set the logged-in user globally
+            CurrentSession.UserAccountId = userAccount.UserAccountId; // Add this line to set the UserAccountId
+            CurrentSession.Username = userAccount.Username;          // Ensure Username is also set
 
             return userAccount;
         }

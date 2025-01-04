@@ -33,29 +33,35 @@ namespace BLL
                 throw new Exception("An error occurred while retrieving visitors: " + ex.Message, ex);
             }
         }
-
         public void RegisterVisitor(Visitor visitor, int rfidTagNumber)
         {
             try
             {
-                // Validate if the visitor object is not null
                 if (visitor == null)
-                {
                     throw new ArgumentNullException(nameof(visitor), "Visitor object cannot be null.");
-                }
 
-                // Check if RFID tag is valid before registering the visitor
+                // Assign the current logged-in user's ID
+                visitor.UserAccountId = CurrentSession.UserAccountId;
+
+                // Ensure UserAccountId is valid
+                if (visitor.UserAccountId <= 0)
+                    throw new ArgumentException("Invalid UserAccountId. Please ensure a user is logged in.");
+
+                // Set default VisitorStatus if not provided
+                if (string.IsNullOrEmpty(visitor.VisitorStatus))
+                    visitor.VisitorStatus = "Registered";
+
+                // Validate visitor data
+                ValidateVisitor(visitor);
+
+                // Check if RFID Tag is valid
                 if (!_visitorDAL.IsRfidTagValid(rfidTagNumber))
-                {
                     throw new ArgumentException("Invalid RFID Tag Number. The tag does not exist or is not available.");
-                }
 
-                // Add visitor to the database and get the visitor ID
+                // Add visitor to the database
                 int visitorId = _visitorDAL.AddVisitor(visitor);
 
-
-
-                // Assign the RFID tag to the visitor
+                // Assign RFID Tag
                 _visitorDAL.AssignRFIDTag(visitorId, rfidTagNumber);
             }
             catch (Exception ex)
@@ -63,7 +69,6 @@ namespace BLL
                 throw new Exception("An error occurred while registering the visitor: " + ex.Message, ex);
             }
         }
-
 
 
         public int AddVisitor(Visitor visitor)
@@ -130,6 +135,9 @@ namespace BLL
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(keyword))
+                    throw new ArgumentException("Search keyword cannot be empty.");
+
                 return _visitorDAL.SearchVisitors(keyword);
             }
             catch (Exception ex)
@@ -137,6 +145,7 @@ namespace BLL
                 throw new Exception("An error occurred while searching for visitors.", ex);
             }
         }
+
 
 
 
@@ -165,17 +174,16 @@ namespace BLL
                     throw new Exception("Payment Amount cannot be negative.");
                 }
 
-                if (!string.IsNullOrWhiteSpace(visitor.Gender) &&
-                    visitor.Gender.ToLower() != "male" &&
-                    visitor.Gender.ToLower() != "female")
-                {
-                    throw new Exception("Gender must be 'Male' or 'Female'.");
-                }
+               
 
                 if (visitor.RfidTagNumberId < 0)
                 {
                     throw new Exception("Invalid RFID Tag Number.");
                 }
+                if (!new[] { "Registered", "Entered", "Exited" }.Contains(visitor.VisitorStatus))
+                    throw new ArgumentException("Invalid VisitorStatus value.");
+
+
             }
             catch (Exception ex)
             {

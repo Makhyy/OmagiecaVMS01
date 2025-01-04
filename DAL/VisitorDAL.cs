@@ -21,10 +21,11 @@ namespace DAL
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT VisitorId,  FirstName, LastName, Age, VisitorType,
-                                    IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, RfidTagNumberId, DateRegistered
-                                      
-                             FROM Visitors ";
+                    string query = @"SELECT VisitorId, FirstName, LastName, Age, VisitorType,
+                        IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, 
+                        RfidTagNumberId, DateRegistered, VisitorStatus, UserAccountId
+                 FROM Visitors";
+
 
 
 
@@ -52,10 +53,11 @@ namespace DAL
         public int AddVisitor(Visitor visitor)
         {
             string query = @"INSERT INTO Visitors 
-        (FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, DateRegistered, RfidTagNumberId)
-        OUTPUT INSERTED.VisitorId
-        VALUES 
-        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @DateRegistered, @RfidTagNumberId)";
+(FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, DateRegistered, RfidTagNumberId, VisitorStatus, UserAccountId)
+OUTPUT INSERTED.VisitorId
+VALUES 
+(@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @DateRegistered, @RfidTagNumberId, @VisitorStatus, @UserAccountId)";
+
 
             SqlConnection connection = new SqlConnection(connectionString);
             SqlTransaction transaction = null;  // Initialize transaction to null
@@ -64,6 +66,17 @@ namespace DAL
             {
                 connection.Open();
                 transaction = connection.BeginTransaction(); // Start a new transaction
+
+                if (!new[] { "Registered", "Entered", "Exited" }.Contains(visitor.VisitorStatus))
+                {
+                    throw new ArgumentException("Invalid VisitorStatus value.");
+                }
+                if (visitor.UserAccountId <= 0)
+                {
+                    throw new ArgumentException("Invalid UserAccountId.");
+                }
+
+
 
                 using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
@@ -78,6 +91,9 @@ namespace DAL
                     command.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
                     command.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
                     command.Parameters.AddWithValue("@DateRegistered", visitor.DateRegistered);
+                    command.Parameters.AddWithValue("@VisitorStatus", visitor.VisitorStatus ?? "Registered");
+                    command.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId);
+
 
                     int visitorId = (int)command.ExecuteScalar();
                     transaction.Commit();  // Commit the transaction
@@ -96,16 +112,29 @@ namespace DAL
         }
 
 
+        public void UpdateVisitorStatus(int visitorId, string visitorStatus)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"UPDATE Visitors 
+                             SET VisitorStatus = @VisitorStatus
+                             WHERE VisitorId = @VisitorId";
 
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@VisitorId", visitorId);
+                    command.Parameters.AddWithValue("@VisitorStatus", visitorStatus);
 
-
-
-
-
-
-
-
-
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while updating the visitor status: " + ex.Message, ex);
+            }
+        }
 
 
         public void UpdateVisitor(Visitor visitor)
@@ -115,17 +144,19 @@ namespace DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     string query = @"UPDATE Visitors 
-                             SET FirstName = @FirstName, 
-                                 LastName = @LastName, 
-                                 Age = @Age, 
-                                 VisitorType = @VisitorType,  
-                                 IsPWD = @IsPWD, 
-                                 Gender = @Gender, 
-                                 CityMunicipality = @CityMunicipality, 
-                                 ForeignCountry = @ForeignCountry, 
-                                 PaymentAmount = @PaymentAmount, 
-                                 RfidTagNumberId = @RfidTagNumberId  
-                             WHERE VisitorId = @VisitorId";
+                 SET FirstName = @FirstName, 
+                     LastName = @LastName, 
+                     Age = @Age, 
+                     VisitorType = @VisitorType,  
+                     IsPWD = @IsPWD, 
+                     Gender = @Gender, 
+                     CityMunicipality = @CityMunicipality, 
+                     ForeignCountry = @ForeignCountry, 
+                     PaymentAmount = @PaymentAmount, 
+                     RfidTagNumberId = @RfidTagNumberId,  
+                     VisitorStatus = @VisitorStatus, 
+                     UserAccountId = @UserAccountId
+                 WHERE VisitorId = @VisitorId";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -140,6 +171,8 @@ namespace DAL
                         command.Parameters.Add("@ForeignCountry", SqlDbType.VarChar).Value = visitor.ForeignCountry ?? (object)DBNull.Value;
                         command.Parameters.Add("@PaymentAmount", SqlDbType.Decimal).Value = visitor.PaymentAmount;
                         command.Parameters.Add("@RfidTagNumberId", SqlDbType.Int).Value = (visitor.RfidTagNumberId > 0) ? (object)visitor.RfidTagNumberId : DBNull.Value;
+                        command.Parameters.AddWithValue("@VisitorStatus", visitor.VisitorStatus);
+                        command.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId);
 
                         connection.Open();
                         command.ExecuteNonQuery();
@@ -153,21 +186,27 @@ namespace DAL
             }
         }
 
-        public List<Visitor> SearchVisitors(string keyword)
+        public List<Visitor> SearchVisitors(string keyword, int? userAccountId = null)
         {
             List<Visitor> visitors = new List<Visitor>();
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT * FROM Visitors 
-                             WHERE FirstName LIKE @Keyword 
-                                OR LastName LIKE @Keyword
-                                OR CityMunicipality LIKE @Keyword
-                                OR ForeignCountry LIKE @Keyword";
+                    string query = @"
+                SELECT * 
+                FROM Visitors
+                WHERE 
+                    (FirstName LIKE @Keyword 
+                     OR LastName LIKE @Keyword
+                     OR CityMunicipality LIKE @Keyword
+                     OR ForeignCountry LIKE @Keyword
+                     OR VisitorStatus LIKE @Keyword)
+                    AND (@UserAccountId IS NULL OR UserAccountId = @UserAccountId)";
 
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
+                    command.Parameters.AddWithValue("@UserAccountId", (object)userAccountId ?? DBNull.Value);
 
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
@@ -177,7 +216,7 @@ namespace DAL
                         visitors.Add(new Visitor
                         {
                             VisitorId = (int)reader["VisitorId"],
-                            VisitorType = (string)reader["VisitorType"],
+                            VisitorType = reader["VisitorType"].ToString(),
                             FirstName = reader["FirstName"].ToString(),
                             LastName = reader["LastName"].ToString(),
                             Age = (int)reader["Age"],
@@ -187,7 +226,9 @@ namespace DAL
                             ForeignCountry = reader["ForeignCountry"].ToString(),
                             PaymentAmount = (decimal)reader["PaymentAmount"],
                             RfidTagNumberId = reader.IsDBNull(reader.GetOrdinal("RfidTagNumberId")) ? 0 : (int)reader["RfidTagNumberId"],
-                            DateRegistered = (DateTime)reader["DateRegistered"]
+                            DateRegistered = (DateTime)reader["DateRegistered"],
+                            VisitorStatus = reader["VisitorStatus"].ToString(),
+                            UserAccountId = (int)reader["UserAccountId"]
                         });
                     }
 
@@ -201,6 +242,7 @@ namespace DAL
 
             return visitors;
         }
+
 
 
 
@@ -412,23 +454,58 @@ namespace DAL
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                // Include an update for the RFIDTagStatus in the query
-                string query = @"
-            UPDATE RFIDTag 
-            SET VisitorId = NULL, 
-                RfidStatus = 'Available' 
-            WHERE VisitorId = @VisitorId AND RfidStatus = 'In Use'"; // Ensure only tags that are in use are updated
-
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@VisitorId", visitorId);
-
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected == 0)
+                try
                 {
-                    // Log this information but do not throw an error
-                    Console.WriteLine("No RFID tags found or already unassigned for the specified visitor.");
+                    connection.Open();
+                    string query = @"
+                UPDATE RFIDTag 
+                SET VisitorId = NULL, 
+                    RfidStatus = 'Available' 
+                WHERE VisitorId = @VisitorId AND RfidStatus = 'In Use'";
+
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@VisitorId", visitorId);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                    {
+                        // Log a warning if no tags were unassigned
+                        Console.WriteLine($"No RFID tags were unassigned for VisitorId {visitorId}.");
+                    }
                 }
+                catch (Exception ex)
+                {
+                    // Log the exception details
+                    Console.WriteLine($"Error in UnassignRFIDTags: {ex.Message}");
+                    throw; // Re-throw the exception to the caller
+                }
+            }
+        }
+
+
+        public DataTable GetVisitorsByStatus(string visitorStatus)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT VisitorId, FirstName, LastName, VisitorStatus 
+                             FROM Visitors 
+                             WHERE VisitorStatus = @VisitorStatus";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.SelectCommand.Parameters.AddWithValue("@VisitorStatus", visitorStatus);
+
+                    DataTable visitorTable = new DataTable();
+                    adapter.Fill(visitorTable);
+
+                    return visitorTable;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving visitors by status: " + ex.Message, ex);
             }
         }
 
