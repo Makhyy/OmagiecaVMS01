@@ -81,6 +81,7 @@
             this.dgvUserAccounts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvUserAccounts.Location = new System.Drawing.Point(457, 140);
             this.dgvUserAccounts.Name = "dgvUserAccounts";
+            this.dgvUserAccounts.ReadOnly = true;
             this.dgvUserAccounts.Size = new System.Drawing.Size(767, 515);
             this.dgvUserAccounts.TabIndex = 0;
             this.dgvUserAccounts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUserAccounts_CellContentClick);
@@ -272,6 +273,7 @@
             this.cboUserStatus.Name = "cboUserStatus";
             this.cboUserStatus.Size = new System.Drawing.Size(171, 28);
             this.cboUserStatus.TabIndex = 248;
+            this.cboUserStatus.Text = "Active";
             // 
             // label21
             // 

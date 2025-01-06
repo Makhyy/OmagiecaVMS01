@@ -21,14 +21,11 @@ namespace DAL
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT VisitorId, FirstName, LastName, Age, VisitorType,
-                        IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, 
-                        RfidTagNumberId, DateRegistered, VisitorStatus, UserAccountId
-                 FROM Visitors";
-
-
-
-
+                    string query = @"SELECT V.VisitorId, V.FirstName, V.LastName, V.Age, V.VisitorType,
+                             V.IsPWD, V.Gender, V.CityMunicipality, V.ForeignCountry, V.PaymentAmount, 
+                             R.RFIDTagNumber, V.DateRegistered, V.VisitorStatus, V.UserAccountId
+                      FROM Visitors V
+                      JOIN RFIDTag R ON V.RfidTagNumberId = R.RfidTagNumberId";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable visitorTable = new DataTable();
@@ -43,6 +40,23 @@ namespace DAL
             }
         }
 
+        public DataTable GetVisitorsReport()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT VisitorId, FirstName, LastName, Age, VisitorType,
+                             IsPWD, Gender, CityMunicipality, ForeignCountry,
+                             DateRegistered
+                      FROM Visitors ";
+                      
+
+                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                DataTable visitorTable = new DataTable();
+                adapter.Fill(visitorTable);
+
+                return visitorTable;
+            }
+        }
 
 
 
@@ -508,11 +522,194 @@ VALUES
                 throw new Exception("An error occurred while retrieving visitors by status: " + ex.Message, ex);
             }
         }
+        public DataTable GetVisitorsForSpecificDay(DateTime specificDay)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT VisitorId, FirstName, LastName, Age, VisitorType,
+                             IsPWD, Gender, CityMunicipality, ForeignCountry,
+                             DateRegistered
+                      FROM Visitors 
+                    WHERE CAST(DateRegistered AS DATE) = @SpecificDay";
 
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@SpecificDay", specificDay.Date);
 
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable visitorTable = new DataTable();
+                    adapter.Fill(visitorTable);
 
+                    return visitorTable;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving visitors: " + ex.Message, ex);
+            }
+        }
 
+        public DataTable GetVisitorsWeeklyReport(DateTime startDate, DateTime endDate)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT VisitorId, FirstName, LastName, Age, VisitorType,
+                             IsPWD, Gender, CityMunicipality, ForeignCountry,
+                             DateRegistered
+                      FROM Visitors 
+                WHERE DateRegistered >= @StartDate AND DateRegistered <= @EndDate";
 
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@StartDate", startDate.Date);
+                command.Parameters.AddWithValue("@EndDate", endDate.Date);
 
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                DataTable visitorTable = new DataTable();
+                adapter.Fill(visitorTable);
+
+                return visitorTable;
+            }
+        }
+
+        public DataTable GetRevenueByDateRange(DateTime startDate, DateTime endDate)
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sqlQuery = @"
+                SELECT CAST(DateRegistered AS DATE) AS Date, SUM(PaymentAmount) AS TotalRevenue
+                FROM Visitor
+                WHERE DateRegistered BETWEEN @StartDate AND @EndDate
+                GROUP BY CAST(DateRegistered AS DATE)
+                ORDER BY Date";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                cmd.Parameters.AddWithValue("@StartDate", startDate);
+                cmd.Parameters.AddWithValue("@EndDate", endDate);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(dataTable);
+            }
+            return dataTable;
+        }
+
+        public DataTable GetDailyRevenue(DateTime specificDate)
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sqlQuery = @"
+                SELECT CAST(DateRegistered AS DATE) AS Date, SUM(PaymentAmount) AS TotalRevenue
+                FROM Visitors
+                WHERE CAST(DateRegistered AS DATE) = @SpecificDate
+                GROUP BY CAST(DateRegistered AS DATE)";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                cmd.Parameters.AddWithValue("@SpecificDate", specificDate);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(dataTable);
+            }
+            return dataTable;
+        }
+
+        public DataTable LoadRevenueVisitorData()
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sqlQuery = @"
+                SELECT VisitorId, PaymentAmount, DateRegistered
+                FROM Visitors";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(dataTable);
+            }
+            return dataTable;
+        }
+        public decimal GetTotalWeeklyRevenue()
+        {
+            decimal totalPayment = 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sqlQuery = @"
+                SELECT SUM(PaymentAmount) AS TotalPayment
+                FROM Visitors
+                WHERE DateRegistered >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE))";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                conn.Open();
+                object result = cmd.ExecuteScalar();
+                if (result != DBNull.Value)
+                {
+                    totalPayment = Convert.ToDecimal(result);
+                }
+            }
+            return totalPayment;
+        }
+        public decimal GetTotalMonthlyRevenue()
+        {
+            decimal totalPayment = 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sqlQuery = @"
+                SELECT SUM(PaymentAmount) AS TotalPayment
+                FROM Visitors
+                WHERE DateRegistered >= DATEADD(MONTH, -1, CAST(GETDATE() AS DATE))";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                conn.Open();
+                object result = cmd.ExecuteScalar();
+                if (result != DBNull.Value)
+                {
+                    totalPayment = Convert.ToDecimal(result);
+                }
+            }
+            return totalPayment;
+        }
+        public decimal GetTotalRevenue()
+        {
+            decimal totalPayment = 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sqlQuery = @"
+                SELECT SUM(PaymentAmount) AS TotalPayment
+                FROM Visitors";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                conn.Open();
+                object result = cmd.ExecuteScalar();
+                if (result != DBNull.Value)
+                {
+                    totalPayment = Convert.ToDecimal(result);
+                }
+            }
+            return totalPayment;
+        }
+        public decimal GetTotalRevenueByDateRange(DateTime startDate, DateTime endDate)
+        {
+            decimal totalPayment = 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sqlQuery = @"
+                SELECT SUM(PaymentAmount) AS TotalPayment
+                FROM Visitors
+                WHERE DateRegistered >= @StartDate AND DateRegistered <= @EndDate";
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                cmd.Parameters.AddWithValue("@StartDate", startDate);
+                cmd.Parameters.AddWithValue("@EndDate", endDate);
+
+                conn.Open();
+                object result = cmd.ExecuteScalar();
+                if (result != DBNull.Value)
+                {
+                    totalPayment = Convert.ToDecimal(result);
+                }
+            }
+            return totalPayment;
+        }
     }
 }

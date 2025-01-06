@@ -28,14 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
-            this.dgvActiveVisits = new System.Windows.Forms.DataGridView();
+            this.dgvVisitors = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvActiveVisits)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).BeginInit();
+            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,14 +66,44 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "Visitor Status";
             // 
-            // dgvActiveVisits
+            // dgvVisitors
             // 
-            this.dgvActiveVisits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvActiveVisits.Location = new System.Drawing.Point(3, 3);
-            this.dgvActiveVisits.Name = "dgvActiveVisits";
-            this.dgvActiveVisits.Size = new System.Drawing.Size(1243, 341);
-            this.dgvActiveVisits.TabIndex = 22;
-            this.dgvActiveVisits.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvActiveVisits_CellContentClick);
+            this.dgvVisitors.AllowUserToAddRows = false;
+            this.dgvVisitors.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.dgvVisitors.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvVisitors.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvVisitors.BackgroundColor = System.Drawing.Color.PowderBlue;
+            this.dgvVisitors.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvVisitors.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvVisitors.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvVisitors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvVisitors.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvVisitors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvVisitors.GridColor = System.Drawing.Color.LightSteelBlue;
+            this.dgvVisitors.Location = new System.Drawing.Point(0, 0);
+            this.dgvVisitors.Name = "dgvVisitors";
+            this.dgvVisitors.ReadOnly = true;
+            this.dgvVisitors.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+            this.dgvVisitors.RowTemplate.ReadOnly = true;
+            this.dgvVisitors.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvVisitors.Size = new System.Drawing.Size(1255, 305);
+            this.dgvVisitors.TabIndex = 22;
+            this.dgvVisitors.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvActiveVisits_CellContentClick);
             // 
             // panel1
             // 
@@ -81,20 +116,38 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.PeachPuff;
+            this.panel2.Controls.Add(this.btnRefresh);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 64);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1261, 100);
+            this.panel2.Size = new System.Drawing.Size(1261, 53);
             this.panel2.TabIndex = 24;
             // 
             // panel3
             // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.panel3.Controls.Add(this.dgvActiveVisits);
-            this.panel3.Location = new System.Drawing.Point(3, 185);
+            this.panel3.Controls.Add(this.dgvVisitors);
+            this.panel3.Location = new System.Drawing.Point(3, 123);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1255, 347);
+            this.panel3.Size = new System.Drawing.Size(1255, 305);
             this.panel3.TabIndex = 25;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.BackColor = System.Drawing.Color.LightSeaGreen;
+            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefresh.ForeColor = System.Drawing.Color.White;
+            this.btnRefresh.Location = new System.Drawing.Point(1119, 12);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(139, 38);
+            this.btnRefresh.TabIndex = 219;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // ucfrmVisitorStatus
             // 
@@ -109,7 +162,8 @@
             this.Size = new System.Drawing.Size(1261, 699);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvActiveVisits)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -118,9 +172,10 @@
         #endregion
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.DataGridView dgvActiveVisits;
+        private System.Windows.Forms.DataGridView dgvVisitors;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }

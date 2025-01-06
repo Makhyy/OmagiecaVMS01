@@ -33,6 +33,80 @@ namespace BLL
                 throw new Exception("An error occurred while retrieving visitors: " + ex.Message, ex);
             }
         }
+        public DataTable GetVisitorsReport()
+        {
+            try
+            {
+                return _visitorDAL.GetVisitorsReport();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving visitors: " + ex.Message, ex);
+}
+        }
+
+        public (DateTime Start, DateTime End) GetLastCompleteWeekRange()
+        {
+            DateTime today = DateTime.Today;
+            int daysToSubtract = (int)today.DayOfWeek - (int)DayOfWeek.Monday;
+            DateTime weekStart = today.AddDays(-daysToSubtract - 7);
+            DateTime weekEnd = weekStart.AddDays(6);
+
+            return (weekStart, weekEnd);
+        }
+        public DataTable GetVisitorsForLastCompleteWeek()
+        {
+            var (weekStart, weekEnd) = GetLastCompleteWeekRange();
+            return visitorDAL.GetVisitorsWeeklyReport(weekStart, weekEnd);
+        }
+        public DataTable GetVisitorsWeeklyReport()
+        {
+            DateTime endDate = DateTime.Today; // Today's date
+            DateTime startDate = endDate.AddDays(-6); // 7 days including today
+
+            return visitorDAL.GetVisitorsWeeklyReport(startDate, endDate);
+        }
+
+        public DataTable GetVisitorsForToday()
+        {
+            return visitorDAL.GetVisitorsForSpecificDay(DateTime.Today);
+        }
+        public DataTable GetVisitorsForSpecificDay(DateTime specificDay)
+        {
+            // You can add any business logic here if needed, for example:
+            if (specificDay.Date > DateTime.Now.Date)
+            {
+                throw new ArgumentException("Cannot retrieve visitors for a future date.");
+            }
+
+            return visitorDAL.GetVisitorsForSpecificDay(specificDay);
+        }
+        public (DateTime Start, DateTime End) GetCurrentMonthRange()
+        {
+            DateTime today = DateTime.Today;
+            DateTime monthStart = new DateTime(today.Year, today.Month, 1);
+            DateTime monthEnd = monthStart.AddMonths(1).AddDays(-1);
+
+            return (monthStart, monthEnd);
+        }
+        public DataTable GetVisitorsForCurrentMonth()
+        {
+            var (monthStart, monthEnd) = GetCurrentMonthRange();
+            return visitorDAL.GetVisitorsWeeklyReport(monthStart, monthEnd);
+        }
+        public DataTable GetVisitorsForDateRange(DateTime startDate, DateTime endDate)
+        {
+            return visitorDAL.GetVisitorsWeeklyReport(startDate, endDate);
+        }
+        public DataTable GetDailyRevenue(DateTime date)
+        {
+            if (date.Date > DateTime.Now.Date)
+            {
+                throw new ArgumentException("Cannot fetch revenue for a future date.");
+            }
+            return visitorDAL.GetDailyRevenue(date);
+        }
+
         public void RegisterVisitor(Visitor visitor, int rfidTagNumber)
         {
             try
@@ -272,7 +346,29 @@ namespace BLL
                 throw new Exception("Error occurred in BLL while retrieving available RFID tags: " + ex.Message, ex);
             }
         }
-
-
+        public DataTable GetRevenueVisitorData()
+        {
+            return visitorDAL.LoadRevenueVisitorData();
+        }
+        public decimal GetTotalWeeklyRevenue()
+        {
+            return visitorDAL.GetTotalWeeklyRevenue();
+        }
+        public decimal GetTotalMonthlyRevenue()
+        {
+            return visitorDAL.GetTotalMonthlyRevenue();
+        }
+        public decimal GetTotalRevenue()
+        {
+            return visitorDAL.GetTotalRevenue();
+        }
+        public decimal GetTotalRevenueByDateRange(DateTime startDate, DateTime endDate)
+        {
+            if (endDate < startDate)
+            {
+                throw new ArgumentException("End date must be after start date.");
+            }
+            return visitorDAL.GetTotalRevenueByDateRange(startDate, endDate);
+        }
     }
 }

@@ -13,49 +13,53 @@ namespace OmagiecaVMS01
 {
     public partial class ucfrmVisitorStatus : UserControl
     {
+        private PaymentBLL paymentBLL = new PaymentBLL();
         public ucfrmVisitorStatus()
         {
             InitializeComponent();
-            
+            LoadVisitors();
+            dgvVisitors.Columns["VisitorId"].Visible = false;
+            dgvVisitors.Columns["Age"].Visible = false;
+            dgvVisitors.Columns["IsPWD"].Visible = false;
+            dgvVisitors.Columns["Gender"].Visible = false;
+            dgvVisitors.Columns["CityMunicipality"].Visible = false;
+            dgvVisitors.Columns["ForeignCountry"].Visible = false;
+            dgvVisitors.Columns["PaymentAmount"].Visible = false;
+            dgvVisitors.Columns["UserAccountId"].Visible = false;
+            dgvVisitors.Columns["DateRegistered"].Visible = false;
+
+
         }
 
-/*        private void LoadVisitors()
+        private void LoadVisitors()
         {
             try
             {
-                VisitorStatusBLL visitorstatusBLL = new VisitorStatusBLL();
-                dgvVisitors.DataSource = visitorstatusBLL.GetVisitors();
+                VisitorBLL visitorBLL = new VisitorBLL();
+                dgvVisitors.DataSource = visitorBLL.GetVisitors();
 
-                // Reorder columns
-                
-                dgvVisitors.Columns["FirstName"].DisplayIndex = 0;
-                dgvVisitors.Columns["LastName"].DisplayIndex = 1;               
-                dgvVisitors.Columns["VisitorTypeName"].DisplayIndex = 2;                                                             
-                dgvVisitors.Columns["RfidTagNumber"].DisplayIndex = 3;
-                dgvVisitors.Columns["DateRegistered"].DisplayIndex = 4;
 
-                // Customize column headers (if needed)
-                
-                dgvVisitors.Columns["FirstName"].HeaderText = "First Name";
-                dgvVisitors.Columns["LastName"].HeaderText = "Last Name";
-                
-                dgvVisitors.Columns["VisitorTypeName"].HeaderText = "Visitor Type";
-                
-                
-                
-                dgvVisitors.Columns["RfidTagNumber"].HeaderText = "RFID Tag Number";
-                dgvVisitors.Columns["DateRegistered"].HeaderText = "Date Registered";
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred while loading visitors: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }*/
-       
+        }
+
 
         private void dgvActiveVisits_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadVisitors();
         }
     }
 }

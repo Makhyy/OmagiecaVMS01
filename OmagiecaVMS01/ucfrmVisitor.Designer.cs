@@ -68,6 +68,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.pnlRFIDMonitor = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.visitorBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
@@ -201,6 +202,7 @@
             this.txtPaymentAmount.Name = "txtPaymentAmount";
             this.txtPaymentAmount.Size = new System.Drawing.Size(126, 29);
             this.txtPaymentAmount.TabIndex = 207;
+            this.txtPaymentAmount.SelectedIndexChanged += new System.EventHandler(this.txtPaymentAmount_SelectedIndexChanged);
             // 
             // chkIsPWD
             // 
@@ -356,7 +358,7 @@
             this.btnRegisterVisitor.Location = new System.Drawing.Point(22, 299);
             this.btnRegisterVisitor.Margin = new System.Windows.Forms.Padding(2);
             this.btnRegisterVisitor.Name = "btnRegisterVisitor";
-            this.btnRegisterVisitor.Size = new System.Drawing.Size(170, 45);
+            this.btnRegisterVisitor.Size = new System.Drawing.Size(134, 45);
             this.btnRegisterVisitor.TabIndex = 214;
             this.btnRegisterVisitor.Text = "Register";
             this.btnRegisterVisitor.UseVisualStyleBackColor = false;
@@ -368,10 +370,10 @@
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnUpdate.Location = new System.Drawing.Point(240, 299);
+            this.btnUpdate.Location = new System.Drawing.Point(177, 299);
             this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(170, 45);
+            this.btnUpdate.Size = new System.Drawing.Size(143, 45);
             this.btnUpdate.TabIndex = 215;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = false;
@@ -381,10 +383,10 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.BackColor = System.Drawing.Color.LightSeaGreen;
-            this.button2.FlatAppearance.BorderSize = 2;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(1112, 69);
+            this.button2.Location = new System.Drawing.Point(1112, 54);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(139, 38);
             this.button2.TabIndex = 218;
@@ -399,8 +401,9 @@
             this.btnGroupRegister.FlatAppearance.BorderSize = 2;
             this.btnGroupRegister.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btnGroupRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGroupRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGroupRegister.ForeColor = System.Drawing.Color.White;
-            this.btnGroupRegister.Location = new System.Drawing.Point(1112, 117);
+            this.btnGroupRegister.Location = new System.Drawing.Point(1112, 102);
             this.btnGroupRegister.Name = "btnGroupRegister";
             this.btnGroupRegister.Size = new System.Drawing.Size(139, 56);
             this.btnGroupRegister.TabIndex = 219;
@@ -415,9 +418,9 @@
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.txtSearch);
             this.panel1.Controls.Add(this.btnSearch);
-            this.panel1.Location = new System.Drawing.Point(897, 299);
+            this.panel1.Location = new System.Drawing.Point(667, 54);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(354, 41);
+            this.panel1.Size = new System.Drawing.Size(439, 41);
             this.panel1.TabIndex = 220;
             // 
             // label8
@@ -426,7 +429,7 @@
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(4, 9);
+            this.label8.Location = new System.Drawing.Point(4, 10);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(60, 20);
@@ -436,9 +439,9 @@
             // txtSearch
             // 
             this.txtSearch.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(69, 5);
+            this.txtSearch.Location = new System.Drawing.Point(69, 6);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(189, 27);
+            this.txtSearch.Size = new System.Drawing.Size(277, 27);
             this.txtSearch.TabIndex = 222;
             // 
             // btnSearch
@@ -449,10 +452,10 @@
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(263, 5);
+            this.btnSearch.Location = new System.Drawing.Point(351, 4);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(86, 29);
+            this.btnSearch.Size = new System.Drawing.Size(86, 31);
             this.btnSearch.TabIndex = 221;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
@@ -466,10 +469,10 @@
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(446, 298);
+            this.btnDelete.Location = new System.Drawing.Point(350, 299);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(170, 46);
+            this.btnDelete.Size = new System.Drawing.Size(143, 46);
             this.btnDelete.TabIndex = 217;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = false;
@@ -497,7 +500,7 @@
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClear.ForeColor = System.Drawing.Color.White;
-            this.btnClear.Location = new System.Drawing.Point(657, 298);
+            this.btnClear.Location = new System.Drawing.Point(508, 297);
             this.btnClear.Margin = new System.Windows.Forms.Padding(2);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(153, 47);
@@ -555,18 +558,28 @@
             this.panel5.Size = new System.Drawing.Size(1241, 10);
             this.panel5.TabIndex = 281;
             // 
+            // pnlRFIDMonitor
+            // 
+            this.pnlRFIDMonitor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlRFIDMonitor.BackColor = System.Drawing.Color.PowderBlue;
+            this.pnlRFIDMonitor.Location = new System.Drawing.Point(667, 110);
+            this.pnlRFIDMonitor.Name = "pnlRFIDMonitor";
+            this.pnlRFIDMonitor.Size = new System.Drawing.Size(439, 235);
+            this.pnlRFIDMonitor.TabIndex = 283;
+            // 
             // ucfrmVisitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlRFIDMonitor);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.dgvVisitors);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnGroupRegister);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnDelete);
@@ -647,5 +660,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel pnlRFIDMonitor;
     }
 }

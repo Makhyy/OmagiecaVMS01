@@ -110,8 +110,12 @@ namespace OmagiecaVMS01
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK; // Set the DialogResult to OK to indicate a logout
-            this.Close(); // Close the receptionist form
+            // Prompt the user to confirm they want to log out
+            if (MessageBox.Show("Are you sure you want to log out?", "Logout Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                this.DialogResult = DialogResult.OK; // Set the DialogResult to OK to indicate a logout
+                this.Close(); // Close the receptionist form
+            }
         }
     }
 }

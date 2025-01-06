@@ -38,14 +38,15 @@
             this.txtSecurityAnswer = new System.Windows.Forms.TextBox();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.lblSA = new System.Windows.Forms.Label();
+            this.lblNP = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnResetPassword
             // 
-            this.btnResetPassword.BackColor = System.Drawing.Color.CadetBlue;
-            this.btnResetPassword.FlatAppearance.BorderSize = 2;
-            this.btnResetPassword.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOliveGreen;
-            this.btnResetPassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResetPassword.BackColor = System.Drawing.Color.DarkBlue;
+            this.btnResetPassword.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.btnResetPassword.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnResetPassword.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnResetPassword.ForeColor = System.Drawing.Color.White;
             this.btnResetPassword.Location = new System.Drawing.Point(393, 473);
@@ -59,17 +60,16 @@
             // txtNewPassword
             // 
             this.txtNewPassword.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNewPassword.Location = new System.Drawing.Point(300, 436);
+            this.txtNewPassword.Location = new System.Drawing.Point(300, 423);
             this.txtNewPassword.Name = "txtNewPassword";
             this.txtNewPassword.Size = new System.Drawing.Size(378, 31);
             this.txtNewPassword.TabIndex = 25;
             // 
             // btnSubmitAnswer
             // 
-            this.btnSubmitAnswer.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.btnSubmitAnswer.FlatAppearance.BorderSize = 2;
-            this.btnSubmitAnswer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOliveGreen;
-            this.btnSubmitAnswer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubmitAnswer.BackColor = System.Drawing.Color.DarkGoldenrod;
+            this.btnSubmitAnswer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.btnSubmitAnswer.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSubmitAnswer.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSubmitAnswer.ForeColor = System.Drawing.Color.White;
             this.btnSubmitAnswer.Location = new System.Drawing.Point(414, 341);
@@ -85,18 +85,18 @@
             this.lblSecurityQuestion.AutoSize = true;
             this.lblSecurityQuestion.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSecurityQuestion.ForeColor = System.Drawing.Color.White;
-            this.lblSecurityQuestion.Location = new System.Drawing.Point(410, 258);
+            this.lblSecurityQuestion.Location = new System.Drawing.Point(118, 255);
             this.lblSecurityQuestion.Name = "lblSecurityQuestion";
             this.lblSecurityQuestion.Size = new System.Drawing.Size(174, 23);
             this.lblSecurityQuestion.TabIndex = 23;
             this.lblSecurityQuestion.Text = "Security Question:";
+            this.lblSecurityQuestion.Click += new System.EventHandler(this.lblSecurityQuestion_Click);
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.LightSlateGray;
-            this.button1.FlatAppearance.BorderSize = 2;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOliveGreen;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.BackColor = System.Drawing.Color.Crimson;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.Location = new System.Drawing.Point(517, 171);
@@ -109,10 +109,9 @@
             // 
             // btnVerifyUsername
             // 
-            this.btnVerifyUsername.BackColor = System.Drawing.Color.LightCoral;
-            this.btnVerifyUsername.FlatAppearance.BorderSize = 2;
+            this.btnVerifyUsername.BackColor = System.Drawing.Color.ForestGreen;
             this.btnVerifyUsername.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOliveGreen;
-            this.btnVerifyUsername.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVerifyUsername.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnVerifyUsername.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVerifyUsername.ForeColor = System.Drawing.Color.White;
             this.btnVerifyUsername.Location = new System.Drawing.Point(309, 171);
@@ -161,12 +160,36 @@
             this.label2.TabIndex = 27;
             this.label2.Text = "Verify Username";
             // 
+            // lblSA
+            // 
+            this.lblSA.AutoSize = true;
+            this.lblSA.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSA.ForeColor = System.Drawing.Color.White;
+            this.lblSA.Location = new System.Drawing.Point(135, 299);
+            this.lblSA.Name = "lblSA";
+            this.lblSA.Size = new System.Drawing.Size(159, 23);
+            this.lblSA.TabIndex = 28;
+            this.lblSA.Text = "Security Answer:";
+            // 
+            // lblNP
+            // 
+            this.lblNP.AutoSize = true;
+            this.lblNP.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNP.ForeColor = System.Drawing.Color.White;
+            this.lblNP.Location = new System.Drawing.Point(152, 431);
+            this.lblNP.Name = "lblNP";
+            this.lblNP.Size = new System.Drawing.Size(147, 23);
+            this.lblNP.TabIndex = 29;
+            this.lblNP.Text = "New Password:";
+            // 
             // frmForgotPassword
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.SeaGreen;
+            this.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ClientSize = new System.Drawing.Size(928, 536);
+            this.Controls.Add(this.lblNP);
+            this.Controls.Add(this.lblSA);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnResetPassword);
             this.Controls.Add(this.txtNewPassword);
@@ -181,6 +204,7 @@
             this.Name = "frmForgotPassword";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Verify Account";
+            this.Load += new System.EventHandler(this.frmForgotPassword_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -198,5 +222,7 @@
         private System.Windows.Forms.TextBox txtSecurityAnswer;
         private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblSA;
+        private System.Windows.Forms.Label lblNP;
     }
 }

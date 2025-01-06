@@ -29,8 +29,8 @@ namespace OmagiecaVMS01
 
                 // Customize DataGridView columns
                 dgvUserAccounts.Columns["Password"].Visible = true; // Hide sensitive data
-                dgvUserAccounts.Columns["SecurityQuestion"].Visible = false;
-                dgvUserAccounts.Columns["SecurityAnswer"].Visible = false;
+                dgvUserAccounts.Columns["SecurityQuestion"].Visible = true;
+                dgvUserAccounts.Columns["SecurityAnswer"].Visible = true;
 
                 dgvUserAccounts.Columns["UserAccountId"].HeaderText = "User ID";
                 dgvUserAccounts.Columns["FirstName"].HeaderText = "First Name";

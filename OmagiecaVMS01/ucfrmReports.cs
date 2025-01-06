@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,19 +16,16 @@ namespace OmagiecaVMS01
         public ucfrmReports()
         {
             InitializeComponent();
+           
         }
+       
 
 
         private void btnGenerateReport_Click(object sender, EventArgs e)
         {
            
         }
-        private void GenerateReport(string reportType, DateTime startDate, DateTime endDate)
-        {
-            // Here you will add logic to query the database and fetch the data based on the report type and date range
-            // Placeholder for actual implementation
-            MessageBox.Show($"Generating {reportType} from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}.", "Report Generation", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
+       
 
         private void cmbReportType_SelectedIndexChanged(object sender, EventArgs e)
         {

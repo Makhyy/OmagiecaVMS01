@@ -30,6 +30,10 @@ namespace OmagiecaVMS01
             RefreshRFIDTags();
             ClearInputs();
             chkIsPWD.CheckedChanged += chkIsPWD_CheckedChanged;
+
+            ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
+            rfidMonitor.Dock = DockStyle.Fill;
+            pnlRFIDMonitor.Controls.Add(rfidMonitor);
         }
 
         private void visitorBindingNavigatorSaveItem_Click(object sender, EventArgs e)
@@ -544,5 +548,11 @@ namespace OmagiecaVMS01
             }
         }
 
+       
+
+        private void txtPaymentAmount_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

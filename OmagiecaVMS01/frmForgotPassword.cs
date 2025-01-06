@@ -31,6 +31,8 @@ namespace OmagiecaVMS01
             btnSubmitAnswer.Visible = false;
             txtNewPassword.Visible = false;
             btnResetPassword.Visible = false;
+            lblSA.Visible = false;
+            lblNP.Visible = false;
         }
 
         private void btnVerifyUsername_Click(object sender, EventArgs e)
@@ -53,10 +55,11 @@ namespace OmagiecaVMS01
                 {
                     // Show security question
                     securityQuestion = userAccount.SecurityQuestion;
-                    lblSecurityQuestion.Text = $"Security Question: {securityQuestion}";
+                    lblSecurityQuestion.Text = $"Security Question:        {securityQuestion}";
                     lblSecurityQuestion.Visible = true;
                     txtSecurityAnswer.Visible = true;
                     btnSubmitAnswer.Visible = true;
+                    lblSA.Visible = true;
                 }
                 else
                 {
@@ -91,6 +94,7 @@ namespace OmagiecaVMS01
                     // Show new password fields
                     txtNewPassword.Visible = true;
                     btnResetPassword.Visible = true;
+                    lblNP.Visible = true;
                 }
                 else
                 {
@@ -150,6 +154,16 @@ namespace OmagiecaVMS01
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close(); // Close the form
+        }
+
+        private void lblSecurityQuestion_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmForgotPassword_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

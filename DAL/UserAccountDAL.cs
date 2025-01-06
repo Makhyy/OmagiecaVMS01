@@ -409,7 +409,11 @@ namespace DAL
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM UserAccount WHERE Username = @Username";
+                string query = @"
+            SELECT UserAccountId, FirstName, LastName, Username, UserRole, UserStatus, 
+                   SecurityQuestion, SecurityAnswer, DateRegistered 
+            FROM UserAccount 
+            WHERE Username = @Username";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Username", username);
 
@@ -421,13 +425,21 @@ namespace DAL
                     return new UserAccount
                     {
                         UserAccountId = (int)reader["UserAccountId"],
-                        SecurityQuestion = reader["SecurityQuestion"].ToString()
+                        FirstName = reader["FirstName"].ToString(),
+                        LastName = reader["LastName"].ToString(),
+                        Username = reader["Username"].ToString(),
+                        UserRole = reader["UserRole"].ToString(),
+                        UserStatus = reader["UserStatus"].ToString(),
+                        SecurityQuestion = reader["SecurityQuestion"].ToString(),
+                        SecurityAnswer = reader["SecurityAnswer"].ToString(),
+                        DateRegistered = (DateTime)reader["DateRegistered"]
                     };
                 }
 
                 return null;
             }
         }
+
 
 
 
