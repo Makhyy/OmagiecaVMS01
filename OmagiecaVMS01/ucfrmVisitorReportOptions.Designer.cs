@@ -45,13 +45,14 @@
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button3 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAll = new System.Windows.Forms.Button();
             this.btnMonthly = new System.Windows.Forms.Button();
             this.btnWeekly = new System.Windows.Forms.Button();
             this.btnDaily = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.omagiecaVMS01DBDataSet21 = new OmagiecaVMS01.OmagiecaVMS01DBDataSet2();
             this.panel3 = new System.Windows.Forms.Panel();
             this.labelTotalRecords = new System.Windows.Forms.Label();
+            this.omagiecaVMS01DBDataSet21 = new OmagiecaVMS01.OmagiecaVMS01DBDataSet2();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitorsReport)).BeginInit();
@@ -59,8 +60,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet21)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet21)).BeginInit();
             this.SuspendLayout();
             // 
             // label3
@@ -181,10 +182,10 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.chart1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 30);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1233, 472);
+            this.tabPage2.Size = new System.Drawing.Size(1233, 467);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Chart View";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -202,7 +203,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(1227, 466);
+            this.chart1.Size = new System.Drawing.Size(1227, 461);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
@@ -220,10 +221,12 @@
             this.button3.TabIndex = 308;
             this.button3.Text = "Export to Excel";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Cornsilk;
+            this.panel1.Controls.Add(this.btnAll);
             this.panel1.Controls.Add(this.btnMonthly);
             this.panel1.Controls.Add(this.btnWeekly);
             this.panel1.Controls.Add(this.btnDaily);
@@ -232,6 +235,21 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1241, 100);
             this.panel1.TabIndex = 309;
+            // 
+            // btnAll
+            // 
+            this.btnAll.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.btnAll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAll.ForeColor = System.Drawing.Color.White;
+            this.btnAll.Location = new System.Drawing.Point(485, 22);
+            this.btnAll.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAll.Name = "btnAll";
+            this.btnAll.Size = new System.Drawing.Size(106, 53);
+            this.btnAll.TabIndex = 301;
+            this.btnAll.Text = "ALL";
+            this.btnAll.UseVisualStyleBackColor = false;
+            this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
             // 
             // btnMonthly
             // 
@@ -289,11 +307,6 @@
             this.panel2.Size = new System.Drawing.Size(1241, 100);
             this.panel2.TabIndex = 310;
             // 
-            // omagiecaVMS01DBDataSet21
-            // 
-            this.omagiecaVMS01DBDataSet21.DataSetName = "OmagiecaVMS01DBDataSet2";
-            this.omagiecaVMS01DBDataSet21.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -317,6 +330,11 @@
             this.labelTotalRecords.TabIndex = 310;
             this.labelTotalRecords.Text = "Total Revenue";
             // 
+            // omagiecaVMS01DBDataSet21
+            // 
+            this.omagiecaVMS01DBDataSet21.DataSetName = "OmagiecaVMS01DBDataSet2";
+            this.omagiecaVMS01DBDataSet21.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // ucfrmVisitorReportOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -338,9 +356,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet21)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet21)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,5 +384,6 @@
         private OmagiecaVMS01DBDataSet2 omagiecaVMS01DBDataSet21;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label labelTotalRecords;
+        private System.Windows.Forms.Button btnAll;
     }
 }
