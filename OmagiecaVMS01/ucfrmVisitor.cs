@@ -30,6 +30,7 @@ namespace OmagiecaVMS01
             RefreshRFIDTags();
             ClearInputs();
             chkIsPWD.CheckedChanged += chkIsPWD_CheckedChanged;
+            dgvVisitors.Columns["UserAccountId"].Visible = false;
 
             ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
             rfidMonitor.Dock = DockStyle.Fill;

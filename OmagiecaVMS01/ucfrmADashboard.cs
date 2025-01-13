@@ -20,6 +20,9 @@ namespace OmagiecaVMS01
             InitializeComponent();
 
             UpdateVisitorCount();
+            ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
+            rfidMonitor.Dock = DockStyle.Fill;
+            pnlRFIDMonitor.Controls.Add(rfidMonitor);
 
         }
 
