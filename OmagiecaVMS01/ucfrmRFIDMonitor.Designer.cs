@@ -13,12 +13,24 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+                if (mySerialPort != null)
+                {
+                    if (mySerialPort.IsOpen)
+                    {
+                        mySerialPort.Close();
+                    }
+                    mySerialPort.Dispose();
+                }
             }
             base.Dispose(disposing);
         }
+
 
         #region Component Designer generated code
 
