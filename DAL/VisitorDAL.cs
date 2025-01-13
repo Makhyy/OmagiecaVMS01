@@ -549,7 +549,30 @@ VALUES
                 throw new Exception("An error occurred while retrieving visitors: " + ex.Message, ex);
             }
         }
+        public int GetVisitorDaily()
+        {
+            try
+            {
+                int specificDay = 0;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT COUNT(*) FROM Visitors
+                      FROM Visitors 
+                   ";
 
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@SpecificDay", specificDay);
+
+                   
+
+                    return specificDay;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving visitors: " + ex.Message, ex);
+            }
+        }
         public DataTable GetVisitorsWeeklyReport(DateTime startDate, DateTime endDate)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -711,5 +734,36 @@ VALUES
             }
             return totalPayment;
         }
+
+        public int GetTodaysVisitorCount()
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                // Use the correct field name 'RegisteredDate' for filtering today's visitors
+                string query = "SELECT COUNT(*) FROM Visitors WHERE CAST(RegisteredDate AS DATE) = CAST(GETDATE() AS DATE)";
+                SqlCommand cmd = new SqlCommand(query, con);
+
+                try
+                {
+                    con.Open();
+                    int count = (int)cmd.ExecuteScalar(); // Safely cast as the return is expected to be a non-null integer
+                    return count;
+                }
+                catch (Exception ex)
+                {
+                    // It's a good idea to handle possible exceptions that might occur during database operations
+                    Console.WriteLine("Error in GetTodaysVisitorCount: " + ex.Message);
+                    return 0; // Return 0 or handle accordingly if an error occurs
+                }
+                finally
+                {
+                    con.Close(); // Ensure the connection is closed even if an exception occurs
+                }
+            }
+        }
+
+
+
+
     }
 }

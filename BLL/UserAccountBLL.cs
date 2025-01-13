@@ -40,6 +40,7 @@ namespace BLL
         }
 
 
+
         public class BusinessLogicException : Exception
         {
             public BusinessLogicException(string message) : base(message) { }
@@ -220,8 +221,12 @@ namespace BLL
 
             return userAccountDAL.GetUserByUsername(username);
         }
-
-       
-
+        public UserAccount GetUserAccount(int userId)
+        {
+            // Call the DAL method to get user data
+            return userAccountDAL.GetUserAccount(userId);
         }
+
+
+    }
     }

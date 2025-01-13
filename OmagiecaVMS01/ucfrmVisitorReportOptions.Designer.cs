@@ -326,9 +326,9 @@
             this.labelTotalRecords.ForeColor = System.Drawing.Color.White;
             this.labelTotalRecords.Location = new System.Drawing.Point(3, 8);
             this.labelTotalRecords.Name = "labelTotalRecords";
-            this.labelTotalRecords.Size = new System.Drawing.Size(136, 25);
+            this.labelTotalRecords.Size = new System.Drawing.Size(126, 25);
             this.labelTotalRecords.TabIndex = 310;
-            this.labelTotalRecords.Text = "Total Revenue";
+            this.labelTotalRecords.Text = "Total Visitors";
             // 
             // omagiecaVMS01DBDataSet21
             // 

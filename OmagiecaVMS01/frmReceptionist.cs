@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL;
+using MODELS;
 
 
 
@@ -113,9 +114,20 @@ namespace OmagiecaVMS01
             // Prompt the user to confirm they want to log out
             if (MessageBox.Show("Are you sure you want to log out?", "Logout Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                CurrentSession.Logout();
                 this.DialogResult = DialogResult.OK; // Set the DialogResult to OK to indicate a logout
                 this.Close(); // Close the receptionist form
             }
+        }
+
+        private void ucfrmADashboard1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

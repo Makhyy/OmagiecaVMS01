@@ -95,6 +95,18 @@
     <Compile Include="frmReceptionist.Designer.cs">
       <DependentUpon>frmReceptionist.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmUserProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUserProfile.Designer.cs">
+      <DependentUpon>frmUserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUserProfileEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUserProfileEdit.Designer.cs">
+      <DependentUpon>frmUserProfileEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmVisit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -218,6 +230,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmReceptionist.resx">
       <DependentUpon>frmReceptionist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUserProfile.resx">
+      <DependentUpon>frmUserProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUserProfileEdit.resx">
+      <DependentUpon>frmUserProfileEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmVisit.resx">
       <DependentUpon>frmVisit.cs</DependentUpon>

@@ -405,6 +405,7 @@ namespace DAL
             }
         }
 
+
         public UserAccount GetUserByUsername(string username)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -440,6 +441,52 @@ namespace DAL
             }
         }
 
+        public UserAccount GetUserAccount(int userId)
+        {
+            UserAccount user = null;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"
+            SELECT UserAccountId, FirstName, LastName, Age, Gender, Address, Username, Password, 
+                   UserRole, UserStatus, SecurityQuestion, SecurityAnswer
+            FROM UserAccount
+            WHERE UserAccountId = @UserAccountId";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@UserAccountId", userId);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        user = new UserAccount
+                        {
+                            UserAccountId = (int)reader["UserAccountId"],
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            Age = (int)reader["Age"],
+                            Gender = reader["Gender"].ToString(),
+                            Address = reader["Address"].ToString(),
+                            Username = reader["Username"].ToString(),
+                            Password = reader["Password"].ToString(),
+                            UserRole = reader["UserRole"].ToString(),
+                            UserStatus = reader["UserStatus"].ToString(),
+                            SecurityQuestion = reader["SecurityQuestion"].ToString(),
+                            SecurityAnswer = reader["SecurityAnswer"].ToString(),
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving the user account: " + ex.Message, ex);
+            }
+
+            return user;
+        }
 
 
 

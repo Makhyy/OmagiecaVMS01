@@ -41,15 +41,18 @@
             this.btnADashboard = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.mainPanel = new System.Windows.Forms.Panel();
-            this.ucfrmADashboard1 = new OmagiecaVMS01.ucfrmADashboard();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.lblCurrentUser = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.ucfrmADashboard2 = new OmagiecaVMS01.ucfrmADashboard();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.mainPanel.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -252,7 +255,7 @@
             // mainPanel
             // 
             this.mainPanel.BackColor = System.Drawing.Color.OldLace;
-            this.mainPanel.Controls.Add(this.ucfrmADashboard1);
+            this.mainPanel.Controls.Add(this.ucfrmADashboard2);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPanel.Location = new System.Drawing.Point(209, 84);
             this.mainPanel.Name = "mainPanel";
@@ -260,32 +263,49 @@
             this.mainPanel.Size = new System.Drawing.Size(1261, 722);
             this.mainPanel.TabIndex = 48;
             // 
-            // ucfrmADashboard1
-            // 
-            this.ucfrmADashboard1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.ucfrmADashboard1.BackColor = System.Drawing.Color.OldLace;
-            this.ucfrmADashboard1.Location = new System.Drawing.Point(-3, 20);
-            this.ucfrmADashboard1.Name = "ucfrmADashboard1";
-            this.ucfrmADashboard1.Size = new System.Drawing.Size(1261, 699);
-            this.ucfrmADashboard1.TabIndex = 0;
-            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.panel2.Controls.Add(this.pictureBox3);
+            this.panel2.Controls.Add(this.lblCurrentUser);
             this.panel2.Controls.Add(this.pictureBox2);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.ForeColor = System.Drawing.Color.Black;
             this.panel2.Location = new System.Drawing.Point(209, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1261, 84);
             this.panel2.TabIndex = 50;
             // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Location = new System.Drawing.Point(10, 3);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(56, 56);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 51;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click_1);
+            // 
+            // lblCurrentUser
+            // 
+            this.lblCurrentUser.AutoSize = true;
+            this.lblCurrentUser.Font = new System.Drawing.Font("Segoe UI Semilight", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrentUser.Location = new System.Drawing.Point(6, 59);
+            this.lblCurrentUser.Name = "lblCurrentUser";
+            this.lblCurrentUser.Size = new System.Drawing.Size(75, 20);
+            this.lblCurrentUser.TabIndex = 50;
+            this.lblCurrentUser.Text = "Username";
+            this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);
+            // 
             // pictureBox2
             // 
             this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(199, -2);
+            this.pictureBox2.Location = new System.Drawing.Point(195, 3);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(63, 65);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -317,6 +337,15 @@
             this.label1.TabIndex = 46;
             this.label1.Text = "OMAGIECA Visitor Management System";
             // 
+            // ucfrmADashboard2
+            // 
+            this.ucfrmADashboard2.BackColor = System.Drawing.Color.OldLace;
+            this.ucfrmADashboard2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucfrmADashboard2.Location = new System.Drawing.Point(0, 0);
+            this.ucfrmADashboard2.Name = "ucfrmADashboard2";
+            this.ucfrmADashboard2.Size = new System.Drawing.Size(1261, 722);
+            this.ucfrmADashboard2.TabIndex = 0;
+            // 
             // frmAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -335,6 +364,7 @@
             this.mainPanel.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
@@ -359,5 +389,8 @@
         private System.Windows.Forms.Button btnVisitorManagement;
         private ucfrmADashboard ucfrmADashboard1;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label lblCurrentUser;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private ucfrmADashboard ucfrmADashboard2;
     }
 }

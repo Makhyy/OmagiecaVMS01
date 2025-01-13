@@ -71,6 +71,11 @@ namespace BLL
         {
             return visitorDAL.GetVisitorsForSpecificDay(DateTime.Today);
         }
+        public int GetVisitorsDaily()
+        {
+            return visitorDAL.GetVisitorDaily();
+        }
+
         public DataTable GetVisitorsForSpecificDay(DateTime specificDay)
         {
             // You can add any business logic here if needed, for example:
@@ -370,5 +375,11 @@ namespace BLL
             }
             return visitorDAL.GetTotalRevenueByDateRange(startDate, endDate);
         }
+        public int FetchTodaysVisitorCount()
+        {
+            return visitorDAL.GetTodaysVisitorCount(); 
+        }
+        
+
     }
 }

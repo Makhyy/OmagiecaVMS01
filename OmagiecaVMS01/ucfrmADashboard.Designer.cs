@@ -29,13 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
+            this.labelTotalRecords = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -45,10 +47,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.dgvVisitorsReport = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvVisitorsReport)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -113,24 +117,24 @@
             // 
             this.panel5.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panel5.BackColor = System.Drawing.Color.MediumSeaGreen;
-            this.panel5.Controls.Add(this.label7);
+            this.panel5.Controls.Add(this.labelTotalRecords);
             this.panel5.Controls.Add(this.label8);
             this.panel5.Location = new System.Drawing.Point(875, 359);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(227, 119);
             this.panel5.TabIndex = 40;
             // 
-            // label7
+            // labelTotalRecords
             // 
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.Transparent;
-            this.label7.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(96, 58);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 38);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "0";
+            this.labelTotalRecords.AutoSize = true;
+            this.labelTotalRecords.BackColor = System.Drawing.Color.Transparent;
+            this.labelTotalRecords.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTotalRecords.ForeColor = System.Drawing.Color.White;
+            this.labelTotalRecords.Location = new System.Drawing.Point(96, 58);
+            this.labelTotalRecords.Name = "labelTotalRecords";
+            this.labelTotalRecords.Size = new System.Drawing.Size(35, 38);
+            this.labelTotalRecords.TabIndex = 1;
+            this.labelTotalRecords.Text = "0";
             // 
             // label8
             // 
@@ -223,11 +227,44 @@
             this.timer2.Interval = 300;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // dgvVisitorsReport
+            // 
+            this.dgvVisitorsReport.AllowUserToAddRows = false;
+            this.dgvVisitorsReport.AllowUserToDeleteRows = false;
+            this.dgvVisitorsReport.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvVisitorsReport.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.dgvVisitorsReport.BackgroundColor = System.Drawing.Color.OldLace;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.DarkSlateGray;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvVisitorsReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvVisitorsReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LavenderBlush;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvVisitorsReport.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvVisitorsReport.EnableHeadersVisualStyles = false;
+            this.dgvVisitorsReport.GridColor = System.Drawing.Color.OldLace;
+            this.dgvVisitorsReport.Location = new System.Drawing.Point(0, 642);
+            this.dgvVisitorsReport.Name = "dgvVisitorsReport";
+            this.dgvVisitorsReport.ReadOnly = true;
+            this.dgvVisitorsReport.Size = new System.Drawing.Size(10, 44);
+            this.dgvVisitorsReport.TabIndex = 41;
+            // 
             // ucfrmADashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
+            this.Controls.Add(this.dgvVisitorsReport);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel4);
@@ -236,6 +273,7 @@
             this.Controls.Add(this.label1);
             this.Name = "ucfrmADashboard";
             this.Size = new System.Drawing.Size(1261, 699);
+            this.Load += new System.EventHandler(this.ucfrmADashboard_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -244,6 +282,7 @@
             this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvVisitorsReport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -257,7 +296,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label labelTotalRecords;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label5;
@@ -267,5 +306,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.DataGridView dgvVisitorsReport;
     }
 }

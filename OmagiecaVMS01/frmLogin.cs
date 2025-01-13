@@ -28,47 +28,61 @@ namespace OmagiecaVMS01
         {
             try
             {
-                // Validate inputs
-                if (string.IsNullOrWhiteSpace(txtUsername.Text))
+                if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
                 {
-                    MessageBox.Show("Username is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtUsername.Focus();
+                    MessageBox.Show("Both username and password are required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(txtPassword.Text))
-                {
-                    MessageBox.Show("Password is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtPassword.Focus();
-                    return;
-                }
-
-                // Assign the username and password from the text boxes
                 string username = txtUsername.Text.Trim();
                 string password = txtPassword.Text.Trim();
 
-                // Authenticate user
                 UserAccount userAccount = userAccountBLL.AuthenticateUser(username, password);
 
                 if (userAccount != null)
                 {
-                    MessageBox.Show($"Welcome, {userAccount.FirstName} {userAccount.LastName}!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    UserRole = userAccount.UserRole; // Assuming you have a public property UserRole defined in this form
-                    this.DialogResult = DialogResult.OK; // Indicate success
-                    this.Close(); // Close the login form
+                    CurrentSession.UserAccountId = userAccount.UserAccountId; // Set the session user ID
+                    CurrentSession.Username = userAccount.Username; // Set the session username
+                    CurrentSession.UserRole = userAccount.UserRole; // Set the session user role
+                    CurrentSession.FirstName = userAccount.FirstName; // Set the session first name
+                    CurrentSession.LastName = userAccount.LastName; // Set the session last name
+                    MessageBox.Show($"Welcome, {userAccount.FirstName} {userAccount.LastName}! You are logged in as {userAccount.UserRole}.",
+                 "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+                    this.Hide(); // Hide the login form
+
+                    // Redirect based on user role
+                    switch (userAccount.UserRole)
+                    {
+                        case "Admin":
+                            frmAdmin admin = new frmAdmin();
+                            admin.ShowDialog();
+                            break;
+                        case "Receptionist":
+                            frmReceptionist receptionistDashboard = new frmReceptionist();
+                            receptionistDashboard.ShowDialog();
+                            break;
+                        default:
+                            MessageBox.Show("Unauthorized role", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                    }
+
+                    this.Close(); // Close the login form after the dashboard is closed
                 }
                 else
                 {
                     MessageBox.Show("Invalid username or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     txtPassword.Clear();
-                    txtPassword.Focus();
+                    txtUsername.Focus();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while attempting to log in: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An error occurred while attempting to log in: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using BLL;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,14 +8,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MODELS;
 
 namespace OmagiecaVMS01
 {
     public partial class frmAdmin : Form
     {
+        private VisitorBLL visitorBLL;
+        private ucfrmADashboard ucfrmADashboard;
         public frmAdmin()
         {
             InitializeComponent();
+            DisplayCurrentUserName();
+          //  InitializeDashboard();
+
+
+        }
+        private void DisplayCurrentUserName()
+        {
+            // Assuming CurrentSession stores the current user's first name and last name
+            if (!string.IsNullOrEmpty(CurrentSession.FirstName) && !string.IsNullOrEmpty(CurrentSession.LastName))
+            {
+                lblCurrentUser.Text = $"Welcome, {CurrentSession.FirstName} {CurrentSession.LastName}!";
+            }
+            else
+            {
+                lblCurrentUser.Text = "Welcome, guest!";
+            }
         }
         public void LoadUserControl(UserControl userControl)
         {
@@ -102,7 +122,10 @@ namespace OmagiecaVMS01
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+                
+        }
         private void btnSettings_Click(object sender, EventArgs e)
         {
             try
@@ -139,6 +162,7 @@ namespace OmagiecaVMS01
             // Prompt the user to confirm they want to log out
             if (MessageBox.Show("Are you sure you want to log out?", "Logout Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                CurrentSession.Logout(); // Clear the current session
                 this.DialogResult = DialogResult.OK; // Set the DialogResult to OK to indicate a logout
                 this.Close(); // Close the receptionist form
             }
@@ -158,5 +182,45 @@ namespace OmagiecaVMS01
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+       
+
+        private void lblCurrentUser_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click_1(object sender, EventArgs e)
+        {
+            // Ensure there is a valid user logged in
+            if (CurrentSession.UserAccountId > 0)
+            {
+                // Initialize the profile editing form with the current user's ID
+                frmUserProfile userProfileForm = new frmUserProfile(CurrentSession.UserAccountId);
+                userProfileForm.ShowDialog(); // Show form as a modal dialog box
+            }
+            else
+            {
+                MessageBox.Show("No user is currently logged in. Please log in to edit a profile.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        /*  public void InitializeDashboard()
+          {
+              if (CurrentSession.UserAccountId > 0)
+              {
+                  // Assume CurrentSession.UserRole contains the role of the logged-in user
+                  pictureBox3.Enabled = CurrentSession.UserRole == "Admin" || CurrentSession.UserRole == "User";
+              }
+              else
+              {
+                //  pictureBox3.Enabled = false; // Disable if no user is logged in
+              }
+          }*/
+
+
+
+
     }
 }
