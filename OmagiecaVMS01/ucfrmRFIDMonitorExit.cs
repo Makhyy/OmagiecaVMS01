@@ -1,24 +1,24 @@
-﻿
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-    using System.IO;
-    using System.IO.Ports;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
-    using BLL;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using BLL;
+using System.IO.Ports;
+using System.IO;
+
 
 namespace OmagiecaVMS01
 {
-    public partial class ucfrmRFIDMonitor : UserControl
+    public partial class ucfrmRFIDMonitorExit : UserControl
     {
         private SerialPort mySerialPort;
         private RFIDMonitorBLL rfidMonitorBLL;
-        public ucfrmRFIDMonitor()
+        public ucfrmRFIDMonitorExit()
         {
             InitializeComponent();
             InitializeSerialPort();
@@ -43,7 +43,6 @@ namespace OmagiecaVMS01
             {
                 MessageBox.Show("Error starting RFID monitor: " + ex.Message);
             }
-
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
@@ -69,21 +68,21 @@ namespace OmagiecaVMS01
         {
             SerialPort sp = (SerialPort)sender;
             string rfidUID = sp.ReadLine().Trim();  // Read the RFID UID from the serial port
-            UpdateVisitorStatus(rfidUID);  // Delegate to update visitor status
+            UpdateVisitorStatusExit(rfidUID);  // Delegate to update visitor status
         }
-        private void UpdateVisitorStatus(string rfidUID)
+        private void UpdateVisitorStatusExit(string rfidUID)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke((MethodInvoker)delegate { UpdateVisitorStatus(rfidUID); });
+                this.Invoke((MethodInvoker)delegate { UpdateVisitorStatusExit(rfidUID); });
             }
             else
             {
                 try
                 {
-                    rfidMonitorBLL.UpdateVisitorStatus(rfidUID, "Entered");
+                    rfidMonitorBLL.UpdateVisitorStatus(rfidUID, "Exited");
 
-                    ShowTimedMessage("A Visitor has Entered!.", 2000);
+                    ShowTimedMessage("A Visitor has Exited!.", 2000);
                 }
                 catch (Exception ex)
                 {
@@ -91,23 +90,34 @@ namespace OmagiecaVMS01
                 }
             }
         }
-       
         private void InitializeSerialPort()
         {
-            mySerialPort = new SerialPort("COM5");
-            //mySerialPort = new SerialPort("COM7");  // Adjust the COM port as needed
+            //mySerialPort = new SerialPort("COM5");
+            mySerialPort = new SerialPort("COM7");  // Adjust the COM port as needed
             mySerialPort.BaudRate = 9600;
             mySerialPort.Parity = Parity.None;
             mySerialPort.StopBits = StopBits.One;
             mySerialPort.DataBits = 8;
             mySerialPort.Handshake = Handshake.None;
             mySerialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-
-
-        }
-
-        private void ucfrmRFIDMonitor_Load(object sender, EventArgs e)
-        {
+            /*
+           try
+           {
+                mySerialPort.Open();
+                MessageBox.Show("Port opened successfully.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show("Access denied. Port might be in use or locked by another process.\n" + ex.Message);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("IO Exception, check port settings and device connection.\n" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("General error when trying to open port.\n" + ex.Message);
+            }*/
 
         }
         private void ShowTimedMessage(string message, int duration)
@@ -118,7 +128,5 @@ namespace OmagiecaVMS01
                 timedMessage.ShowDialog();
             }
         }
-
     }
 }
-    

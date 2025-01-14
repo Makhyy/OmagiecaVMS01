@@ -1,6 +1,6 @@
 ﻿namespace OmagiecaVMS01
 {
-    partial class ucfrmRFIDMonitor
+    partial class ucfrmRFIDMonitorExit
     {
         /// <summary> 
         /// Required designer variable.
@@ -13,24 +13,12 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && (components != null))
             {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
-                if (mySerialPort != null)
-                {
-                    if (mySerialPort.IsOpen)
-                    {
-                        mySerialPort.Close();
-                    }
-                    mySerialPort.Dispose();
-                }
+                components.Dispose();
             }
             base.Dispose(disposing);
         }
-
 
         #region Component Designer generated code
 
@@ -54,10 +42,10 @@
             this.groupBoxRFID.Controls.Add(this.buttonStart);
             this.groupBoxRFID.Controls.Add(this.buttonStop);
             this.groupBoxRFID.ForeColor = System.Drawing.Color.White;
-            this.groupBoxRFID.Location = new System.Drawing.Point(48, 44);
+            this.groupBoxRFID.Location = new System.Drawing.Point(46, 38);
             this.groupBoxRFID.Name = "groupBoxRFID";
-            this.groupBoxRFID.Size = new System.Drawing.Size(347, 163);
-            this.groupBoxRFID.TabIndex = 14;
+            this.groupBoxRFID.Size = new System.Drawing.Size(347, 175);
+            this.groupBoxRFID.TabIndex = 16;
             this.groupBoxRFID.TabStop = false;
             this.groupBoxRFID.Text = "RFID Reader";
             // 
@@ -66,7 +54,7 @@
             this.labelStatus.AutoSize = true;
             this.labelStatus.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelStatus.ForeColor = System.Drawing.SystemColors.Info;
-            this.labelStatus.Location = new System.Drawing.Point(123, 19);
+            this.labelStatus.Location = new System.Drawing.Point(123, 26);
             this.labelStatus.Name = "labelStatus";
             this.labelStatus.Size = new System.Drawing.Size(97, 20);
             this.labelStatus.TabIndex = 12;
@@ -75,10 +63,10 @@
             // buttonStart
             // 
             this.buttonStart.BackColor = System.Drawing.Color.MidnightBlue;
-            this.buttonStart.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.buttonStart.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Blue;
             this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonStart.Location = new System.Drawing.Point(98, 51);
+            this.buttonStart.Location = new System.Drawing.Point(98, 58);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(149, 41);
             this.buttonStart.TabIndex = 9;
@@ -89,10 +77,10 @@
             // buttonStop
             // 
             this.buttonStop.BackColor = System.Drawing.Color.Crimson;
-            this.buttonStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.buttonStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonStop.Location = new System.Drawing.Point(98, 108);
+            this.buttonStop.Location = new System.Drawing.Point(98, 115);
             this.buttonStop.Name = "buttonStop";
             this.buttonStop.Size = new System.Drawing.Size(149, 41);
             this.buttonStop.TabIndex = 11;
@@ -105,22 +93,21 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.Info;
-            this.label1.Location = new System.Drawing.Point(124, 11);
+            this.label1.Location = new System.Drawing.Point(153, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(201, 30);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "ENTRANCE READER";
+            this.label1.Size = new System.Drawing.Size(136, 30);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "EXIT READER";
             // 
-            // ucfrmRFIDMonitor
+            // ucfrmRFIDMonitorExit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.SteelBlue;
-            this.Controls.Add(this.label1);
+            this.BackColor = System.Drawing.Color.IndianRed;
             this.Controls.Add(this.groupBoxRFID);
-            this.Name = "ucfrmRFIDMonitor";
+            this.Controls.Add(this.label1);
+            this.Name = "ucfrmRFIDMonitorExit";
             this.Size = new System.Drawing.Size(439, 235);
-            this.Load += new System.EventHandler(this.ucfrmRFIDMonitor_Load);
             this.groupBoxRFID.ResumeLayout(false);
             this.groupBoxRFID.PerformLayout();
             this.ResumeLayout(false);

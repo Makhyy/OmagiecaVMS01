@@ -24,6 +24,10 @@ namespace OmagiecaVMS01
             rfidMonitor.Dock = DockStyle.Fill;
             pnlRFIDMonitor.Controls.Add(rfidMonitor);
 
+            ucfrmRFIDMonitorExit rfidMonitorExit = new ucfrmRFIDMonitorExit();
+            rfidMonitorExit.Dock = DockStyle.Fill;
+            pnlRFIDMonitorExit.Controls.Add(rfidMonitorExit);
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)

@@ -16,9 +16,15 @@ namespace OmagiecaVMS01
 {
     public partial class frmReceptionist : Form
     {
+        private ucfrmRFIDMonitor ucRM;
+        private ucfrmVisitor     ucV;
         public frmReceptionist()
         {
             InitializeComponent();
+            ucRM = new ucfrmRFIDMonitor();
+            ucV = new ucfrmVisitor();
+
+           
         }
         public void LoadUserControl(UserControl userControl)
         {

@@ -168,6 +168,12 @@
     <Compile Include="ucfrmRFIDMonitor.Designer.cs">
       <DependentUpon>ucfrmRFIDMonitor.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucfrmRFIDMonitorExit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucfrmRFIDMonitorExit.Designer.cs">
+      <DependentUpon>ucfrmRFIDMonitorExit.cs</DependentUpon>
+    </Compile>
     <Compile Include="ucfrmRFIDTagManagement.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -278,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ucfrmRFIDMonitor.resx">
       <DependentUpon>ucfrmRFIDMonitor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucfrmRFIDMonitorExit.resx">
+      <DependentUpon>ucfrmRFIDMonitorExit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucfrmRFIDTagManagement.resx">
       <DependentUpon>ucfrmRFIDTagManagement.cs</DependentUpon>
