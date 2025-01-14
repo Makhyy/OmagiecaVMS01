@@ -23,8 +23,21 @@ namespace OmagiecaVMS01
             InitializeComponent();
             ucRM = new ucfrmRFIDMonitor();
             ucV = new ucfrmVisitor();
+            DisplayCurrentUserName();
 
-           
+
+        }
+        private void DisplayCurrentUserName()
+        {
+            // Assuming CurrentSession stores the current user's first name and last name
+            if (!string.IsNullOrEmpty(CurrentSession.FirstName) && !string.IsNullOrEmpty(CurrentSession.LastName))
+            {
+                lblCurrentUser.Text = $"Welcome, {CurrentSession.FirstName} {CurrentSession.LastName}!";
+            }
+            else
+            {
+                lblCurrentUser.Text = "Welcome, guest!";
+            }
         }
         public void LoadUserControl(UserControl userControl)
         {
@@ -132,6 +145,22 @@ namespace OmagiecaVMS01
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            // Ensure there is a valid user logged in
+            if (CurrentSession.UserAccountId > 0)
+            {
+                // Initialize the profile editing form with the current user's ID
+                frmUserProfile userProfileForm = new frmUserProfile(CurrentSession.UserAccountId);
+                userProfileForm.ShowDialog(); // Show form as a modal dialog box
+            }
+            else
+            {
+                MessageBox.Show("No user is currently logged in. Please log in to edit a profile.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void lblCurrentUser_Click(object sender, EventArgs e)
         {
 
         }

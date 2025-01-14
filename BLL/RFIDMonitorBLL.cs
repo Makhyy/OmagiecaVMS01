@@ -43,7 +43,7 @@ namespace BLL
             try
             {
                 // First, validate the RFID tag is associated with a registered visitor
-                if (rfidMonitorDAL.IsValidRFID(rfidTag))
+                if (rfidMonitorDAL.IsValidRFIDExit(rfidTag))
                 {
                     // Update the visitor status if the RFID is valid and the visitor is registered
                     rfidMonitorDAL.UpdateVisitorStatusExit(rfidTag, newStatus);

@@ -16,7 +16,7 @@ namespace OmagiecaVMS01
 {
     public partial class ucfrmRFIDMonitorExit : UserControl
     {
-        private SerialPort mySerialPort;
+        private SerialPort mySerialPortExit;
         private RFIDMonitorBLL rfidMonitorBLL;
         public ucfrmRFIDMonitorExit()
         {
@@ -29,9 +29,9 @@ namespace OmagiecaVMS01
         {
             try
             {
-                if (!mySerialPort.IsOpen)
+                if (!mySerialPortExit.IsOpen)
                 {
-                    mySerialPort.Open();
+                    mySerialPortExit.Open();
                     ShowTimedMessage("RFID Reader is Ready!", 2000);
                 }
             }
@@ -41,7 +41,8 @@ namespace OmagiecaVMS01
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error starting RFID monitor: " + ex.Message);
+                
+                ShowErrorTimedMessage("Error starting RFID monitor: " + ex.Message, 2000);
             }
         }
 
@@ -53,9 +54,9 @@ namespace OmagiecaVMS01
         {
             try
             {
-                if (mySerialPort.IsOpen)
+                if (mySerialPortExit.IsOpen)
                 {
-                    mySerialPort.Close();
+                    mySerialPortExit.Close();
                     MessageBox.Show("RFID Reader stopped.");
                 }
             }
@@ -80,26 +81,27 @@ namespace OmagiecaVMS01
             {
                 try
                 {
-                    rfidMonitorBLL.UpdateVisitorStatus(rfidUID, "Exited");
+                    rfidMonitorBLL.UpdateVisitorStatusExit(rfidUID, "Exited");
 
                     ShowTimedMessage("A Visitor has Exited!.", 2000);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error updating visitor status: " + ex.Message);
+                   
+                    ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 2000);
                 }
             }
         }
         private void InitializeSerialPort()
         {
             //mySerialPort = new SerialPort("COM5");
-            mySerialPort = new SerialPort("COM7");  // Adjust the COM port as needed
-            mySerialPort.BaudRate = 9600;
-            mySerialPort.Parity = Parity.None;
-            mySerialPort.StopBits = StopBits.One;
-            mySerialPort.DataBits = 8;
-            mySerialPort.Handshake = Handshake.None;
-            mySerialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+            mySerialPortExit = new SerialPort("COM7");  // Adjust the COM port as needed
+            mySerialPortExit.BaudRate = 9600;
+            mySerialPortExit.Parity = Parity.None;
+            mySerialPortExit.StopBits = StopBits.One;
+            mySerialPortExit.DataBits = 8;
+            mySerialPortExit.Handshake = Handshake.None;
+            mySerialPortExit.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
             /*
            try
            {
@@ -123,6 +125,14 @@ namespace OmagiecaVMS01
         private void ShowTimedMessage(string message, int duration)
         {
             using (TimedMessageBoxForm timedMessage = new TimedMessageBoxForm(message, duration))
+            {
+                timedMessage.StartPosition = FormStartPosition.CenterParent;
+                timedMessage.ShowDialog();
+            }
+        }
+        private void ShowErrorTimedMessage(string messages, int durations)
+        {
+            using (TimedMessageErrorBoxForm timedMessage = new TimedMessageErrorBoxForm(messages, durations))
             {
                 timedMessage.StartPosition = FormStartPosition.CenterParent;
                 timedMessage.ShowDialog();

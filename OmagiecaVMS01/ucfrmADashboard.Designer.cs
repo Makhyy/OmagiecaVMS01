@@ -29,16 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucfrmADashboard));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.dgvVisitorsReport = new System.Windows.Forms.DataGridView();
-            this.pnlRFIDMonitor = new System.Windows.Forms.Panel();
-            this.pnlRFIDMonitorExit = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -57,6 +55,9 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.labelTotalRecords = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnlRFIDMonitorExit = new System.Windows.Forms.Panel();
+            this.pnlRFIDMonitor = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitorsReport)).BeginInit();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -68,6 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -76,7 +78,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Lucida Calligraphy", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.OliveDrab;
-            this.label1.Location = new System.Drawing.Point(26, 4);
+            this.label1.Location = new System.Drawing.Point(159, 48);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(80, 124);
             this.label1.TabIndex = 1;
@@ -88,7 +90,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Lucida Calligraphy", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.OliveDrab;
-            this.label2.Location = new System.Drawing.Point(286, 125);
+            this.label2.Location = new System.Drawing.Point(419, 165);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 83);
             this.label2.TabIndex = 36;
@@ -113,70 +115,52 @@
             this.dgvVisitorsReport.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvVisitorsReport.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgvVisitorsReport.BackgroundColor = System.Drawing.Color.OldLace;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.DarkSlateGray;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvVisitorsReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.DarkSlateGray;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvVisitorsReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvVisitorsReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.LavenderBlush;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvVisitorsReport.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LavenderBlush;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvVisitorsReport.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvVisitorsReport.EnableHeadersVisualStyles = false;
             this.dgvVisitorsReport.GridColor = System.Drawing.Color.OldLace;
-            this.dgvVisitorsReport.Location = new System.Drawing.Point(0, 642);
+            this.dgvVisitorsReport.Location = new System.Drawing.Point(549, 10);
             this.dgvVisitorsReport.Name = "dgvVisitorsReport";
             this.dgvVisitorsReport.ReadOnly = true;
-            this.dgvVisitorsReport.Size = new System.Drawing.Size(10, 44);
+            this.dgvVisitorsReport.Size = new System.Drawing.Size(41, 44);
             this.dgvVisitorsReport.TabIndex = 41;
-            // 
-            // pnlRFIDMonitor
-            // 
-            this.pnlRFIDMonitor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlRFIDMonitor.BackColor = System.Drawing.Color.PowderBlue;
-            this.pnlRFIDMonitor.Location = new System.Drawing.Point(139, 451);
-            this.pnlRFIDMonitor.Name = "pnlRFIDMonitor";
-            this.pnlRFIDMonitor.Size = new System.Drawing.Size(439, 235);
-            this.pnlRFIDMonitor.TabIndex = 284;
-            // 
-            // pnlRFIDMonitorExit
-            // 
-            this.pnlRFIDMonitorExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlRFIDMonitorExit.BackColor = System.Drawing.Color.PowderBlue;
-            this.pnlRFIDMonitorExit.Location = new System.Drawing.Point(670, 451);
-            this.pnlRFIDMonitorExit.Name = "pnlRFIDMonitorExit";
-            this.pnlRFIDMonitorExit.Size = new System.Drawing.Size(439, 235);
-            this.pnlRFIDMonitorExit.TabIndex = 285;
             // 
             // panel7
             // 
-            this.panel7.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panel7.BackColor = System.Drawing.Color.OldLace;
             this.panel7.Controls.Add(this.label2);
             this.panel7.Controls.Add(this.label1);
-            this.panel7.Location = new System.Drawing.Point(139, 42);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(981, 212);
+            this.panel7.Size = new System.Drawing.Size(1261, 260);
             this.panel7.TabIndex = 287;
             // 
             // panel6
             // 
-            this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel6.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panel6.Controls.Add(this.panel3);
-            this.panel6.Controls.Add(this.panel4);
             this.panel6.Controls.Add(this.panel1);
             this.panel6.Controls.Add(this.panel5);
-            this.panel6.Location = new System.Drawing.Point(52, 263);
+            this.panel6.Controls.Add(this.panel4);
+            this.panel6.Location = new System.Drawing.Point(3, 263);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1157, 173);
+            this.panel6.Size = new System.Drawing.Size(1255, 173);
             this.panel6.TabIndex = 288;
             // 
             // panel3
@@ -186,7 +170,7 @@
             this.panel3.Controls.Add(this.pictureBox1);
             this.panel3.Controls.Add(this.label4);
             this.panel3.Controls.Add(this.label3);
-            this.panel3.Location = new System.Drawing.Point(80, 3);
+            this.panel3.Location = new System.Drawing.Point(29, 18);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(227, 142);
             this.panel3.TabIndex = 37;
@@ -231,7 +215,7 @@
             this.panel4.Controls.Add(this.pictureBox2);
             this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.label6);
-            this.panel4.Location = new System.Drawing.Point(323, 3);
+            this.panel4.Location = new System.Drawing.Point(341, 18);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(227, 142);
             this.panel4.TabIndex = 39;
@@ -276,7 +260,7 @@
             this.panel1.Controls.Add(this.pictureBox3);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.label10);
-            this.panel1.Location = new System.Drawing.Point(581, 3);
+            this.panel1.Location = new System.Drawing.Point(671, 18);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(227, 142);
             this.panel1.TabIndex = 38;
@@ -321,7 +305,7 @@
             this.panel5.Controls.Add(this.pictureBox4);
             this.panel5.Controls.Add(this.labelTotalRecords);
             this.panel5.Controls.Add(this.label8);
-            this.panel5.Location = new System.Drawing.Point(834, 3);
+            this.panel5.Location = new System.Drawing.Point(996, 18);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(227, 142);
             this.panel5.TabIndex = 40;
@@ -359,15 +343,43 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "Total Visitors";
             // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.pnlRFIDMonitorExit);
+            this.panel2.Controls.Add(this.pnlRFIDMonitor);
+            this.panel2.Controls.Add(this.dgvVisitorsReport);
+            this.panel2.Location = new System.Drawing.Point(52, 442);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1157, 254);
+            this.panel2.TabIndex = 289;
+            // 
+            // pnlRFIDMonitorExit
+            // 
+            this.pnlRFIDMonitorExit.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pnlRFIDMonitorExit.BackColor = System.Drawing.Color.PowderBlue;
+            this.pnlRFIDMonitorExit.Location = new System.Drawing.Point(622, 10);
+            this.pnlRFIDMonitorExit.Name = "pnlRFIDMonitorExit";
+            this.pnlRFIDMonitorExit.Size = new System.Drawing.Size(439, 235);
+            this.pnlRFIDMonitorExit.TabIndex = 287;
+            // 
+            // pnlRFIDMonitor
+            // 
+            this.pnlRFIDMonitor.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pnlRFIDMonitor.BackColor = System.Drawing.Color.PowderBlue;
+            this.pnlRFIDMonitor.Location = new System.Drawing.Point(80, 10);
+            this.pnlRFIDMonitor.Name = "pnlRFIDMonitor";
+            this.pnlRFIDMonitor.Size = new System.Drawing.Size(439, 235);
+            this.pnlRFIDMonitor.TabIndex = 286;
+            // 
             // ucfrmADashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel6);
-            this.Controls.Add(this.pnlRFIDMonitorExit);
-            this.Controls.Add(this.pnlRFIDMonitor);
-            this.Controls.Add(this.dgvVisitorsReport);
             this.Controls.Add(this.panel7);
             this.Name = "ucfrmADashboard";
             this.Size = new System.Drawing.Size(1261, 699);
@@ -388,6 +400,7 @@
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -399,8 +412,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.DataGridView dgvVisitorsReport;
-        private System.Windows.Forms.Panel pnlRFIDMonitor;
-        private System.Windows.Forms.Panel pnlRFIDMonitorExit;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Panel panel3;
@@ -419,5 +430,8 @@
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.Label labelTotalRecords;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlRFIDMonitorExit;
+        private System.Windows.Forms.Panel pnlRFIDMonitor;
     }
 }

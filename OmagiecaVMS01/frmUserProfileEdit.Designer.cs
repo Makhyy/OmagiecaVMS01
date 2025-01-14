@@ -156,6 +156,7 @@
             this.btnUpdate.TabIndex = 325;
             this.btnUpdate.Text = "Save";
             this.btnUpdate.UseVisualStyleBackColor = false;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // txtAddress
             // 

@@ -20,6 +20,7 @@ namespace OmagiecaVMS01
         {
             InitializeComponent();
             DisplayCurrentUserName();
+
           //  InitializeDashboard();
 
 
@@ -203,6 +204,11 @@ namespace OmagiecaVMS01
             {
                 MessageBox.Show("No user is currently logged in. Please log in to edit a profile.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+        }
+
+        private void ucfrmADashboard2_Load(object sender, EventArgs e)
+        {
 
         }
 

@@ -41,7 +41,7 @@ namespace OmagiecaVMS01
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error starting RFID monitor: " + ex.Message);
+                ShowErrorTimedMessage("Error starting RFID monitor: " + ex.Message, 2000);
             }
 
         }
@@ -87,7 +87,8 @@ namespace OmagiecaVMS01
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error updating visitor status: " + ex.Message);
+
+                    ShowErrorTimedMessage("Error updating visitor status:" + ex.Message, 2000);
                 }
             }
         }
@@ -118,7 +119,14 @@ namespace OmagiecaVMS01
                 timedMessage.ShowDialog();
             }
         }
-
+        private void ShowErrorTimedMessage(string message, int duration)
+        {
+            using (TimedMessageErrorBoxForm timedMessage = new TimedMessageErrorBoxForm(message, duration))
+            {
+                timedMessage.StartPosition = FormStartPosition.CenterParent;
+                timedMessage.ShowDialog();
+            }
+        }
     }
 }
     

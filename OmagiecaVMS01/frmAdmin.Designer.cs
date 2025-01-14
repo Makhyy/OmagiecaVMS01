@@ -345,6 +345,7 @@
             this.ucfrmADashboard2.Name = "ucfrmADashboard2";
             this.ucfrmADashboard2.Size = new System.Drawing.Size(1261, 722);
             this.ucfrmADashboard2.TabIndex = 0;
+            this.ucfrmADashboard2.Load += new System.EventHandler(this.ucfrmADashboard2_Load);
             // 
             // frmAdmin
             // 

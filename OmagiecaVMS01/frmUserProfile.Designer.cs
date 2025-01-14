@@ -40,7 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.txtFirstName = new System.Windows.Forms.TextBox();
-            this.btnUpdate = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -181,20 +181,20 @@
             this.txtFirstName.Size = new System.Drawing.Size(171, 27);
             this.txtFirstName.TabIndex = 260;
             // 
-            // btnUpdate
+            // btnEdit
             // 
-            this.btnUpdate.BackColor = System.Drawing.Color.Green;
-            this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnUpdate.Location = new System.Drawing.Point(97, 583);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(154, 45);
-            this.btnUpdate.TabIndex = 282;
-            this.btnUpdate.Text = "Edit ";
-            this.btnUpdate.UseVisualStyleBackColor = false;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            this.btnEdit.BackColor = System.Drawing.Color.Green;
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEdit.ForeColor = System.Drawing.Color.White;
+            this.btnEdit.Location = new System.Drawing.Point(97, 583);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(2);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(154, 45);
+            this.btnEdit.TabIndex = 282;
+            this.btnEdit.Text = "Edit ";
+            this.btnEdit.UseVisualStyleBackColor = false;
+            this.btnEdit.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // panel4
             // 
@@ -320,7 +320,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel4);
-            this.Controls.Add(this.btnUpdate);
+            this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.txtUsername);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtAddress);
@@ -360,7 +360,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.TextBox txtFirstName;
-        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel1;

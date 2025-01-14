@@ -66,5 +66,10 @@ namespace OmagiecaVMS01
         {
             LoadUserData();
         }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
