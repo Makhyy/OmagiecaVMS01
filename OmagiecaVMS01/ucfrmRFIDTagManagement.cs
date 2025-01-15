@@ -21,6 +21,8 @@ namespace OmagiecaVMS01
             PopulateRFIDStatus(); // Populate the ComboBox
             LoadRFIDTags(); // Load initial data
             dgvRFIDTags.SelectionChanged += dgvRFIDTags_SelectionChanged;
+            txtSearch.TextChanged += txtSearch_TextChanged; // Ensure this line is added
+
         }
         private void PopulateRFIDStatus()
         {
@@ -299,30 +301,50 @@ namespace OmagiecaVMS01
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Get the search keyword from the textbox
-                string keyword = txtSearch.Text.Trim();
+           try
+    {
+        // Get the search keyword from the textbox
+        string keyword = txtSearch.Text.Trim();
 
-                // Call the BLL to search for RFID tags
-                RFIDTagBLL rfidBLL = new RFIDTagBLL();
-                List<RFIDTag> searchResults = rfidBLL.SearchRFIDTags(keyword);
+        // Call the BLL to search for RFID tags
+        RFIDTagBLL rfidBLL = new RFIDTagBLL();
+        var searchResults = rfidBLL.SearchRFIDTags(keyword);
 
-                // Bind the search results to the DataGridView
-                dgvRFIDTags.DataSource = searchResults;
+        // Bind the search results to the DataGridView
+        dgvRFIDTags.DataSource = searchResults;
 
-                // Optionally customize columns again (if required)
-                CustomizeColumns();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while searching RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+        // Check if results are empty and display a message if no results found
+        if (searchResults == null || searchResults.Count == 0)
+        {
+            MessageBox.Show("No RFID tags found with the provided search term.", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // Optionally customize columns again (if required)
+        CustomizeColumns();
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("An error occurred while searching RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
             ClearInputs();
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            // Check if the search box is empty
+            if (string.IsNullOrEmpty(txtSearch.Text))
+            {
+                LoadRFIDTags(); // Load all RFID tags if search text is cleared
+            }
+            else
+            {
+                // Optionally, you could start filtering the DataGridView as the user types, for real-time searching
+                // For now, we do nothing here, as searching is handled by the Search button click event
+            }
         }
     }
 }

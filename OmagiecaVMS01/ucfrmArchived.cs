@@ -10,17 +10,11 @@ using System.Windows.Forms;
 
 namespace OmagiecaVMS01
 {
-    public partial class ucfrmVisitorManagement : UserControl
+    public partial class ucfrmArchived : Form
     {
-        public ucfrmVisitorManagement()
+        public ucfrmArchived()
         {
             InitializeComponent();
         }
-
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
-

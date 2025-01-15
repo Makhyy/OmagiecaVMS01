@@ -20,6 +20,8 @@ namespace OmagiecaVMS01
         {
             InitializeComponent();
             userAccountBLL = new UserAccountBLL();
+            txtSearch.TextChanged += txtSearch_TextChanged; // Ensure this line is added
+            LoadUserAccounts(); // Initial load of user accounts
         }
         private void LoadUserAccounts()
         {
@@ -394,6 +396,19 @@ namespace OmagiecaVMS01
         private void dgvUserAccounts_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            // Check if the search box is empty
+            if (string.IsNullOrEmpty(txtSearch.Text))
+            {
+                LoadUserAccounts(); // Reload all user accounts if search text is cleared
+            }
+            else
+            {
+                // Optionally, implement real-time filtering or do nothing until the search button is clicked
+            }
         }
     }
 }

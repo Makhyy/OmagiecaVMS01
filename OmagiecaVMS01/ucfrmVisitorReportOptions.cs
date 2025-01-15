@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
+
 namespace OmagiecaVMS01
 {
     public partial class ucfrmVisitorReportOptions : UserControl
@@ -193,8 +194,10 @@ namespace OmagiecaVMS01
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excelApp);
         }
 
+        private void chart1_Click(object sender, EventArgs e)
+        {
 
-
+        }
 
     }
 }

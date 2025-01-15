@@ -61,7 +61,9 @@ namespace OmagiecaVMS01
             dgvVisitorsReport.Visible = false;
         }
 
+        private void labelTotalRecords_Click(object sender, EventArgs e)
+        {
 
-        
+        }
     }
 }

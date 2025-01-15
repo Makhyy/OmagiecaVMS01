@@ -236,11 +236,17 @@ namespace OmagiecaVMS01
             {
                 string keyword = txtSearch.Text.Trim();
                 VisitorBLL visitorBLL = new VisitorBLL();
-                dgvVisitors.DataSource = visitorBLL.SearchVisitors(keyword);
+                var results = visitorBLL.SearchVisitors(keyword); // Ensure this method exists and is implemented correctly
+
+                dgvVisitors.DataSource = results;
+                if (results == null || results.Count == 0)
+                {
+                    MessageBox.Show("No records found.", "Search Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while searching for visitors: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("An error occurred while searching: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void PopulateVisitorTypeAndPayment()
@@ -554,6 +560,15 @@ namespace OmagiecaVMS01
         private void txtPaymentAmount_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+
+            if (string.IsNullOrEmpty(txtSearch.Text))
+            {
+                LoadVisitors(); // Load all visitors again
+            }
         }
     }
 }

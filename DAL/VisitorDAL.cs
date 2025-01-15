@@ -14,6 +14,14 @@ namespace DAL
     public class VisitorDAL
     {
         private string connectionString = Properties.Settings.Default.ConnectionString;
+        private SqlCommand CreateCommand(string query, SqlConnection connection)
+        {
+            SqlCommand command = new SqlCommand(query, connection);
+            // Set additional command properties here if needed
+            return command;
+        }
+
+        public string ConnectionString { get; set; }
 
         public DataTable GetVisitors()
         {
@@ -48,7 +56,7 @@ namespace DAL
                              IsPWD, Gender, CityMunicipality, ForeignCountry,
                              DateRegistered
                       FROM Visitors ";
-                      
+
 
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 DataTable visitorTable = new DataTable();
@@ -256,9 +264,6 @@ VALUES
 
             return visitors;
         }
-
-
-
 
         public void DeleteVisitor(int visitorId)
         {
@@ -563,7 +568,7 @@ VALUES
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@SpecificDay", specificDay);
 
-                   
+
 
                     return specificDay;
                 }
@@ -763,7 +768,31 @@ VALUES
         }
 
 
-
-
+        public List<Visitor> GetAllVisitors()
+        {
+            List<Visitor> visitors = new List<Visitor>();
+            string query = "SELECT * FROM Visitors";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = CreateCommand(query, connection);
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        visitors.Add(new Visitor
+                        {
+                            VisitorId = Convert.ToInt32(reader["VisitorId"]),
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            // Other fields...
+                        });
+                    }
+                }
+            }
+            return visitors;
+        }
     }
 }
+
+        
