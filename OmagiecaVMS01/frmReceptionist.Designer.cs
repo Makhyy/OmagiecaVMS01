@@ -37,7 +37,6 @@
             this.btnRDashboard = new System.Windows.Forms.Button();
             this.btnReportsAndAnalytic = new System.Windows.Forms.Button();
             this.mainPanel = new System.Windows.Forms.Panel();
-            this.ucfrmADashboard1 = new OmagiecaVMS01.ucfrmADashboard();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblCurrentUser = new System.Windows.Forms.Label();
@@ -45,6 +44,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.ucfrmADashboard1 = new OmagiecaVMS01.ucfrmADashboard();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.mainPanel.SuspendLayout();
@@ -188,16 +188,6 @@
             this.mainPanel.Size = new System.Drawing.Size(1261, 722);
             this.mainPanel.TabIndex = 1;
             // 
-            // ucfrmADashboard1
-            // 
-            this.ucfrmADashboard1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.ucfrmADashboard1.BackColor = System.Drawing.Color.OldLace;
-            this.ucfrmADashboard1.Location = new System.Drawing.Point(0, 6);
-            this.ucfrmADashboard1.Name = "ucfrmADashboard1";
-            this.ucfrmADashboard1.Size = new System.Drawing.Size(1261, 699);
-            this.ucfrmADashboard1.TabIndex = 0;
-            this.ucfrmADashboard1.Load += new System.EventHandler(this.ucfrmADashboard1_Load);
-            // 
             // panel3
             // 
             this.panel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -277,9 +267,19 @@
             this.label1.Location = new System.Drawing.Point(209, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(939, 56);
+            this.label1.Size = new System.Drawing.Size(954, 56);
             this.label1.TabIndex = 46;
-            this.label1.Text = "Omagieca Visitor Management System";
+            this.label1.Text = "OMAGIECA Visitor Management System";
+            // 
+            // ucfrmADashboard1
+            // 
+            this.ucfrmADashboard1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.ucfrmADashboard1.BackColor = System.Drawing.Color.OldLace;
+            this.ucfrmADashboard1.Location = new System.Drawing.Point(0, 6);
+            this.ucfrmADashboard1.Name = "ucfrmADashboard1";
+            this.ucfrmADashboard1.Size = new System.Drawing.Size(1261, 699);
+            this.ucfrmADashboard1.TabIndex = 0;
+            this.ucfrmADashboard1.Load += new System.EventHandler(this.ucfrmADashboard1_Load);
             // 
             // frmReceptionist
             // 

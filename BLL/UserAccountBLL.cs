@@ -227,6 +227,10 @@ namespace BLL
             return userAccountDAL.GetUserAccount(userId);
         }
 
-
+        public bool UpdateUserAccountFromEdit(int userAccountId, string firstName, string lastName, int age, string gender, string address, string userRole)
+        {
+            UserAccountDAL userDal = new UserAccountDAL();
+            return userDal.UpdateUserAccountFromEdit(userAccountId, firstName, lastName, age, gender, address, userRole);
+        }
     }
     }

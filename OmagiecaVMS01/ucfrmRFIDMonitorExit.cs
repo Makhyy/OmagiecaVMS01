@@ -81,13 +81,23 @@ namespace OmagiecaVMS01
             {
                 try
                 {
-                    rfidMonitorBLL.UpdateVisitorStatusExit(rfidUID, "Exited");
+                    // Assuming GetCurrentVisitorStatus is a method that fetches the current status
+                    string currentStatus = rfidMonitorBLL.GetCurrentVisitorStatus(rfidUID);
 
-                    ShowTimedMessage("A Visitor has Exited!.", 2000);
+                    // Check the current status before updating
+                    if (currentStatus != "Exited")
+                    {
+                        rfidMonitorBLL.UpdateVisitorStatusExit(rfidUID, "Exited");
+                        ShowTimedMessage("Visitor has Exited!.", 2000);
+                    }
+                    else
+                    {
+                        // Handle the case where status is already 'Entered', e.g., log or notify
+                        ShowTimedMessage("RFID Tag has already been scanned!", 2000);
+                    }
                 }
                 catch (Exception ex)
                 {
-                   
                     ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 2000);
                 }
             }

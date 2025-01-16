@@ -59,6 +59,37 @@ namespace DAL
             }
         }
 
+        public void AddNewVisit(Visit visit)
+        {
+            string query = @"
+        INSERT INTO Visit (VisitorId, UserAccountId, VisitStatusId, EntryTime, ExitTime, RfidTagNumberId)
+        VALUES (@VisitorId, @UserAccountId, @VisitStatusId, @EntryTime, @ExitTime, @RfidTagNumberId)";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@VisitorId", visit.VisitorId);
+            command.Parameters.AddWithValue("@UserAccountId", visit.UserAccountId);
+            command.Parameters.AddWithValue("@VisitStatusId", visit.VisitStatusId);
+            command.Parameters.AddWithValue("@EntryTime", (object)visit.EntryTime ?? DBNull.Value);
+            command.Parameters.AddWithValue("@ExitTime", (object)visit.ExitTime ?? DBNull.Value);
+            command.Parameters.AddWithValue("@RfidTagNumberId", (object)visit.RfidTagNumberId ?? DBNull.Value);
+
+            try
+            {
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (connection != null) connection.Close();
+            }
+        }
+
 
     }
 

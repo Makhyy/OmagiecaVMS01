@@ -54,6 +54,26 @@ namespace DAL
                 }
             }
         }
+        public string GetCurrentVisitorStatus(string rfidTagUID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+                SELECT Visitors.VisitorStatus
+                FROM Visitors
+                INNER JOIN RFIDTag ON Visitors.RfidTagNumberId = RFIDTag.RfidTagNumberId
+                WHERE RFIDTag.RfidTagUID = @RfidTagUID";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@RfidTagUID", rfidTagUID);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? "Not Found" : result.ToString();
+                }
+            }
+        }
         public void UpdateVisitorStatus(string rfidTagUID, string newStatus)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -61,11 +81,11 @@ namespace DAL
                 conn.Open();
                 // Update to modify the appropriate visitor record based on RFID UID
                 string query = @"
-            UPDATE Visitors
-            SET VisitorStatus = @NewStatus
-            FROM Visitors
-            INNER JOIN RFIDTag ON Visitors.RfidTagNumberId = RFIDTag.RfidTagNumberId
-            WHERE RFIDTag.RfidTagUID = @RfidTagUID AND Visitors.VisitorStatus = 'Registered'";
+        UPDATE Visitors
+        SET VisitorStatus = @NewStatus
+        FROM Visitors
+        INNER JOIN RFIDTag ON Visitors.RfidTagNumberId = RFIDTag.RfidTagNumberId
+        WHERE RFIDTag.RfidTagUID = @RfidTagUID AND (Visitors.VisitorStatus = 'Registered' OR Visitors.VisitorStatus = 'Entered')";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -80,6 +100,7 @@ namespace DAL
                 }
             }
         }
+
         public void UpdateVisitorStatusExit(string rfidTagUID, string newStatus)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -91,7 +112,7 @@ namespace DAL
             SET VisitorStatus = @NewStatus
             FROM Visitors
             INNER JOIN RFIDTag ON Visitors.RfidTagNumberId = RFIDTag.RfidTagNumberId
-            WHERE RFIDTag.RfidTagUID = @RfidTagUID AND Visitors.VisitorStatus = 'Entered'";
+            WHERE RFIDTag.RfidTagUID = @RfidTagUID AND (Visitors.VisitorStatus = 'Entered' OR Visitors.VisitorStatus = 'Exited')";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {

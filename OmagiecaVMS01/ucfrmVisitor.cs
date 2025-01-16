@@ -159,8 +159,9 @@ namespace OmagiecaVMS01
                 MessageBox.Show("An error occurred while registering the visitor: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+       
 
-
+       
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {

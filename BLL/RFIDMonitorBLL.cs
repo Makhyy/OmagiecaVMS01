@@ -15,6 +15,10 @@ namespace BLL
         {
             rfidMonitorDAL = new RFIDMonitorDAL();  // Initialize the DAL instance
         }
+        public string GetCurrentVisitorStatus(string rfidTagUID)
+        {
+            return rfidMonitorDAL.GetCurrentVisitorStatus(rfidTagUID);
+        }
 
         public void UpdateVisitorStatus(string rfidTag, string newStatus)
         {

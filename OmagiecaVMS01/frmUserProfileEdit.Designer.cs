@@ -49,6 +49,7 @@
             this.lblName = new System.Windows.Forms.Label();
             this.txtFirstName = new System.Windows.Forms.TextBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.txtUserAccountId = new System.Windows.Forms.TextBox();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SuspendLayout();
@@ -149,7 +150,7 @@
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnUpdate.Location = new System.Drawing.Point(97, 545);
+            this.btnUpdate.Location = new System.Drawing.Point(93, 545);
             this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(154, 45);
@@ -280,12 +281,25 @@
             this.pictureBox3.TabIndex = 310;
             this.pictureBox3.TabStop = false;
             // 
+            // txtUserAccountId
+            // 
+            this.txtUserAccountId.BackColor = System.Drawing.Color.PapayaWhip;
+            this.txtUserAccountId.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUserAccountId.Location = new System.Drawing.Point(201, 87);
+            this.txtUserAccountId.Margin = new System.Windows.Forms.Padding(2);
+            this.txtUserAccountId.Name = "txtUserAccountId";
+            this.txtUserAccountId.ReadOnly = true;
+            this.txtUserAccountId.Size = new System.Drawing.Size(171, 27);
+            this.txtUserAccountId.TabIndex = 339;
+            this.txtUserAccountId.Visible = false;
+            // 
             // frmUserProfileEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.PapayaWhip;
             this.ClientSize = new System.Drawing.Size(555, 722);
+            this.Controls.Add(this.txtUserAccountId);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.cboUserRole);
             this.Controls.Add(this.label8);
@@ -340,5 +354,6 @@
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.TextBox txtFirstName;
         private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.TextBox txtUserAccountId;
     }
 }

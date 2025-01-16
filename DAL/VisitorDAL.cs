@@ -452,7 +452,7 @@ VALUES
 
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@VisitorId", visitorId);
-                    command.Parameters.AddWithValue("@RfidStatus", "In Use"); // Set to a valid status
+                    command.Parameters.AddWithValue("@RfidStatus", "InUse"); // Set to a valid status
                     command.Parameters.AddWithValue("@RfidTagNumberId", rfidTagNumber);
 
                     connection.Open();
@@ -792,6 +792,67 @@ VALUES
             }
             return visitors;
         }
+        public int GetVisitStatusIdByName(string statusName)
+        {
+            string query = "SELECT VisitStatusId FROM VisitStatus WHERE VisitStatusName = @StatusName";
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@StatusName", statusName);
+
+            try
+            {
+                connection.Open();
+                object result = command.ExecuteScalar();
+
+                // If no result found, default to '1' for 'Registered'
+                if (result != null)
+                    return Convert.ToInt32(result);
+                else
+                    return 1;  // Default VisitStatusId for 'Registered'
+            }
+            catch (Exception)
+            {
+                // In case of any other exception, still return the default status ID
+                return 1;
+            }
+            finally
+            {
+                if (connection != null) connection.Close();
+            }
+        }
+
+        public void AddNewVisit(Visit visit)
+        {
+            string query = @"
+        INSERT INTO Visit (VisitorId, UserAccountId, VisitStatusId, EntryTime, ExitTime, RfidTagNumberId)
+        VALUES (@VisitorId, @UserAccountId, @VisitStatusId, @EntryTime, @ExitTime, @RfidTagNumberId)";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@VisitorId", visit.VisitorId);
+            command.Parameters.AddWithValue("@UserAccountId", visit.UserAccountId);
+            command.Parameters.AddWithValue("@VisitStatusId", visit.VisitStatusId);
+            command.Parameters.AddWithValue("@EntryTime", (object)visit.EntryTime ?? DBNull.Value);
+            command.Parameters.AddWithValue("@ExitTime", (object)visit.ExitTime ?? DBNull.Value);
+            command.Parameters.AddWithValue("@RfidTagNumberId", (object)visit.RfidTagNumberId ?? DBNull.Value);
+
+            try
+            {
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (connection != null) connection.Close();
+            }
+        }
+
     }
 }
 

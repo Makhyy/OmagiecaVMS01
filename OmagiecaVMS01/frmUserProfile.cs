@@ -20,6 +20,7 @@ namespace OmagiecaVMS01
         public frmUserProfile(int userId)
         {
             InitializeComponent();
+            
             this.userId = userId;
             userAccountBLL = new UserAccountBLL(); // Assuming the BLL handles connection strings internally
             LoadUserData();
@@ -36,11 +37,12 @@ namespace OmagiecaVMS01
         {
             LoadUserData();
         }
-        private void LoadUserData()
+        public void LoadUserData()
         {
             var user = userAccountBLL.GetUserAccount(userId);
             if (user != null)
             {
+                
                 txtFirstName.Text = user.FirstName ?? "";
                 txtLastName.Text = user.LastName ?? "";
                 txtAge.Text = user.Age?.ToString() ?? "";
@@ -70,6 +72,7 @@ namespace OmagiecaVMS01
         {
             frmUserProfileEdit frmUserProfileEdit = new frmUserProfileEdit(userId);
             frmUserProfileEdit.ShowDialog();
+           this.Close();
 
         }
     }

@@ -22,7 +22,7 @@ namespace OmagiecaVMS01
             LoadRFIDTags(); // Load initial data
             dgvRFIDTags.SelectionChanged += dgvRFIDTags_SelectionChanged;
             txtSearch.TextChanged += txtSearch_TextChanged; // Ensure this line is added
-
+            cboRfidStatus.Text = "Available";
         }
         private void PopulateRFIDStatus()
         {
@@ -73,7 +73,7 @@ namespace OmagiecaVMS01
                     return;
                 }
 
-                // Validate RFID Status
+                 //Validate RFID Status
                 if (cboRfidStatus.SelectedItem == null ||
                     !Enum.TryParse<RFIDTagStatus>(cboRfidStatus.SelectedItem.ToString(), out RFIDTagStatus status))
                 {

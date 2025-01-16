@@ -17,7 +17,7 @@ namespace OmagiecaVMS01
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             
-                /* while (true) // Loop to allow re-login
+                 while (true) // Loop to allow re-login
                         {
                             using (frmLogin loginForm = new frmLogin())
                             {
@@ -48,9 +48,9 @@ namespace OmagiecaVMS01
                         Application.Exit(); // Ensure the application exits completely when the loop ends
                     }
                 }
-              }*/
-
+              }
+/*
  Application.Run(new frmAdmin());
 }
 }
-}
+}*/

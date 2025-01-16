@@ -379,7 +379,31 @@ namespace BLL
         {
             return visitorDAL.GetTodaysVisitorCount(); 
         }
-        
+
+        public int GetVisitStatusIdByName(string statusName)
+        {
+            try
+            {
+                // Call DAL method to get status ID
+                return visitorDAL.GetVisitStatusIdByName(statusName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to retrieve status ID: " + ex.Message);
+            }
+        }
+        public void AddNewVisit(Visit visit)
+        {
+            try
+            {
+                visitorDAL.AddNewVisit(visit);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while adding a new visit: " + ex.Message);
+            }
+        }
+
 
     }
 }

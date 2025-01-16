@@ -1,6 +1,7 @@
 ﻿using MODELS;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -490,7 +491,35 @@ namespace DAL
 
 
 
+        public bool UpdateUserAccountFromEdit(int UserAccountId, string FirstName, string LastName, int Age, string Gender, string Address, string UserRole)
+        {
+            
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"UPDATE [dbo].[UserAccount]
+                             SET [FirstName] = @FirstName,
+                                 [LastName] = @LastName,
+                                 [Age] = @Age,
+                                 [Gender] = @Gender,
+                                 [Address] = @Address,
+                                 [UserRole] = @UserRole
+                             WHERE [UserAccountId] = @UserAccountId";
 
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@UserAccountId", UserAccountId);
+                command.Parameters.AddWithValue("@FirstName", FirstName);
+                command.Parameters.AddWithValue("@LastName", LastName);
+                command.Parameters.AddWithValue("@Age", Age);
+                command.Parameters.AddWithValue("@Gender", Gender);
+                command.Parameters.AddWithValue("@Address", Address);
+                command.Parameters.AddWithValue("@UserRole", UserRole);
+
+                connection.Open();
+                int result = command.ExecuteNonQuery();
+
+                return result > 0; // true if one or more rows were updated
+            }
+        }
 
     }
 }
