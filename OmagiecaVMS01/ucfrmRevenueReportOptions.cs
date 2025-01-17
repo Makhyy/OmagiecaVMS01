@@ -176,7 +176,9 @@ namespace OmagiecaVMS01
     System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excelApp);
 }
 
+        private void dgvRevenue_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
-
+        }
     }
 }

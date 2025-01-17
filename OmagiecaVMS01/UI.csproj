@@ -144,11 +144,11 @@
     <Compile Include="ucfrmADashboard.Designer.cs">
       <DependentUpon>ucfrmADashboard.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucfrmArchived.cs">
+    <Compile Include="ucfrmVisitorArchived.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ucfrmArchived.Designer.cs">
-      <DependentUpon>ucfrmArchived.cs</DependentUpon>
+    <Compile Include="ucfrmVisitorArchived.Designer.cs">
+      <DependentUpon>ucfrmVisitorArchived.cs</DependentUpon>
     </Compile>
     <Compile Include="ucfrmGroupRegister.cs">
       <SubType>UserControl</SubType>
@@ -291,8 +291,8 @@
     <EmbeddedResource Include="ucfrmADashboard.resx">
       <DependentUpon>ucfrmADashboard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ucfrmArchived.resx">
-      <DependentUpon>ucfrmArchived.cs</DependentUpon>
+    <EmbeddedResource Include="ucfrmVisitorArchived.resx">
+      <DependentUpon>ucfrmVisitorArchived.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucfrmGroupRegister.resx">
       <DependentUpon>ucfrmGroupRegister.cs</DependentUpon>

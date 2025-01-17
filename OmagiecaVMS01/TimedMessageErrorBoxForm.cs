@@ -16,7 +16,7 @@ namespace OmagiecaVMS01
         public TimedMessageErrorBoxForm(string messages, int durations)
         {
             InitializeComponent();
-
+            this.TopMost = true;
             InitializeLabel();
             this.Resize += new EventHandler(Form_Resize); // Add resize event handler
             label1.TextChanged += new EventHandler(label1_TextChanged); // Add text changed event handler
@@ -75,6 +75,11 @@ namespace OmagiecaVMS01
         private void TimedMessageErrorBoxForm_TextChanged(object sender, EventArgs e)
         {
 
+        }
+        public static void Show(string message, int duration)
+        {
+            TimedMessageBoxForm messageBox = new TimedMessageBoxForm(message, duration);
+            messageBox.ShowDialog();
         }
     }
 }

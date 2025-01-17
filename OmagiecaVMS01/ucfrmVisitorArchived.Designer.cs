@@ -1,6 +1,6 @@
 ﻿namespace OmagiecaVMS01
 {
-    partial class ucfrmArchived
+    partial class ucfrmVisitorArchived
     {
         /// <summary>
         /// Required designer variable.

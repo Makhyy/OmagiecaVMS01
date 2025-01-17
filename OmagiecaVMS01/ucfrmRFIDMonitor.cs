@@ -96,9 +96,11 @@ namespace OmagiecaVMS01
                         ShowTimedMessage("RFID Tag has already been scanned!", 2000);
                     }
                 }
+
                 catch (Exception ex)
                 {
                     ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 2000);
+                    
                 }
             }
         }
@@ -136,6 +138,19 @@ namespace OmagiecaVMS01
             {
                 timedMessage.StartPosition = FormStartPosition.CenterParent;
                 timedMessage.ShowDialog();
+            }
+            
+        }
+       
+        private void SendCommandToArduino(string command)
+        {
+            if (mySerialPort.IsOpen)
+            {
+                mySerialPort.WriteLine(command); // Send the command to Arduino
+            }
+            else
+            {
+                MessageBox.Show("Unable to send command to Arduino. Serial port is not open.", "Communication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

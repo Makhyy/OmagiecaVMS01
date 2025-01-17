@@ -303,7 +303,7 @@
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.Lavender;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.CadetBlue;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvRevenue.DefaultCellStyle = dataGridViewCellStyle2;
@@ -315,6 +315,7 @@
             this.dgvRevenue.RowHeadersVisible = false;
             this.dgvRevenue.Size = new System.Drawing.Size(1227, 462);
             this.dgvRevenue.TabIndex = 0;
+            this.dgvRevenue.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRevenue_CellContentClick);
             // 
             // tabPage2
             // 

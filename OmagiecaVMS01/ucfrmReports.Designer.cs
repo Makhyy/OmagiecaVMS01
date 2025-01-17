@@ -92,6 +92,7 @@
             // 
             // cmbReportType
             // 
+            this.cmbReportType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbReportType.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbReportType.FormattingEnabled = true;
             this.cmbReportType.Items.AddRange(new object[] {

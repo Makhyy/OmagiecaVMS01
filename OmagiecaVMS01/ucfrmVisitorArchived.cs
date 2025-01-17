@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace OmagiecaVMS01
 {
-    public partial class ucfrmArchived : Form
+    public partial class ucfrmVisitorArchived : Form
     {
-        public ucfrmArchived()
+        public ucfrmVisitorArchived()
         {
             InitializeComponent();
         }

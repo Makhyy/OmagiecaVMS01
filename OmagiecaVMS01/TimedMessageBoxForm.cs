@@ -18,6 +18,7 @@ namespace OmagiecaVMS01
 
             InitializeComponent();
             InitializeLabel();
+            this.TopMost = true;
             // Assuming there is a Label control called label1 on this form
             label1.Text = message;  // Display the message
 
@@ -80,5 +81,11 @@ namespace OmagiecaVMS01
         {
             CenterLabel();
         }
+        public static void Show(string message, int duration)
+        {
+            TimedMessageBoxForm messageBox = new TimedMessageBoxForm(message, duration);
+            messageBox.ShowDialog();
+        }
+
     }
 }
