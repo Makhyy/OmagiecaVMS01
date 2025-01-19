@@ -38,6 +38,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).BeginInit();
             this.panel2.SuspendLayout();
@@ -75,7 +76,7 @@
             this.dgvVisitors.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvVisitors.BackgroundColor = System.Drawing.Color.OldLace;
             this.dgvVisitors.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvVisitors.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvVisitors.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightSlateGray;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -85,7 +86,7 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvVisitors.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvVisitors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.BottomCenter;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -102,16 +103,16 @@
             this.dgvVisitors.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvVisitors.RowTemplate.ReadOnly = true;
             this.dgvVisitors.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvVisitors.Size = new System.Drawing.Size(1255, 305);
+            this.dgvVisitors.Size = new System.Drawing.Size(1255, 434);
             this.dgvVisitors.TabIndex = 22;
             this.dgvVisitors.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvActiveVisits_CellContentClick);
             // 
             // panel1
             // 
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 643);
+            this.panel1.Location = new System.Drawing.Point(0, 598);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1261, 56);
+            this.panel1.Size = new System.Drawing.Size(1261, 101);
             this.panel1.TabIndex = 23;
             // 
             // panel2
@@ -147,8 +148,16 @@
             this.panel3.Controls.Add(this.dgvVisitors);
             this.panel3.Location = new System.Drawing.Point(3, 123);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1255, 305);
+            this.panel3.Size = new System.Drawing.Size(1255, 434);
             this.panel3.TabIndex = 25;
+            // 
+            // panel5
+            // 
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(0, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1261, 699);
+            this.panel5.TabIndex = 26;
             // 
             // ucfrmVisitorStatus
             // 
@@ -159,6 +168,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel5);
             this.Name = "ucfrmVisitorStatus";
             this.Size = new System.Drawing.Size(1261, 699);
             this.panel4.ResumeLayout(false);
@@ -178,5 +188,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Panel panel5;
     }
 }

@@ -14,19 +14,18 @@ namespace OmagiecaVMS01
 {
     public partial class frmVisit : Form
     {
-        private VisitorBLL visitorBLL = new VisitorBLL();   
+        private VisitorBLL visitorBLL = new VisitorBLL();
+        private VisitBLL visitBLL = new VisitBLL();
         public frmVisit()
         {
             InitializeComponent();
+            DisplayVisitorData();
         }
-        /*
-        private void LoadVisitorStatuses()
+        private void DisplayVisitorData()
         {
-            DataTable visitorStatuses = visitorBLL.GetVisitorStatuses();
-            dgvVisitorStatuses.DataSource = visitorStatuses;
-            // Customize columns, set headers, etc.
+            VisitBLL visitBLL = new VisitBLL(); 
+            dgvVisitorStatus.DataSource = visitBLL.GetVisitorInformation();
         }
-        */
 
         private void btnRegisterVisitor_Click(object sender, EventArgs e)
         {

@@ -31,9 +31,10 @@ namespace DAL
                 {
                     string query = @"SELECT V.VisitorId, V.FirstName, V.LastName, V.Age, V.VisitorType,
                              V.IsPWD, V.Gender, V.CityMunicipality, V.ForeignCountry, V.PaymentAmount, 
-                             R.RFIDTagNumber, V.DateRegistered, V.VisitorStatus, V.UserAccountId
+                             R.RFIDTagNumber, V.DateRegistered, V.VisitorStatus, V.UserAccountId, VIS.EntryTime, VIS.ExitTime
                       FROM Visitors V
-                      JOIN RFIDTag R ON V.RfidTagNumberId = R.RfidTagNumberId";
+                      JOIN RFIDTag R ON V.RfidTagNumberId = R.RfidTagNumberId
+                      LEFT JOIN Visit VIS ON V.VisitorId = VIS.VisitorId";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable visitorTable = new DataTable();
@@ -928,6 +929,87 @@ VALUES
                 }
             }
             return dataTable;
+        }
+        public int GetEnteredVisitorCount()
+        {
+            int count = 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                // Using DATEDIFF to filter entries from today
+                string query = @"
+           SELECT COUNT(*) 
+           FROM Visitors
+           WHERE VisitorStatus = 'Entered'
+           AND DATEDIFF(day, DateRegistered, GETDATE()) = 0"; // Only include records where the difference in days is 0
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                try
+                {
+                    conn.Open();
+                    count = (int)cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions (you might want to log this error)
+                    throw new Exception("Error fetching entered visitor count: " + ex.Message);
+                }
+            }
+            return count;
+        }
+        public int GetExitedVisitorCount()
+        {
+            int count = 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                // Using DATEDIFF to filter entries from today
+                string query = @"
+           SELECT COUNT(*) 
+           FROM Visitors
+           WHERE VisitorStatus = 'Exited'
+           AND DATEDIFF(day, DateRegistered, GETDATE()) = 0"; // Only include records where the difference in days is 0
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                try
+                {
+                    conn.Open();
+                    count = (int)cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions (you might want to log this error)
+                    throw new Exception("Error fetching entered visitor count: " + ex.Message);
+                }
+            }
+            return count;
+        }
+        public int GetRemainingVisitorCount()
+        {
+            int remainingVisitors = 0;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                // Query to count visitors who have entered and not exited today
+                string query = @"
+            SELECT
+                (SELECT COUNT(*) FROM Visitors WHERE VisitorStatus = 'Entered' AND DATEDIFF(day, DateRegistered, GETDATE()) = 0) -
+                (SELECT COUNT(*) FROM Visitors WHERE VisitorStatus = 'Exited' AND DATEDIFF(day, DateRegistered, GETDATE()) = 0)
+            AS RemainingVisitors";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                try
+                {
+                    conn.Open();
+                    remainingVisitors = (int)cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions (you might want to log this error)
+                    throw new Exception("Error fetching remaining visitor count: " + ex.Message);
+                }
+            }
+            return remainingVisitors;
         }
 
 

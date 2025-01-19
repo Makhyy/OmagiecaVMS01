@@ -20,6 +20,8 @@ namespace OmagiecaVMS01
             InitializeComponent();
 
             UpdateVisitorCount();
+            LoadVisitorEnteredCount();
+            LoadVisitorExitedCount();
             ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
             rfidMonitor.Dock = DockStyle.Fill;
             pnlRFIDMonitor.Controls.Add(rfidMonitor);
@@ -64,6 +66,73 @@ namespace OmagiecaVMS01
         private void labelTotalRecords_Click(object sender, EventArgs e)
         {
 
+        }
+        private void LoadVisitorEnteredCount()
+        {
+            try
+            {
+                VisitorBLL visitorBLL = new VisitorBLL();
+                if (visitorBLL == null)
+                {
+                    MessageBox.Show("Visitor BLL is not initialized!");
+                    return;
+                }
+                
+                int count = visitorBLL.GetDailyEnteredVisitorCount();
+                lblDailyVisitorsEntered.Text = count.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void lblDailyVisitorsEntered_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void LoadVisitorExitedCount()
+        {
+            try
+            {
+                VisitorBLL visitorBLL = new VisitorBLL();
+                if (visitorBLL == null)
+                {
+                    MessageBox.Show("Visitor BLL is not initialized!");
+                    return;
+                }
+
+                int count = visitorBLL.GetDailyExitedVisitorCount();
+                lblDailyVisitorsExited.Text = count.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void lblDailyVisitorsExited_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void LoadRemainingVisitorCount()
+        {
+            try
+            {
+                VisitorBLL visitorBLL = new VisitorBLL();
+                if (visitorBLL == null)
+                {
+                    MessageBox.Show("Visitor BLL is not initialized!");
+                    return;
+                }
+
+                int count = visitorBLL.GetRemainingVisitorCount();
+                lblDailyRemainingVisitors.Text = count.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
     }
 }

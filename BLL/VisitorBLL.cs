@@ -433,7 +433,18 @@ namespace BLL
         {
             return _visitorDAL.GetRevenueByDateRange(startDate, endDate);
         }
-
-
+        public int GetDailyEnteredVisitorCount()
+        {
+            return _visitorDAL.GetEnteredVisitorCount();
+        }
+        public int GetDailyExitedVisitorCount()
+        {
+            return _visitorDAL.GetExitedVisitorCount();
+        }
+       
+         public int GetRemainingVisitorCount()
+        {
+            return _visitorDAL.GetRemainingVisitorCount();
+        }
     }
 }

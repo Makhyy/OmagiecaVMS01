@@ -39,6 +39,8 @@ namespace OmagiecaVMS01
             ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
             rfidMonitor.Dock = DockStyle.Fill;
             pnlRFIDMonitor.Controls.Add(rfidMonitor);
+            dgvVisitors.Columns["EntryTime"].Visible = false;
+            dgvVisitors.Columns["ExitTime"].Visible = false;
         }
 
         private void visitorBindingNavigatorSaveItem_Click(object sender, EventArgs e)

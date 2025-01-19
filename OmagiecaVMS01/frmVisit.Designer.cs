@@ -30,8 +30,8 @@
         {
             this.btnRegisterVisitor = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.dgvVisitorStatuses = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvVisitorStatuses)).BeginInit();
+            this.dgvVisitorStatus = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvVisitorStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // btnRegisterVisitor
@@ -53,25 +53,25 @@
             this.button1.Text = "Update";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // dgvVisitorStatuses
+            // dgvVisitorStatus
             // 
-            this.dgvVisitorStatuses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvVisitorStatuses.Location = new System.Drawing.Point(89, 60);
-            this.dgvVisitorStatuses.Name = "dgvVisitorStatuses";
-            this.dgvVisitorStatuses.Size = new System.Drawing.Size(899, 380);
-            this.dgvVisitorStatuses.TabIndex = 2;
+            this.dgvVisitorStatus.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvVisitorStatus.Location = new System.Drawing.Point(89, 60);
+            this.dgvVisitorStatus.Name = "dgvVisitorStatus";
+            this.dgvVisitorStatus.Size = new System.Drawing.Size(899, 380);
+            this.dgvVisitorStatus.TabIndex = 2;
             // 
             // frmVisit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1080, 607);
-            this.Controls.Add(this.dgvVisitorStatuses);
+            this.Controls.Add(this.dgvVisitorStatus);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnRegisterVisitor);
             this.Name = "frmVisit";
             this.Text = "frmVisit";
-            ((System.ComponentModel.ISupportInitialize)(this.dgvVisitorStatuses)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvVisitorStatus)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -80,6 +80,6 @@
 
         private System.Windows.Forms.Button btnRegisterVisitor;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView dgvVisitorStatuses;
+        private System.Windows.Forms.DataGridView dgvVisitorStatus;
     }
 }

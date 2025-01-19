@@ -41,11 +41,11 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblDailyVisitorsEntered = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.lblDailyRemainingVisitors = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
@@ -53,7 +53,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblDailyVisitorsExited = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlRFIDMonitorExit = new System.Windows.Forms.Panel();
@@ -168,7 +168,7 @@
             this.panel3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel3.BackColor = System.Drawing.Color.Blue;
             this.panel3.Controls.Add(this.pictureBox1);
-            this.panel3.Controls.Add(this.label4);
+            this.panel3.Controls.Add(this.lblDailyVisitorsEntered);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Location = new System.Drawing.Point(29, 18);
             this.panel3.Name = "panel3";
@@ -185,17 +185,18 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // label4
+            // lblDailyVisitorsEntered
             // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(90, 83);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(33, 37);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "0";
+            this.lblDailyVisitorsEntered.AutoSize = true;
+            this.lblDailyVisitorsEntered.BackColor = System.Drawing.Color.Transparent;
+            this.lblDailyVisitorsEntered.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDailyVisitorsEntered.ForeColor = System.Drawing.Color.White;
+            this.lblDailyVisitorsEntered.Location = new System.Drawing.Point(90, 83);
+            this.lblDailyVisitorsEntered.Name = "lblDailyVisitorsEntered";
+            this.lblDailyVisitorsEntered.Size = new System.Drawing.Size(33, 37);
+            this.lblDailyVisitorsEntered.TabIndex = 1;
+            this.lblDailyVisitorsEntered.Text = "0";
+            this.lblDailyVisitorsEntered.Click += new System.EventHandler(this.lblDailyVisitorsEntered_Click);
             // 
             // label3
             // 
@@ -213,7 +214,7 @@
             this.panel1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel1.BackColor = System.Drawing.Color.Purple;
             this.panel1.Controls.Add(this.pictureBox3);
-            this.panel1.Controls.Add(this.label9);
+            this.panel1.Controls.Add(this.lblDailyRemainingVisitors);
             this.panel1.Controls.Add(this.label10);
             this.panel1.Location = new System.Drawing.Point(671, 18);
             this.panel1.Name = "panel1";
@@ -230,17 +231,17 @@
             this.pictureBox3.TabIndex = 4;
             this.pictureBox3.TabStop = false;
             // 
-            // label9
+            // lblDailyRemainingVisitors
             // 
-            this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.Transparent;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(98, 82);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(33, 37);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "0";
+            this.lblDailyRemainingVisitors.AutoSize = true;
+            this.lblDailyRemainingVisitors.BackColor = System.Drawing.Color.Transparent;
+            this.lblDailyRemainingVisitors.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDailyRemainingVisitors.ForeColor = System.Drawing.Color.White;
+            this.lblDailyRemainingVisitors.Location = new System.Drawing.Point(98, 82);
+            this.lblDailyRemainingVisitors.Name = "lblDailyRemainingVisitors";
+            this.lblDailyRemainingVisitors.Size = new System.Drawing.Size(33, 37);
+            this.lblDailyRemainingVisitors.TabIndex = 1;
+            this.lblDailyRemainingVisitors.Text = "0";
             // 
             // label10
             // 
@@ -304,7 +305,7 @@
             this.panel4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel4.BackColor = System.Drawing.Color.Crimson;
             this.panel4.Controls.Add(this.pictureBox2);
-            this.panel4.Controls.Add(this.label5);
+            this.panel4.Controls.Add(this.lblDailyVisitorsExited);
             this.panel4.Controls.Add(this.label6);
             this.panel4.Location = new System.Drawing.Point(341, 18);
             this.panel4.Name = "panel4";
@@ -321,17 +322,18 @@
             this.pictureBox2.TabIndex = 3;
             this.pictureBox2.TabStop = false;
             // 
-            // label5
+            // lblDailyVisitorsExited
             // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(91, 83);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(33, 37);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "0";
+            this.lblDailyVisitorsExited.AutoSize = true;
+            this.lblDailyVisitorsExited.BackColor = System.Drawing.Color.Transparent;
+            this.lblDailyVisitorsExited.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDailyVisitorsExited.ForeColor = System.Drawing.Color.White;
+            this.lblDailyVisitorsExited.Location = new System.Drawing.Point(91, 83);
+            this.lblDailyVisitorsExited.Name = "lblDailyVisitorsExited";
+            this.lblDailyVisitorsExited.Size = new System.Drawing.Size(33, 37);
+            this.lblDailyVisitorsExited.TabIndex = 1;
+            this.lblDailyVisitorsExited.Text = "0";
+            this.lblDailyVisitorsExited.Click += new System.EventHandler(this.lblDailyVisitorsExited_Click);
             // 
             // label6
             // 
@@ -417,15 +419,15 @@
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblDailyVisitorsEntered;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblDailyVisitorsExited;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblDailyRemainingVisitors;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.PictureBox pictureBox4;

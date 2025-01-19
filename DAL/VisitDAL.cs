@@ -138,6 +138,31 @@ namespace DAL
             }
         }
 
+        public DataTable GetVisitorDetails()
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                string sqlQuery = @"
+            SELECT 
+                v.VisitorId, 
+                rt.RfidTagNumber, 
+                v. VisitorStatus, 
+                vis.EntryTime, 
+                vis.ExitTime
+            FROM Visitors v
+            JOIN RFIDTag rt ON v.VisitorId = rt.VisitorId
+            LEFT JOIN Visit vis ON v.VisitorId = vis.VisitorId";
+
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, con))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    return dt;
+                }
+            }
+        }
 
     }
 
