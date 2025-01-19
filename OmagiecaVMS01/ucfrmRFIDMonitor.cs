@@ -1,16 +1,16 @@
 ﻿
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-    using System.IO;
-    using System.IO.Ports;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
-    using BLL;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.IO.Ports;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using BLL;
 
 namespace OmagiecaVMS01
 {
@@ -100,7 +100,7 @@ namespace OmagiecaVMS01
                 catch (Exception ex)
                 {
                     ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 2000);
-                    
+
                 }
             }
         }
@@ -139,9 +139,9 @@ namespace OmagiecaVMS01
                 timedMessage.StartPosition = FormStartPosition.CenterParent;
                 timedMessage.ShowDialog();
             }
-            
+
         }
-       
+
         private void SendCommandToArduino(string command)
         {
             if (mySerialPort.IsOpen)
@@ -155,4 +155,3 @@ namespace OmagiecaVMS01
         }
     }
 }
-    

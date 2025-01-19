@@ -2,10 +2,12 @@
 using MODELS;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 
 namespace BLL
@@ -14,11 +16,13 @@ namespace BLL
     {
         private VisitorDAL _visitorDAL;
         private RFIDTagBLL rfidTagBLL;
+        private VisitDAL _visitDAL;
 
         public VisitorBLL()
         {
             _visitorDAL = new VisitorDAL();
             rfidTagBLL = new RFIDTagBLL();
+            _visitDAL = new VisitDAL();
         }
 
 
@@ -76,6 +80,7 @@ namespace BLL
             return visitorDAL.GetVisitorDaily();
         }
 
+
         public DataTable GetVisitorsForSpecificDay(DateTime specificDay)
         {
             // You can add any business logic here if needed, for example:
@@ -105,12 +110,10 @@ namespace BLL
         }
         public DataTable GetDailyRevenue(DateTime date)
         {
-            if (date.Date > DateTime.Now.Date)
-            {
-                throw new ArgumentException("Cannot fetch revenue for a future date.");
-            }
-            return visitorDAL.GetDailyRevenue(date);
+            return _visitorDAL.GetRevenueByDate(date);
         }
+
+       
 
         public void RegisterVisitor(Visitor visitor, int rfidTagNumber)
         {
@@ -149,6 +152,22 @@ namespace BLL
             }
         }
 
+
+
+
+
+        public int FetchDefaultStatusId()
+        {
+            try
+            {
+                return _visitDAL.GetDefaultStatusId();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Log exception or handle it as per your error handling policy
+                throw new Exception("Failed to retrieve the default status ID.", ex);
+            }
+        }
 
         public int AddVisitor(Visitor visitor)
         {
@@ -351,10 +370,11 @@ namespace BLL
                 throw new Exception("Error occurred in BLL while retrieving available RFID tags: " + ex.Message, ex);
             }
         }
-        public DataTable GetRevenueVisitorData()
+        public DataTable LoadRevenueVisitorData()
         {
-            return visitorDAL.LoadRevenueVisitorData();
+            return _visitorDAL.LoadRevenueVisitorData();
         }
+
         public decimal GetTotalWeeklyRevenue()
         {
             return visitorDAL.GetTotalWeeklyRevenue();
@@ -402,6 +422,16 @@ namespace BLL
             {
                 throw new Exception("An error occurred while adding a new visit: " + ex.Message);
             }
+        }
+
+        public DataTable GetRevenueByDateRange(DateTime startDate, DateTime endDate)
+        {
+            return _visitorDAL.GetRevenueByDateRange(startDate, endDate);
+        }
+
+        public DataTable GetRevenueByDateRangeM(DateTime startDate, DateTime endDate)
+        {
+            return _visitorDAL.GetRevenueByDateRange(startDate, endDate);
         }
 
 

@@ -16,6 +16,7 @@ namespace OmagiecaVMS01
     public partial class ucfrmVisitorReportOptions : UserControl
     {
         private VisitorBLL visitorBLL = new VisitorBLL();
+
         public ucfrmVisitorReportOptions()
         {
             InitializeComponent();

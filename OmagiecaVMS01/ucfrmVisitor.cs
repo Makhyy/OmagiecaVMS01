@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using static OmagiecaVMS01.OmagiecaVMS01DBDataSet2;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace OmagiecaVMS01
 {
@@ -18,6 +19,7 @@ namespace OmagiecaVMS01
     public partial class ucfrmVisitor : UserControl
     {
         private PaymentBLL paymentBLL;
+        private VisitorBLL visitorBLL;
 
 
         private List<VisitorType> VisitorTypes;
@@ -29,7 +31,9 @@ namespace OmagiecaVMS01
             LoadRFIDTags();
             RefreshRFIDTags();
             ClearInputs();
-            chkIsPWD.CheckedChanged += chkIsPWD_CheckedChanged;
+            txtCityMunicipality.TextChanged += TextBox_TextChanged;
+            txtForeignCountry.TextChanged += TextBox_TextChanged;
+
             dgvVisitors.Columns["UserAccountId"].Visible = false;
 
             ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
@@ -43,6 +47,14 @@ namespace OmagiecaVMS01
             this.visitorBindingSource.EndEdit();
             this.tableAdapterManager.UpdateAll(this.omagiecaVMS01DBDataSet2);
 
+        }
+        private void TextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Check if textBox1 has text and adjust textBox2's enabled state
+            txtForeignCountry.Enabled = string.IsNullOrEmpty(txtCityMunicipality.Text);
+
+            // Check if textBox2 has text and adjust textBox1's enabled state
+            txtCityMunicipality.Enabled = string.IsNullOrEmpty(txtForeignCountry.Text);
         }
         private void LoadVisitors()
         {
@@ -159,9 +171,9 @@ namespace OmagiecaVMS01
                 MessageBox.Show("An error occurred while registering the visitor: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-       
 
-       
+
+
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
@@ -195,6 +207,7 @@ namespace OmagiecaVMS01
                 MessageBox.Show("Visitor updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadVisitors(); // Refresh visitors
                 ClearInputs();
+                LoadRFIDTags();
             }
             catch (Exception ex)
             {
@@ -223,6 +236,7 @@ namespace OmagiecaVMS01
                     MessageBox.Show("Visitor deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadVisitors(); // Reload visitor list
                     ClearInputs();
+                    LoadRFIDTags();
                 }
             }
             catch (Exception ex)
@@ -230,7 +244,7 @@ namespace OmagiecaVMS01
                 MessageBox.Show("An error occurred while deleting the visitor: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+       
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -379,7 +393,7 @@ namespace OmagiecaVMS01
                 txtFirstName.Focus();
                 return false;
             }
-
+          
             if (string.IsNullOrWhiteSpace(txtLastName.Text))
             {
                 MessageBox.Show("Last Name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -570,6 +584,11 @@ namespace OmagiecaVMS01
             {
                 LoadVisitors(); // Load all visitors again
             }
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

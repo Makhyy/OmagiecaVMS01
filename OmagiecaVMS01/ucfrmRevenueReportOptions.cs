@@ -26,12 +26,12 @@ namespace OmagiecaVMS01
             try
             {
                 VisitorBLL visitorBLL = new VisitorBLL();
-                dgvRevenue.DataSource = visitorBLL.GetRevenueVisitorData();
-                decimal totalPayment = visitorBLL.GetTotalRevenue();
-                
-                lblTotalRevenue.Text = $"Total Revenue: {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
-            
+                dgvRevenue.DataSource = visitorBLL.LoadRevenueVisitorData();
 
+                // Calculate total payment
+                decimal totalPayment = visitorBLL.GetTotalRevenue();
+
+                lblTotalRevenue.Text = $"Total Revenue: {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
             }
             catch (Exception ex)
             {
@@ -41,16 +41,29 @@ namespace OmagiecaVMS01
 
         private void btnDaily_Click(object sender, EventArgs e)
         {
-            DateTime today = DateTime.Now.Date; // This will get the current date without the time part.
+            DateTime today = DateTime.Now.Date; // Get the current date (without time).
             try
             {
+                // Retrieve daily revenue data for today.
                 var revenueData = visitorBLL.GetDailyRevenue(today);
+
+                // Check if there is any data for today.
                 if (revenueData.Rows.Count > 0)
                 {
-                    lblTotalRevenue.Text = $"Total Revenue for Today ({today.ToShortDateString()}): {revenueData.Rows[0]["TotalRevenue"]}";
+                    // Bind the filtered data to the DataGridView.
+                    dgvRevenue.DataSource = revenueData;
+
+                    // Calculate the total revenue for today.
+                    decimal totalPayment = revenueData.AsEnumerable()
+                        .Sum(row => row.Field<decimal>("PaymentAmount"));
+
+                    // Display the total revenue for today.
+                    lblTotalRevenue.Text = $"Total Revenue for Today ({today.ToShortDateString()}): {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
                 }
                 else
                 {
+                    // If no data, clear the DataGridView and show a message.
+                    dgvRevenue.DataSource = null;
                     lblTotalRevenue.Text = "No revenue data available for today.";
                 }
             }
@@ -65,7 +78,22 @@ namespace OmagiecaVMS01
         {
             try
             {
-                decimal totalPayment = visitorBLL.GetTotalWeeklyRevenue();
+                // Calculate the start and end dates of the current week
+                DateTime today = DateTime.Now;
+                DateTime startOfWeek = today.AddDays(-(int)today.DayOfWeek + (int)DayOfWeek.Monday); // Adjust for Monday as the start of the week
+                DateTime endOfWeek = startOfWeek.AddDays(6); // Sunday is the last day of the week
+
+                // Fetch weekly revenue data
+                var revenueData = visitorBLL.GetRevenueByDateRange(startOfWeek, endOfWeek);
+
+                // Bind the filtered data to the DataGridView
+                dgvRevenue.DataSource = revenueData;
+
+                // Calculate the total revenue for the week
+                decimal totalPayment = revenueData.AsEnumerable()
+                    .Sum(row => row.Field<decimal>("PaymentAmount"));
+
+                // Display the total revenue for the week
                 lblTotalRevenue.Text = $"Total Revenue for this Week = {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
             }
             catch (Exception ex)
@@ -78,8 +106,22 @@ namespace OmagiecaVMS01
         {
             try
             {
-                decimal totalPayment = visitorBLL.GetTotalMonthlyRevenue();
-                // Format the output using Philippine Peso currency format
+                // Calculate the first and last dates of the current month
+                DateTime today = DateTime.Now;
+                DateTime startOfMonth = new DateTime(today.Year, today.Month, 1); // First day of the month
+                DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1); // Last day of the month
+
+                // Fetch monthly revenue data
+                var revenueData = visitorBLL.GetRevenueByDateRangeM(startOfMonth, endOfMonth);
+
+                // Bind the filtered data to the DataGridView
+                dgvRevenue.DataSource = revenueData;
+
+                // Calculate the total revenue for the month
+                decimal totalPayment = revenueData.AsEnumerable()
+                    .Sum(row => row.Field<decimal>("PaymentAmount"));
+
+                // Display the total revenue for the month
                 lblTotalRevenue.Text = $"Total Revenue for this Month = {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
             }
             catch (Exception ex)
@@ -92,8 +134,17 @@ namespace OmagiecaVMS01
         {
             try
             {
-                decimal totalPayment = visitorBLL.GetTotalRevenue();
-                // Format the output using Philippine Peso currency format
+                // Retrieve all revenue data
+                var revenueData = visitorBLL.LoadRevenueVisitorData();
+
+                // Bind the retrieved data to the DataGridView
+                dgvRevenue.DataSource = revenueData;
+
+                // Calculate the total revenue
+                decimal totalPayment = revenueData.AsEnumerable()
+                    .Sum(row => row.Field<decimal>("PaymentAmount"));
+
+                // Display the total revenue
                 lblTotalRevenue.Text = $"Total Revenue: {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
             }
             catch (Exception ex)

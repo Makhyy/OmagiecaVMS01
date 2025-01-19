@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblTotalMembers = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -132,6 +132,7 @@
             this.txtTotalPayment.Location = new System.Drawing.Point(1065, 265);
             this.txtTotalPayment.Margin = new System.Windows.Forms.Padding(2);
             this.txtTotalPayment.Name = "txtTotalPayment";
+            this.txtTotalPayment.ReadOnly = true;
             this.txtTotalPayment.Size = new System.Drawing.Size(113, 27);
             this.txtTotalPayment.TabIndex = 297;
             // 
@@ -202,10 +203,10 @@
             // remove_btn
             // 
             this.remove_btn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle30.ForeColor = System.Drawing.Color.White;
-            this.remove_btn.DefaultCellStyle = dataGridViewCellStyle30;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            this.remove_btn.DefaultCellStyle = dataGridViewCellStyle4;
             this.remove_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.remove_btn.HeaderText = "Remove_Visitor";
             this.remove_btn.Name = "remove_btn";

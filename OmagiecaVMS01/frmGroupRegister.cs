@@ -27,10 +27,6 @@ namespace OmagiecaVMS01
 
         }
 
-        private void btnSubmitRegistration_Click(object sender, EventArgs e)
-        {
-            
-        }
         private List<GroupMember> GetGroupMembersFromGrid()
         {
             var members = new List<GroupMember>();

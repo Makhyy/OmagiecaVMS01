@@ -41,13 +41,13 @@
             this.btnADashboard = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.mainPanel = new System.Windows.Forms.Panel();
+            this.ucfrmADashboard2 = new OmagiecaVMS01.ucfrmADashboard();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.lblCurrentUser = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.ucfrmADashboard2 = new OmagiecaVMS01.ucfrmADashboard();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.mainPanel.SuspendLayout();
@@ -200,7 +200,7 @@
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(199, 49);
             this.btnSettings.TabIndex = 8;
-            this.btnSettings.Text = "Settings";
+            this.btnSettings.Text = "User Guide";
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
@@ -262,6 +262,16 @@
             this.mainPanel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.mainPanel.Size = new System.Drawing.Size(1261, 722);
             this.mainPanel.TabIndex = 48;
+            // 
+            // ucfrmADashboard2
+            // 
+            this.ucfrmADashboard2.BackColor = System.Drawing.Color.OldLace;
+            this.ucfrmADashboard2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucfrmADashboard2.Location = new System.Drawing.Point(0, 0);
+            this.ucfrmADashboard2.Name = "ucfrmADashboard2";
+            this.ucfrmADashboard2.Size = new System.Drawing.Size(1261, 722);
+            this.ucfrmADashboard2.TabIndex = 0;
+            this.ucfrmADashboard2.Load += new System.EventHandler(this.ucfrmADashboard2_Load);
             // 
             // panel2
             // 
@@ -336,16 +346,6 @@
             this.label1.Size = new System.Drawing.Size(954, 56);
             this.label1.TabIndex = 46;
             this.label1.Text = "OMAGIECA Visitor Management System";
-            // 
-            // ucfrmADashboard2
-            // 
-            this.ucfrmADashboard2.BackColor = System.Drawing.Color.OldLace;
-            this.ucfrmADashboard2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ucfrmADashboard2.Location = new System.Drawing.Point(0, 0);
-            this.ucfrmADashboard2.Name = "ucfrmADashboard2";
-            this.ucfrmADashboard2.Size = new System.Drawing.Size(1261, 722);
-            this.ucfrmADashboard2.TabIndex = 0;
-            this.ucfrmADashboard2.Load += new System.EventHandler(this.ucfrmADashboard2_Load);
             // 
             // frmAdmin
             // 

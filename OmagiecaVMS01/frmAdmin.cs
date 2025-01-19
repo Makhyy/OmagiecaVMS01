@@ -131,7 +131,7 @@ namespace OmagiecaVMS01
         {
             try
             {
-                var settingsControl = new ucfrmSettings();
+                var settingsControl = new ucfrmUserGuideAdmin();
                 LoadUserControl(settingsControl);
             }
             catch (Exception ex)

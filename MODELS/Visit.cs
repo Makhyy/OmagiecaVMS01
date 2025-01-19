@@ -8,13 +8,17 @@ namespace MODELS
 {
     public class Visit
     {
-        public int VisitId { get; set; }
-        public int VisitorId { get; set; }
-        public int UserAccountId { get; set; }
-        public int RfidTagNumberId { get; set; }
-        public decimal PaymentAmount { get; set; }
-        public int VisitStatusId { get; set; }
-        public DateTime EntryTime { get; set; }
-        public DateTime? ExitTime { get; set; }
+        
+        
+            public int VisitId { get; set; } // Primary key
+            public int VisitorId { get; set; }
+            public int RfidTagNumberId { get; set; }
+            public DateTime? EntryTime { get; set; }
+            public DateTime? ExitTime { get; set; } // Nullable for initial creation
+            public int VisitStatusId { get; set; }
+            public int? UserAccountId { get; set; } // Optional, nullable if not used
+            public int? PaymentId { get; set; } // Optional, nullable if not handling payments at entry
+        
+
     }
 }

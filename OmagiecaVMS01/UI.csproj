@@ -198,17 +198,17 @@
     <Compile Include="ucfrmRFIDTagManagement.Designer.cs">
       <DependentUpon>ucfrmRFIDTagManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucfrmRSettings.cs">
+    <Compile Include="ucfrmUserGuideReceptionist.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucfrmRSettings.Designer.cs">
-      <DependentUpon>ucfrmRSettings.cs</DependentUpon>
+    <Compile Include="ucfrmUserGuideReceptionist.Designer.cs">
+      <DependentUpon>ucfrmUserGuideReceptionist.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucfrmSettings.cs">
+    <Compile Include="ucfrmUserGuideAdmin.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucfrmSettings.Designer.cs">
-      <DependentUpon>ucfrmSettings.cs</DependentUpon>
+    <Compile Include="ucfrmUserGuideAdmin.Designer.cs">
+      <DependentUpon>ucfrmUserGuideAdmin.cs</DependentUpon>
     </Compile>
     <Compile Include="ucfrmUsers.cs">
       <SubType>UserControl</SubType>
@@ -318,11 +318,11 @@
     <EmbeddedResource Include="ucfrmRFIDTagManagement.resx">
       <DependentUpon>ucfrmRFIDTagManagement.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ucfrmRSettings.resx">
-      <DependentUpon>ucfrmRSettings.cs</DependentUpon>
+    <EmbeddedResource Include="ucfrmUserGuideReceptionist.resx">
+      <DependentUpon>ucfrmUserGuideReceptionist.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ucfrmSettings.resx">
-      <DependentUpon>ucfrmSettings.cs</DependentUpon>
+    <EmbeddedResource Include="ucfrmUserGuideAdmin.resx">
+      <DependentUpon>ucfrmUserGuideAdmin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucfrmUsers.resx">
       <DependentUpon>ucfrmUsers.cs</DependentUpon>

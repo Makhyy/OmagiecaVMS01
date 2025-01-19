@@ -12,25 +12,41 @@ namespace DAL
     public class VisitDAL
     {
         private string connectionString = Properties.Settings.Default.ConnectionString;
-        public void AddVisit(Visit visit)
+        public bool AddVisit(Visit visit)
         {
-            string query = @"
-        INSERT INTO Visits (VisitorId, UserAccountId, RfidTagNumberId, PaymentId, VisitStatusId, EntryTime, ExitTime)
-        VALUES (@VisitorId, @UserAccountId, @RfidTagNumberId, @PaymentId, @VisitStatusId, @EntryTime, @ExitTime);
-        SELECT SCOPE_IDENTITY();";
+            string commandText = @"
+        INSERT INTO Visit (VisitorId, RfidTagNumberId, EntryTime, VisitStatusId)
+        VALUES (@VisitorId, @RfidTagNumberId, @EntryTime, @VisitStatusId);";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlTransaction transaction = null;  // Initialize transaction to null
+
+            try
             {
-                command.Parameters.AddWithValue("@VisitorId", visit.VisitorId);
-                command.Parameters.AddWithValue("@UserAccountId", visit.UserAccountId);
-                command.Parameters.AddWithValue("@RfidTagNumberId", visit.RfidTagNumberId);
-                command.Parameters.AddWithValue("@PaymentId", visit.PaymentAmount);
-                command.Parameters.AddWithValue("@VisitStatusId", visit.VisitStatusId);
-                command.Parameters.AddWithValue("@EntryTime", visit.EntryTime);
-                command.Parameters.AddWithValue("@ExitTime", visit.ExitTime ?? (object)DBNull.Value);
                 connection.Open();
-                visit.VisitId = Convert.ToInt32(command.ExecuteScalar());
+                transaction = connection.BeginTransaction();  // Begin transaction
+
+                using (SqlCommand command = new SqlCommand(commandText, connection, transaction))
+                {
+                    command.Parameters.AddWithValue("@VisitorId", visit.VisitorId);
+                    command.Parameters.AddWithValue("@RfidTagNumberId", visit.RfidTagNumberId);
+                    command.Parameters.AddWithValue("@EntryTime", visit.EntryTime);
+                    command.Parameters.AddWithValue("@VisitStatusId", visit.VisitStatusId);
+
+                    command.ExecuteNonQuery();
+                }
+
+                transaction.Commit();  // Commit transaction
+                return true;
+            }
+            catch (Exception)
+            {
+                transaction?.Rollback();  // Rollback transaction if an exception occurs
+                throw;
+            }
+            finally
+            {
+                if (connection != null) connection.Close();
             }
         }
 
@@ -43,6 +59,38 @@ namespace DAL
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
                 return dataTable;
+            }
+        }
+        public bool IsValidStatus(int statusId)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Status WHERE StatusId = @StatusId";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@StatusId", statusId);
+                    connection.Open();
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+        public int GetDefaultStatusId()
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                string commandText = "SELECT TOP 1 StatusId FROM Status WHERE IsDefault = 1";
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        return Convert.ToInt32(result);
+                    }
+                    throw new InvalidOperationException("No default status ID found in the database.");
+                }
             }
         }
 

@@ -291,6 +291,7 @@ namespace OmagiecaVMS01
                     txtRfidTagUID.Text = selectedRow.Cells["RfidTagUID"].Value?.ToString();
                     txtRfidTagNumber.Text = selectedRow.Cells["RfidTagNumber"].Value?.ToString();
                     cboRfidStatus.SelectedItem = Enum.TryParse<RFIDTagStatus>(selectedRow.Cells["RfidStatus"].Value?.ToString(), out var status) ? status : (object)null;
+                    
                 }
             }
             catch (Exception ex)

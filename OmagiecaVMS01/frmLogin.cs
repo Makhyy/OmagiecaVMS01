@@ -46,7 +46,7 @@ namespace OmagiecaVMS01
                     CurrentSession.UserRole = userAccount.UserRole; // Set the session user role
                     CurrentSession.FirstName = userAccount.FirstName; // Set the session first name
                     CurrentSession.LastName = userAccount.LastName; // Set the session last name
-                    MessageBox.Show($"Welcome, {userAccount.FirstName} {userAccount.LastName}! You are logged in as {userAccount.UserRole}.",
+                    MessageBox.Show($"Welcome, {userAccount.FirstName} {userAccount.LastName}! ",
                  "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
