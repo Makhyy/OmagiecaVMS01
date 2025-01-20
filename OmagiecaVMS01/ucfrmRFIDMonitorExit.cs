@@ -32,7 +32,7 @@ namespace OmagiecaVMS01
                 if (!mySerialPortExit.IsOpen)
                 {
                     mySerialPortExit.Open();
-                    ShowTimedMessage("RFID Reader is Ready!", 2000);
+                    ShowTimedMessage("The Exit RFID Reader is Ready!", 1500);
                 }
             }
             catch (UnauthorizedAccessException ex)
@@ -41,8 +41,8 @@ namespace OmagiecaVMS01
             }
             catch (Exception ex)
             {
-                
-                ShowErrorTimedMessage("Error starting RFID monitor: " + ex.Message, 2000);
+
+                ShowErrorTimedMessage("The Exit RFID Reader is Disconnected ", 1500);
             }
         }
 
@@ -57,12 +57,12 @@ namespace OmagiecaVMS01
                 if (mySerialPortExit.IsOpen)
                 {
                     mySerialPortExit.Close();
-                    MessageBox.Show("RFID Reader stopped.");
+                    ShowErrorTimedMessage("The Exit RFID Reader has Stopped ", 1500);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error stopping RFID monitor: " + ex.Message);
+                ShowErrorTimedMessage("Error stopping RFID monitor: " + ex.Message, 1500);
             }
         }
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
@@ -88,7 +88,7 @@ namespace OmagiecaVMS01
                     if (currentStatus != "Exited")
                     {
                         rfidMonitorBLL.UpdateVisitorStatusExit(rfidUID, "Exited");
-                        ShowTimedMessage("Visitor has Exited!.", 2000);
+                        ShowTimedMessage("Visitor has Exited!.", 1500);
                     }
                     else
                     {
@@ -98,7 +98,7 @@ namespace OmagiecaVMS01
                 }
                 catch (Exception ex)
                 {
-                    ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 2000);
+                    ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 1500);
                 }
             }
         }

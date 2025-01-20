@@ -35,7 +35,7 @@ namespace OmagiecaVMS01
                 if (!mySerialPort.IsOpen)
                 {
                     mySerialPort.Open();
-                    ShowTimedMessage("RFID Reader is Ready!", 2000);
+                    ShowTimedMessage("The Entrance RFID Reader is Ready!", 1500);
                 }
             }
             catch (UnauthorizedAccessException ex)
@@ -44,7 +44,7 @@ namespace OmagiecaVMS01
             }
             catch (Exception ex)
             {
-                ShowErrorTimedMessage("Error starting RFID monitor: " + ex.Message, 2000);
+                ShowErrorTimedMessage("The Entrance RFID Reader is Disconnected " , 1500);
             }
 
         }
@@ -60,12 +60,13 @@ namespace OmagiecaVMS01
                 if (mySerialPort.IsOpen)
                 {
                     mySerialPort.Close();
-                    MessageBox.Show("RFID Reader stopped.");
+                    ShowErrorTimedMessage("The Entrance RFID Reader has Stopped ", 1500);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error stopping RFID monitor: " + ex.Message);
+                
+                ShowErrorTimedMessage("Error stopping RFID monitor: " + ex.Message, 1500);
             }
         }
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
@@ -93,7 +94,7 @@ namespace OmagiecaVMS01
                     if (currentStatus != "Entered")
                     {
                         rfidMonitorBLL.UpdateVisitorStatus(rfidUID, "Entered");
-                        ShowTimedMessage("Visitor has Entered!.", 2000);
+                        ShowTimedMessage("Visitor has Entered!.", 1500);
                         
 
 
@@ -101,13 +102,13 @@ namespace OmagiecaVMS01
                     else
                     {
                         // Handle the case where status is already 'Entered', e.g., log or notify
-                        ShowTimedMessage("RFID Tag has already been scanned!", 2000);
+                        ShowTimedMessage("RFID Tag has already been scanned!", 1500);
                     }
                 }
 
                 catch (Exception ex)
                 {
-                    ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 2000);
+                    ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 1500);
 
                 }
             }
