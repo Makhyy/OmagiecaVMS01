@@ -253,46 +253,43 @@ namespace OmagiecaVMS01
 
         private void UpdateChartWithData()
         {
-            // Clear existing series and chart areas
             chartRevenue.Series.Clear();
             chartRevenue.ChartAreas.Clear();
-
-            // Create new chart area and series
-            ChartArea area = new ChartArea();
-            chartRevenue.ChartAreas.Add(area);
-
             Series series = new Series("Revenue")
             {
-                ChartType = SeriesChartType.Column, // Column chart type for revenue data
-                XValueType = ChartValueType.DateTime, // Assuming date values are used
+                ChartType = SeriesChartType.Column,
+                XValueType = ChartValueType.DateTime
             };
+
+            ChartArea area = new ChartArea();
+            chartRevenue.ChartAreas.Add(area);
             chartRevenue.Series.Add(series);
 
-            // Set the width of the bars to occupy 80% of the space between points
-            series["PointWidth"] = "0.8";
+            // Dynamically adjust point width
+            int dataCount = dgvRevenue.Rows.Count;
+            double pointWidth = dataCount > 30 ? 0.5 : (dataCount > 10 ? 0.7 : 0.9);
+            series["PointWidth"] = pointWidth.ToString();
 
-            // Add data points from the DataGridView
+            // Add data points
             foreach (DataGridViewRow row in dgvRevenue.Rows)
             {
-                if (!row.IsNewRow)
+                if (!row.IsNewRow && DateTime.TryParse(row.Cells["DateRegistered"].Value?.ToString(), out DateTime date) && Decimal.TryParse(row.Cells["PaymentAmount"].Value?.ToString(), out decimal payment))
                 {
-                    DateTime date;
-                    decimal payment;
-                    if (DateTime.TryParse(row.Cells["DateRegistered"].Value?.ToString(), out date) &&
-                        Decimal.TryParse(row.Cells["PaymentAmount"].Value?.ToString(), out payment))
-                    {
-                        series.Points.AddXY(date, payment);
-                    }
+                    series.Points.AddXY(date, payment);
                 }
             }
 
-            // Customize the chart display
-            chartRevenue.ChartAreas[0].AxisX.LabelStyle.Format = "MMM dd, yyyy";
-            chartRevenue.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
-            chartRevenue.ChartAreas[0].AxisX.Interval = 1; // Adjust based on your data density
+            ConfigureChartArea();  // Make sure axis configuration is set properly
             chartRevenue.Titles.Clear();
             chartRevenue.Titles.Add("Revenue Over Time");
         }
+        private void ConfigureChartArea()
+        {
+            chartRevenue.ChartAreas[0].AxisX.LabelStyle.Format = "MMM dd, yyyy";
+            chartRevenue.ChartAreas[0].AxisX.IntervalAutoMode = IntervalAutoMode.VariableCount;
+            chartRevenue.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Auto;
+        }
+
 
 
 

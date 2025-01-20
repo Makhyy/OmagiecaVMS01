@@ -60,15 +60,19 @@ namespace OmagiecaVMS01
             try
             {
                 VisitorBLL visitorManager = new VisitorBLL();
-                DataTable filteredData = visitorManager.GetVisitorsForToday();  // This now fetches today's visitors
+                DataTable filteredData = visitorManager.GetVisitorsForToday();  // This fetches today's visitors
                 dgvVisitorsReport.DataSource = filteredData;
                 labelTotalRecords.Text = $"Total Visitor for Today: {filteredData.Rows.Count}";
+
+                // Update the chart with the latest data
+                UpdateChartWithData();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error Loading Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnWeekly_Click(object sender, EventArgs e)
         {
@@ -78,12 +82,16 @@ namespace OmagiecaVMS01
                 DataTable filteredData = visitorManager.GetVisitorsWeeklyReport();
                 dgvVisitorsReport.DataSource = filteredData;
                 labelTotalRecords.Text = $"Total Visitors for this week: {filteredData.Rows.Count}";
+
+                // Update the chart with the latest data
+                UpdateChartWithData();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error Loading Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnMonthly_Click(object sender, EventArgs e)
         {
@@ -93,12 +101,16 @@ namespace OmagiecaVMS01
                 DataTable filteredData = visitorManager.GetVisitorsForCurrentMonth();
                 dgvVisitorsReport.DataSource = filteredData;
                 labelTotalRecords.Text = $"Total Visitors for this Month: {filteredData.Rows.Count}";
+
+                // Update the chart with the latest data
+                UpdateChartWithData();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error Loading Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnCustom_Click(object sender, EventArgs e)
         {
@@ -131,12 +143,16 @@ namespace OmagiecaVMS01
                 VisitorBLL visitorBLL = new VisitorBLL();
                 dgvVisitorsReport.DataSource = visitorBLL.GetVisitorsReport();
                 labelTotalRecords.Text = $"Total Visitors: {dgvVisitorsReport.Rows.Count}";
+
+                // Update the chart with the latest data
+                UpdateChartWithData();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred while loading visitors: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -205,49 +221,46 @@ namespace OmagiecaVMS01
 
         private void UpdateChartWithData()
         {
-            // Create or clear existing series and chart areas
             chart1.Series.Clear();
             chart1.ChartAreas.Clear();
+
             ChartArea area = new ChartArea();
             chart1.ChartAreas.Add(area);
 
             Series series = new Series("VisitorCount")
             {
-                ChartType = SeriesChartType.Column, // Or any other chart type as needed
-                Color = Color.Green, // Customize as per your UI design
+                ChartType = SeriesChartType.Column,
+                Color = Color.Green
             };
             chart1.Series.Add(series);
 
-            // Dictionary to track visitor types and their counts
-            Dictionary<string, int> dataMap = new Dictionary<string, int>();
+            Dictionary<string, int> visitorTypeCounts = new Dictionary<string, int>();
 
-            // Loop through DataGridView to aggregate data
             foreach (DataGridViewRow row in dgvVisitorsReport.Rows)
             {
                 if (!row.IsNewRow)
                 {
-                    string visitorType = row.Cells["VisitorType"].Value?.ToString() ?? string.Empty;
-                    if (dataMap.ContainsKey(visitorType))
+                    string visitorType = row.Cells["VisitorType"].Value?.ToString() ?? "Unknown";
+                    if (visitorTypeCounts.ContainsKey(visitorType))
                     {
-                        dataMap[visitorType]++;
+                        visitorTypeCounts[visitorType]++;
                     }
                     else
                     {
-                        dataMap.Add(visitorType, 1);
+                        visitorTypeCounts[visitorType] = 1;
                     }
                 }
             }
 
-            // Add data points to the series
-            foreach (var entry in dataMap)
+            foreach (var entry in visitorTypeCounts)
             {
                 series.Points.AddXY(entry.Key, entry.Value);
             }
 
-            // Set the chart title and other properties
             chart1.Titles.Clear();
             chart1.Titles.Add("Visitor Count by Type");
         }
+
 
     }
 }
