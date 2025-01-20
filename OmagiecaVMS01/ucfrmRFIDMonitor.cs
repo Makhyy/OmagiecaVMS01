@@ -18,11 +18,14 @@ namespace OmagiecaVMS01
     {
         private SerialPort mySerialPort;
         private RFIDMonitorBLL rfidMonitorBLL;
+        
         public ucfrmRFIDMonitor()
         {
             InitializeComponent();
             InitializeSerialPort();
             rfidMonitorBLL = new RFIDMonitorBLL();
+            
+            
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
@@ -70,6 +73,7 @@ namespace OmagiecaVMS01
             SerialPort sp = (SerialPort)sender;
             string rfidUID = sp.ReadLine().Trim();  // Read the RFID UID from the serial port
             UpdateVisitorStatus(rfidUID);  // Delegate to update visitor status
+           
         }
         private void UpdateVisitorStatus(string rfidUID)
         {
@@ -81,6 +85,7 @@ namespace OmagiecaVMS01
             {
                 try
                 {
+                    
                     // Assuming GetCurrentVisitorStatus is a method that fetches the current status
                     string currentStatus = rfidMonitorBLL.GetCurrentVisitorStatus(rfidUID);
 
@@ -89,6 +94,9 @@ namespace OmagiecaVMS01
                     {
                         rfidMonitorBLL.UpdateVisitorStatus(rfidUID, "Entered");
                         ShowTimedMessage("Visitor has Entered!.", 2000);
+                        
+
+
                     }
                     else
                     {

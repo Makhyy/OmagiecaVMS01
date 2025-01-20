@@ -16,8 +16,8 @@ namespace MODELS
             public DateTime? EntryTime { get; set; }
             public DateTime? ExitTime { get; set; } // Nullable for initial creation
             public int VisitStatusId { get; set; }
-            public int? UserAccountId { get; set; } // Optional, nullable if not used
-            public int? PaymentId { get; set; } // Optional, nullable if not handling payments at entry
+            
+            
         
 
     }

@@ -508,7 +508,7 @@ VALUES
                 UPDATE RFIDTag 
                 SET VisitorId = NULL, 
                     RfidStatus = 'Available' 
-                WHERE VisitorId = @VisitorId AND RfidStatus = 'In Use'";
+                WHERE VisitorId = @VisitorId AND RfidStatus = 'InUse'";
 
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@VisitorId", visitorId);
@@ -989,28 +989,39 @@ VALUES
             int remainingVisitors = 0;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                // Query to count visitors who have entered and not exited today
+                // Optimized query to count remaining visitors (entered not exited)
                 string query = @"
-            SELECT
-                (SELECT COUNT(*) FROM Visitors WHERE VisitorStatus = 'Entered' AND DATEDIFF(day, DateRegistered, GETDATE()) = 0) -
-                (SELECT COUNT(*) FROM Visitors WHERE VisitorStatus = 'Exited' AND DATEDIFF(day, DateRegistered, GETDATE()) = 0)
-            AS RemainingVisitors";
+SELECT SUM(CASE WHEN VisitorStatus = 'Entered' THEN 1 ELSE 0 END) -
+       SUM(CASE WHEN VisitorStatus = 'Exited' THEN 1 ELSE 0 END) AS RemainingVisitors
+FROM Visitors
+WHERE DATEDIFF(day, DateRegistered, GETDATE()) = 0";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
                 try
                 {
                     conn.Open();
-                    remainingVisitors = (int)cmd.ExecuteScalar();
+                    object result = cmd.ExecuteScalar();
+                    remainingVisitors = result != DBNull.Value ? (int)result : 0; // Ensure no DBNull issues
                 }
                 catch (Exception ex)
                 {
                     // Handle exceptions (you might want to log this error)
                     throw new Exception("Error fetching remaining visitor count: " + ex.Message);
                 }
+                finally
+                {
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
             }
-            return remainingVisitors;
+            // Ensure the count doesn't go negative
+            return Math.Max(0, remainingVisitors);
         }
+
+
 
 
     }

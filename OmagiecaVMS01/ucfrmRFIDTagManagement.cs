@@ -23,6 +23,7 @@ namespace OmagiecaVMS01
             dgvRFIDTags.SelectionChanged += dgvRFIDTags_SelectionChanged;
             txtSearch.TextChanged += txtSearch_TextChanged; // Ensure this line is added
             cboRfidStatus.Text = "Available";
+            dgvRFIDTags.Columns["VisitorId"].Visible = false; 
         }
         private void PopulateRFIDStatus()
         {

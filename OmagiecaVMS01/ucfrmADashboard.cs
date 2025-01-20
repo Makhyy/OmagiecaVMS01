@@ -22,6 +22,7 @@ namespace OmagiecaVMS01
             UpdateVisitorCount();
             LoadVisitorEnteredCount();
             LoadVisitorExitedCount();
+            LoadRemainingVisitorCount();
             ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
             rfidMonitor.Dock = DockStyle.Fill;
             pnlRFIDMonitor.Controls.Add(rfidMonitor);
@@ -67,7 +68,7 @@ namespace OmagiecaVMS01
         {
 
         }
-        private void LoadVisitorEnteredCount()
+        public void LoadVisitorEnteredCount()
         {
             try
             {
@@ -91,7 +92,7 @@ namespace OmagiecaVMS01
         {
 
         }
-        private void LoadVisitorExitedCount()
+        public void LoadVisitorExitedCount()
         {
             try
             {
