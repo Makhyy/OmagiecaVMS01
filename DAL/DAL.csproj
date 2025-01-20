@@ -54,7 +54,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="ReportDAL.cs" />
-    <Compile Include="RFIDDAL.cs" />
     <Compile Include="RFIDMonitorDAL.cs" />
     <Compile Include="RFIDTagDAL.cs" />
     <Compile Include="UserAccountDAL.cs" />

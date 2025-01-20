@@ -275,7 +275,7 @@ namespace DAL
             return visitors;
         }
 
-        public void DeleteVisitor(int visitorId)
+        public void DeleteVisitors(List<int> visitorIds)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -284,17 +284,19 @@ namespace DAL
 
                 try
                 {
-                    // Attempt to unassign RFID tags, but do not fail if none are found
-                    UnassignRFIDTags(visitorId);
+                    // Optionally unassign RFID tags
+                    foreach (int visitorId in visitorIds)
+                    {
+                        UnassignRFIDTags(visitorId);
+                    }
 
-                    // Proceed to delete the visitor
-                    string deleteQuery = "DELETE FROM Visitors WHERE VisitorId = @VisitorId";
+                    // Proceed to delete the visitors
+                    string deleteQuery = "DELETE FROM Visitors WHERE VisitorId IN (" + String.Join(", ", visitorIds) + ")";
                     SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection, transaction);
-                    deleteCommand.Parameters.AddWithValue("@VisitorId", visitorId);
                     int affectedRows = deleteCommand.ExecuteNonQuery();
                     if (affectedRows == 0)
                     {
-                        throw new KeyNotFoundException("No visitor found with ID " + visitorId);
+                        throw new KeyNotFoundException("No visitors found with the provided IDs.");
                     }
 
                     transaction.Commit();
@@ -302,10 +304,11 @@ namespace DAL
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    throw new ApplicationException("Failed to delete visitor with ID " + visitorId + ". Error: " + ex.Message, ex);
+                    throw new ApplicationException("Failed to delete visitors. Error: " + ex.Message, ex);
                 }
             }
         }
+
 
 
 
@@ -425,6 +428,42 @@ namespace DAL
                 return result > 0;
             }
         }
+        public List<RFIDTag> GetAvailableRFIDTagsToDisplay()
+        {
+            List<RFIDTag> rfidTags = new List<RFIDTag>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    // Only select RFID tags that have 'Available' status
+                    const string query = "SELECT RfidTagNumberId, RfidTagNumber, RfidStatus FROM RFIDTag WHERE RfidStatus = 'Available'";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                RFIDTag rfidTag = new RFIDTag
+                                {
+                                    RfidTagNumberId = reader.GetInt32(reader.GetOrdinal("RfidTagNumberId")),
+                                    RfidTagNumber = reader.GetInt32(reader.GetOrdinal("RfidTagNumber")),
+                                    RfidStatus = Enum.TryParse(reader["RfidStatus"].ToString(), true, out RFIDTagStatus status) ? status : RFIDTagStatus.Inactive
+                                };
+                                rfidTags.Add(rfidTag);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Consider logging the exception details here
+                throw; // Re-throw the same exception to preserve the stack trace
+            }
+            return rfidTags;
+        }
+
 
 
 
@@ -975,8 +1014,7 @@ WHERE DATEDIFF(day, DateRegistered, GETDATE()) = 0";
             return Math.Max(0, remainingVisitors);
         }
 
-
-
+       
 
     }
 }

@@ -20,6 +20,7 @@ namespace OmagiecaVMS01
     {
         private PaymentBLL paymentBLL;
         private VisitorBLL visitorBLL;
+        private RFIDTagBLL rfidTagBLL = new RFIDTagBLL();
 
 
         private List<VisitorType> VisitorTypes;
@@ -27,8 +28,9 @@ namespace OmagiecaVMS01
         {
             InitializeComponent();
             LoadVisitors();
-
-            LoadRFIDTags();
+            LoadAvailableRFIDTagsToDisplay();
+            //LoadRFIDTags();
+            //LoadAvailableRFIDTagsIntoComboBox();
             RefreshRFIDTags();
             ClearInputs();
             txtCityMunicipality.TextChanged += TextBox_TextChanged;
@@ -102,7 +104,7 @@ namespace OmagiecaVMS01
             }
         }
 
-
+        /*
 
         private void LoadRFIDTags()
         {
@@ -126,9 +128,54 @@ namespace OmagiecaVMS01
             {
                 MessageBox.Show("An error occurred while loading RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }*/
+        private void LoadAvailableRFIDTagsToDisplay()
+        {
+            try
+            {
+                VisitorBLL visitorBLL = new VisitorBLL();
+                var rfidTags = visitorBLL.GetAvailableRFIDTagsToDisplay(); // Fetch RFID tags from BLL
+
+                if (rfidTags == null || rfidTags.Count == 0)
+                {
+                    MessageBox.Show("No RFID tags found in the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                cboRFIDTag.DataSource = rfidTags;
+                cboRFIDTag.DisplayMember = "RfidTagNumber"; // Column to display
+                cboRFIDTag.ValueMember = "RfidTagNumberId"; // Column for SelectedValue
+                cboRFIDTag.SelectedIndex = -1; // Reset selection
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while loading RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+        /*
+        private void LoadAvailableRFIDTagsIntoComboBox()
+        {
+            try
+            {
+                RFIDTagBLL rfidTagBLL = new RFIDTagBLL();
 
+                var rfidTags = visitorBLL.GetAvailableRFIDTags();  // Fetch RFID tags from BLL
 
+                if (rfidTags == null || rfidTags.Count == 0)
+                {
+                    MessageBox.Show("No RFID tags found in the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                cboRFIDTag.DataSource = rfidTags; // Assuming you have a ComboBox named comboBoxAvailableRFIDTags
+                cboRFIDTag.DisplayMember = "RfidTagNumber"; // Display the RFID Tag Number to the user
+                cboRFIDTag.ValueMember = "RfidTagNumberId"; // Use the RFID Tag Number ID as the underlying value
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading RFID tags: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        */
 
         private void btnRegisterVisitor_Click(object sender, EventArgs e)
         {
@@ -168,6 +215,7 @@ namespace OmagiecaVMS01
 
                 // Refresh visitors and clear inputs
                 LoadVisitors();
+                LoadAvailableRFIDTagsToDisplay();
                 ClearInputs();
             }
             catch (Exception ex)
@@ -211,7 +259,8 @@ namespace OmagiecaVMS01
                 MessageBox.Show("Visitor updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadVisitors(); // Refresh visitors
                 ClearInputs();
-                LoadRFIDTags();
+                //LoadRFIDTags();
+                LoadAvailableRFIDTagsToDisplay();
             }
             catch (Exception ex)
             {
@@ -225,30 +274,36 @@ namespace OmagiecaVMS01
             {
                 if (dgvVisitors.SelectedRows.Count == 0)
                 {
-                    MessageBox.Show("Please select a visitor to delete.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please select at least one visitor to delete.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                int visitorId = (int)dgvVisitors.SelectedRows[0].Cells["VisitorId"].Value;
-
-                DialogResult result = MessageBox.Show("Are you sure you want to delete this visitor?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult result = MessageBox.Show("Are you sure you want to delete the selected visitors?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                    VisitorBLL visitorBLL = new VisitorBLL();
-                    visitorBLL.DeleteVisitor(visitorId);
+                    var visitorIds = new List<int>();
+                    foreach (DataGridViewRow row in dgvVisitors.SelectedRows)
+                    {
+                        visitorIds.Add((int)row.Cells["VisitorId"].Value);
+                    }
 
-                    MessageBox.Show("Visitor deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    VisitorBLL visitorBLL = new VisitorBLL();
+                    visitorBLL.DeleteVisitors(visitorIds); // Notice the plural in the method name
+
+                    MessageBox.Show("Visitors deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadVisitors(); // Reload visitor list
                     ClearInputs();
-                    LoadRFIDTags();
+                    //LoadRFIDTags();
+                    LoadAvailableRFIDTagsToDisplay();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while deleting the visitor: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("An error occurred while deleting the visitors: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-       
+
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try

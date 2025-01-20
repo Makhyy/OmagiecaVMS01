@@ -12,6 +12,7 @@ namespace BLL
 {
     public class RFIDTagBLL
     {
+        private RFIDTagDAL _rfidTagDAL;
         public void AddRFIDTag(RFIDTag rfidTag)
         {
             if (rfidTag == null)
@@ -71,7 +72,10 @@ namespace BLL
             return rfidDal.SearchRFIDTags(keyword);
         }
 
-
+        public DataTable GetAvailableRFIDTags()
+        {
+            return _rfidTagDAL.GetAvailableRFIDTags();
+        }
     }
 
 }

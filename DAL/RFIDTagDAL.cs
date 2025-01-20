@@ -219,6 +219,23 @@ namespace DAL
             return rfidTags;
         }
 
+        public DataTable GetAvailableRFIDTags()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT RfidTagNumberId, RfidTagNumber FROM [RFIDTag] WHERE [RfidStatus] = 'Available'";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                    }
+                }
+            }
+            return dt;
+        }
 
 
 

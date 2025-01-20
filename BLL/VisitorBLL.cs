@@ -196,23 +196,23 @@ namespace BLL
         /// <summary>
         /// Deletes a visitor from the database by their ID.
         /// </summary>
-        public void DeleteVisitor(int visitorId)
+        public void DeleteVisitors(List<int> visitorIds)
         {
-            if (visitorId <= 0)
-            {
-                throw new ArgumentException("Invalid Visitor ID.");
-            }
+            if (visitorIds == null || !visitorIds.Any())
+                throw new ArgumentException("No visitor IDs provided for deletion.");
 
             try
             {
                 VisitorDAL visitorDAL = new VisitorDAL();
-                visitorDAL.DeleteVisitor(visitorId);
+                visitorDAL.DeleteVisitors(visitorIds);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error occurred in BLL while deleting a visitor: " + ex.Message, ex);
+                throw new Exception("Error occurred in BLL while deleting visitors: " + ex.Message, ex);
             }
         }
+
+
 
 
         public List<Visitor> SearchVisitors(string keyword)
@@ -291,6 +291,17 @@ namespace BLL
             try
             {
                 return _visitorDAL.GetRFIDTags(); // Call DAL method
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving RFID tags.", ex);
+            }
+        }
+        public List<RFIDTag> GetAvailableRFIDTagsToDisplay()
+        {
+            try
+            {
+                return _visitorDAL.GetAvailableRFIDTagsToDisplay(); // Call DAL method
             }
             catch (Exception ex)
             {

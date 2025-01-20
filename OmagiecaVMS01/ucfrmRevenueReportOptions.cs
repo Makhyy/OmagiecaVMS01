@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace OmagiecaVMS01
 {
@@ -44,26 +45,17 @@ namespace OmagiecaVMS01
             DateTime today = DateTime.Now.Date; // Get the current date (without time).
             try
             {
-                // Retrieve daily revenue data for today.
                 var revenueData = visitorBLL.GetDailyRevenue(today);
+                dgvRevenue.DataSource = revenueData; // Update the DataGridView DataSource
 
-                // Check if there is any data for today.
                 if (revenueData.Rows.Count > 0)
                 {
-                    // Bind the filtered data to the DataGridView.
-                    dgvRevenue.DataSource = revenueData;
-
-                    // Calculate the total revenue for today.
                     decimal totalPayment = revenueData.AsEnumerable()
                         .Sum(row => row.Field<decimal>("PaymentAmount"));
-
-                    // Display the total revenue for today.
                     lblTotalRevenue.Text = $"Total Revenue for Today ({today.ToShortDateString()}): {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
                 }
                 else
                 {
-                    // If no data, clear the DataGridView and show a message.
-                    dgvRevenue.DataSource = null;
                     lblTotalRevenue.Text = "No revenue data available for today.";
                 }
             }
@@ -72,7 +64,12 @@ namespace OmagiecaVMS01
                 MessageBox.Show("Error: " + ex.Message);
             }
 
+            UpdateChartWithData(); // Update chart after setting new data source
         }
+
+
+
+
 
         private void btnWeekly_Click(object sender, EventArgs e)
         {
@@ -85,22 +82,29 @@ namespace OmagiecaVMS01
 
                 // Fetch weekly revenue data
                 var revenueData = visitorBLL.GetRevenueByDateRange(startOfWeek, endOfWeek);
+                dgvRevenue.DataSource = revenueData; // Bind the filtered data to the DataGridView
 
-                // Bind the filtered data to the DataGridView
-                dgvRevenue.DataSource = revenueData;
-
-                // Calculate the total revenue for the week
-                decimal totalPayment = revenueData.AsEnumerable()
-                    .Sum(row => row.Field<decimal>("PaymentAmount"));
-
-                // Display the total revenue for the week
-                lblTotalRevenue.Text = $"Total Revenue for this Week = {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
+                // Calculate and display the total revenue for the week
+                if (revenueData.Rows.Count > 0)
+                {
+                    decimal totalPayment = revenueData.AsEnumerable()
+                        .Sum(row => row.Field<decimal>("PaymentAmount"));
+                    lblTotalRevenue.Text = $"Total Revenue for this Week = {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
+                }
+                else
+                {
+                    lblTotalRevenue.Text = "No revenue data available for this week.";
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+
+            UpdateChartWithData(); // Update chart after loading data
         }
+
+
 
         private void btnMontthly_Click(object sender, EventArgs e)
         {
@@ -112,23 +116,30 @@ namespace OmagiecaVMS01
                 DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1); // Last day of the month
 
                 // Fetch monthly revenue data
-                var revenueData = visitorBLL.GetRevenueByDateRangeM(startOfMonth, endOfMonth);
+                var revenueData = visitorBLL.GetRevenueByDateRange(startOfMonth, endOfMonth);
+                dgvRevenue.DataSource = revenueData; // Bind the filtered data to the DataGridView
 
-                // Bind the filtered data to the DataGridView
-                dgvRevenue.DataSource = revenueData;
-
-                // Calculate the total revenue for the month
-                decimal totalPayment = revenueData.AsEnumerable()
-                    .Sum(row => row.Field<decimal>("PaymentAmount"));
-
-                // Display the total revenue for the month
-                lblTotalRevenue.Text = $"Total Revenue for this Month = {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
+                // Calculate and display the total revenue for the month
+                if (revenueData.Rows.Count > 0)
+                {
+                    decimal totalPayment = revenueData.AsEnumerable()
+                        .Sum(row => row.Field<decimal>("PaymentAmount"));
+                    lblTotalRevenue.Text = $"Total Revenue for this Month = {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
+                }
+                else
+                {
+                    lblTotalRevenue.Text = "No revenue data available for this month.";
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+
+            UpdateChartWithData(); // Update chart after loading data
         }
+
+
 
         private void btnAll_Click(object sender, EventArgs e)
         {
@@ -136,22 +147,29 @@ namespace OmagiecaVMS01
             {
                 // Retrieve all revenue data
                 var revenueData = visitorBLL.LoadRevenueVisitorData();
+                dgvRevenue.DataSource = revenueData; // Bind the retrieved data to the DataGridView
 
-                // Bind the retrieved data to the DataGridView
-                dgvRevenue.DataSource = revenueData;
-
-                // Calculate the total revenue
-                decimal totalPayment = revenueData.AsEnumerable()
-                    .Sum(row => row.Field<decimal>("PaymentAmount"));
-
-                // Display the total revenue
-                lblTotalRevenue.Text = $"Total Revenue: {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
+                // Calculate and display the total revenue
+                if (revenueData.Rows.Count > 0)
+                {
+                    decimal totalPayment = revenueData.AsEnumerable()
+                        .Sum(row => row.Field<decimal>("PaymentAmount"));
+                    lblTotalRevenue.Text = $"Total Revenue: {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
+                }
+                else
+                {
+                    lblTotalRevenue.Text = "No total revenue data available.";
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+
+            UpdateChartWithData(); // Update chart after loading data
         }
+
+
 
         private void btnCalculateRange_Click(object sender, EventArgs e)
         {
@@ -227,9 +245,57 @@ namespace OmagiecaVMS01
     System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excelApp);
 }
 
-        private void dgvRevenue_CellContentClick(object sender, DataGridViewCellEventArgs e)
+      
+        private void dgvRevenue_CellContentClick(object sender, EventArgs e)
         {
-
+            UpdateChartWithData();
         }
+
+        private void UpdateChartWithData()
+        {
+            // Clear existing series and chart areas
+            chartRevenue.Series.Clear();
+            chartRevenue.ChartAreas.Clear();
+
+            // Create new chart area and series
+            ChartArea area = new ChartArea();
+            chartRevenue.ChartAreas.Add(area);
+
+            Series series = new Series("Revenue")
+            {
+                ChartType = SeriesChartType.Column, // Column chart type for revenue data
+                XValueType = ChartValueType.DateTime, // Assuming date values are used
+            };
+            chartRevenue.Series.Add(series);
+
+            // Set the width of the bars to occupy 80% of the space between points
+            series["PointWidth"] = "0.8";
+
+            // Add data points from the DataGridView
+            foreach (DataGridViewRow row in dgvRevenue.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    DateTime date;
+                    decimal payment;
+                    if (DateTime.TryParse(row.Cells["DateRegistered"].Value?.ToString(), out date) &&
+                        Decimal.TryParse(row.Cells["PaymentAmount"].Value?.ToString(), out payment))
+                    {
+                        series.Points.AddXY(date, payment);
+                    }
+                }
+            }
+
+            // Customize the chart display
+            chartRevenue.ChartAreas[0].AxisX.LabelStyle.Format = "MMM dd, yyyy";
+            chartRevenue.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
+            chartRevenue.ChartAreas[0].AxisX.Interval = 1; // Adjust based on your data density
+            chartRevenue.Titles.Clear();
+            chartRevenue.Titles.Add("Revenue Over Time");
+        }
+
+
+
+
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -195,9 +196,57 @@ namespace OmagiecaVMS01
             System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excelApp);
         }
 
+     
         private void chart1_Click(object sender, EventArgs e)
         {
+            // Assuming you have a chart control named 'chart1' and a DataGridView named 'dataGridView1'
+            UpdateChartWithData();
+        }
 
+        private void UpdateChartWithData()
+        {
+            // Create or clear existing series and chart areas
+            chart1.Series.Clear();
+            chart1.ChartAreas.Clear();
+            ChartArea area = new ChartArea();
+            chart1.ChartAreas.Add(area);
+
+            Series series = new Series("VisitorCount")
+            {
+                ChartType = SeriesChartType.Column, // Or any other chart type as needed
+                Color = Color.Green, // Customize as per your UI design
+            };
+            chart1.Series.Add(series);
+
+            // Dictionary to track visitor types and their counts
+            Dictionary<string, int> dataMap = new Dictionary<string, int>();
+
+            // Loop through DataGridView to aggregate data
+            foreach (DataGridViewRow row in dgvVisitorsReport.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    string visitorType = row.Cells["VisitorType"].Value?.ToString() ?? string.Empty;
+                    if (dataMap.ContainsKey(visitorType))
+                    {
+                        dataMap[visitorType]++;
+                    }
+                    else
+                    {
+                        dataMap.Add(visitorType, 1);
+                    }
+                }
+            }
+
+            // Add data points to the series
+            foreach (var entry in dataMap)
+            {
+                series.Points.AddXY(entry.Key, entry.Value);
+            }
+
+            // Set the chart title and other properties
+            chart1.Titles.Clear();
+            chart1.Titles.Add("Visitor Count by Type");
         }
 
     }
