@@ -73,93 +73,76 @@ namespace DAL
 
         // Inserts visitor information into the database
 
-        public int AddVisitor(Visitor visitor)
+        public int AddVisitorAndLogVisit(Visitor visitor)
         {
-            string query = @"INSERT INTO Visitors 
-(FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, DateRegistered, RfidTagNumberId, VisitorStatus, UserAccountId)
-OUTPUT INSERTED.VisitorId
-VALUES 
-(@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @DateRegistered, @RfidTagNumberId, @VisitorStatus, @UserAccountId)";
+            string addVisitorQuery = @"
+        INSERT INTO Visitors 
+        (FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, DateRegistered, RfidTagNumberId, VisitorStatus, UserAccountId)
+        OUTPUT INSERTED.VisitorId
+        VALUES 
+        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @DateRegistered, @RfidTagNumberId, @VisitorStatus, @UserAccountId)";
 
+            string logVisitQuery = @"
+        INSERT INTO Visit 
+        (VisitorId, RfidTagNumberId, VisitStatusId)
+        VALUES 
+        (@VisitorId, @RfidTagNumberId, 1)";  // Assuming default VisitStatusId '1' is 'Registered'
 
             SqlConnection connection = new SqlConnection(connectionString);
-            SqlTransaction transaction = null;  // Initialize transaction to null
+            SqlTransaction transaction = null;
 
             try
             {
                 connection.Open();
-                transaction = connection.BeginTransaction(); // Start a new transaction
+                transaction = connection.BeginTransaction();
 
-                if (!new[] { "Registered", "Entered", "Exited" }.Contains(visitor.VisitorStatus))
+                // First, add the visitor
+                using (SqlCommand visitorCommand = new SqlCommand(addVisitorQuery, connection, transaction))
                 {
-                    throw new ArgumentException("Invalid VisitorStatus value.");
-                }
-                if (visitor.UserAccountId <= 0)
-                {
-                    throw new ArgumentException("Invalid UserAccountId.");
-                }
+                    // Add all parameters for visitor
+                    visitorCommand.Parameters.AddWithValue("@FirstName", visitor.FirstName);
+                    visitorCommand.Parameters.AddWithValue("@LastName", visitor.LastName);
+                    visitorCommand.Parameters.AddWithValue("@Age", visitor.Age);
+                    visitorCommand.Parameters.AddWithValue("@VisitorType", visitor.VisitorType);
+                    visitorCommand.Parameters.AddWithValue("@IsPWD", visitor.IsPWD);
+                    visitorCommand.Parameters.AddWithValue("@Gender", visitor.Gender);
+                    visitorCommand.Parameters.AddWithValue("@CityMunicipality", visitor.CityMunicipality ?? (object)DBNull.Value);
+                    visitorCommand.Parameters.AddWithValue("@ForeignCountry", visitor.ForeignCountry ?? (object)DBNull.Value);
+                    visitorCommand.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
+                    visitorCommand.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
+                    visitorCommand.Parameters.AddWithValue("@DateRegistered", visitor.DateRegistered);
+                    visitorCommand.Parameters.AddWithValue("@VisitorStatus", visitor.VisitorStatus ?? "Registered");
+                    visitorCommand.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId);
 
+                    int visitorId = (int)visitorCommand.ExecuteScalar();
 
+                    // Next, log the visit
+                    using (SqlCommand visitCommand = new SqlCommand(logVisitQuery, connection, transaction))
+                    {
+                        visitCommand.Parameters.AddWithValue("@VisitorId", visitorId);
+                        visitCommand.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
+                       
 
-                using (SqlCommand command = new SqlCommand(query, connection, transaction))
-                {
-                    command.Parameters.AddWithValue("@FirstName", visitor.FirstName);
-                    command.Parameters.AddWithValue("@LastName", visitor.LastName);
-                    command.Parameters.AddWithValue("@Age", visitor.Age);
-                    command.Parameters.AddWithValue("@VisitorType", visitor.VisitorType);
-                    command.Parameters.AddWithValue("@IsPWD", visitor.IsPWD);
-                    command.Parameters.AddWithValue("@Gender", visitor.Gender);
-                    command.Parameters.AddWithValue("@CityMunicipality", visitor.CityMunicipality ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@ForeignCountry", visitor.ForeignCountry ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
-                    command.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
-                    command.Parameters.AddWithValue("@DateRegistered", visitor.DateRegistered);
-                    command.Parameters.AddWithValue("@VisitorStatus", visitor.VisitorStatus ?? "Registered");
-                    command.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId);
+                        visitCommand.ExecuteNonQuery();
+                    }
 
-
-                    int visitorId = (int)command.ExecuteScalar();
-                    transaction.Commit();  // Commit the transaction
+                    transaction.Commit();
                     return visitorId;
                 }
             }
             catch (Exception)
             {
-                if (transaction != null) transaction.Rollback();  // Rollback the transaction on error
-                throw;  // Re-throw the exception to the caller
+                if (transaction != null) transaction.Rollback();
+                throw;
             }
             finally
             {
-                if (connection != null) connection.Close();  // Ensure the connection is closed
+                if (connection != null) connection.Close();
             }
         }
 
-        public bool AddVisit(Visit visit)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                string commandText = @"
-            INSERT INTO Visit (VisitorId, RfidTagNumberId, EntryTime, ExitTime, VisitStatusId, UserAccountId, PaymentId)
-            VALUES (@VisitorId, @RfidTagNumberId, @EntryTime, @ExitTime, @VisitStatusId, @UserAccountId, @PaymentId);
-            SELECT CAST(SCOPE_IDENTITY() as int);"; // For getting back the new VisitId if needed
 
-                var command = new SqlCommand(commandText, connection);
-                command.Parameters.AddWithValue("@VisitorId", visit.VisitorId);
-                command.Parameters.AddWithValue("@RfidTagNumberId", visit.RfidTagNumberId);
-                command.Parameters.AddWithValue("@EntryTime", visit.EntryTime);
-                command.Parameters.AddWithValue("@ExitTime", (object)visit.ExitTime ?? DBNull.Value);
-                command.Parameters.AddWithValue("@VisitStatusId", visit.VisitStatusId);
-                command.Parameters.AddWithValue("@UserAccountId", (object)visit.UserAccountId ?? DBNull.Value);
-                command.Parameters.AddWithValue("@PaymentId", (object)visit.PaymentId ?? DBNull.Value);
-
-                connection.Open();
-                var result = command.ExecuteScalar();
-                if (result != null)
-                    return true;
-                else
-                    return false;
-            }
-        }
+       
 
         public void UpdateVisitorStatus(int visitorId, string visitorStatus)
         {
@@ -854,36 +837,7 @@ VALUES
             }
         }
 
-        public void AddNewVisit(Visit visit)
-        {
-            string query = @"
-        INSERT INTO Visit (VisitorId, UserAccountId, VisitStatusId, EntryTime, ExitTime, RfidTagNumberId)
-        VALUES (@VisitorId, @UserAccountId, @VisitStatusId, @EntryTime, @ExitTime, @RfidTagNumberId)";
-
-            SqlConnection connection = new SqlConnection(connectionString);
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@VisitorId", visit.VisitorId);
-            command.Parameters.AddWithValue("@UserAccountId", visit.UserAccountId);
-            command.Parameters.AddWithValue("@VisitStatusId", visit.VisitStatusId);
-            command.Parameters.AddWithValue("@EntryTime", (object)visit.EntryTime ?? DBNull.Value);
-            command.Parameters.AddWithValue("@ExitTime", (object)visit.ExitTime ?? DBNull.Value);
-            command.Parameters.AddWithValue("@RfidTagNumberId", (object)visit.RfidTagNumberId ?? DBNull.Value);
-
-            try
-            {
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                if (connection != null) connection.Close();
-            }
-        }
+        
 
 
 

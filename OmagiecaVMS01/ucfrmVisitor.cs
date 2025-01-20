@@ -41,6 +41,8 @@ namespace OmagiecaVMS01
             pnlRFIDMonitor.Controls.Add(rfidMonitor);
             dgvVisitors.Columns["EntryTime"].Visible = false;
             dgvVisitors.Columns["ExitTime"].Visible = false;
+            dgvVisitors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVisitors.MultiSelect = true;
         }
 
         private void visitorBindingNavigatorSaveItem_Click(object sender, EventArgs e)

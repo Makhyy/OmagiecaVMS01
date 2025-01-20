@@ -113,7 +113,7 @@ namespace BLL
             return _visitorDAL.GetRevenueByDate(date);
         }
 
-       
+
 
         public void RegisterVisitor(Visitor visitor, int rfidTagNumber)
         {
@@ -140,10 +140,10 @@ namespace BLL
                 if (!_visitorDAL.IsRfidTagValid(rfidTagNumber))
                     throw new ArgumentException("Invalid RFID Tag Number. The tag does not exist or is not available.");
 
-                // Add visitor to the database
-                int visitorId = _visitorDAL.AddVisitor(visitor);
+                // Add visitor and log visit in a single transactional method
+                int visitorId = _visitorDAL.AddVisitorAndLogVisit(visitor);
 
-                // Assign RFID Tag
+                // Assign RFID Tag after successfully adding the visitor and logging the visit
                 _visitorDAL.AssignRFIDTag(visitorId, rfidTagNumber);
             }
             catch (Exception ex)
@@ -151,6 +151,8 @@ namespace BLL
                 throw new Exception("An error occurred while registering the visitor: " + ex.Message, ex);
             }
         }
+
+
 
 
 
@@ -169,23 +171,7 @@ namespace BLL
             }
         }
 
-        public int AddVisitor(Visitor visitor)
-        {
-            if (visitor == null)
-            {
-                throw new ArgumentNullException(nameof(visitor), "Visitor object cannot be null.");
-            }
-
-            try
-            {
-                VisitorDAL visitorDAL = new VisitorDAL();
-                return visitorDAL.AddVisitor(visitor);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred in BLL while adding a visitor: " + ex.Message, ex);
-            }
-        }
+        
 
 
 
@@ -412,17 +398,7 @@ namespace BLL
                 throw new Exception("Failed to retrieve status ID: " + ex.Message);
             }
         }
-        public void AddNewVisit(Visit visit)
-        {
-            try
-            {
-                visitorDAL.AddNewVisit(visit);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while adding a new visit: " + ex.Message);
-            }
-        }
+       
 
         public DataTable GetRevenueByDateRange(DateTime startDate, DateTime endDate)
         {
