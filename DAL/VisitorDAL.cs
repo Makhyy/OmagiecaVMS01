@@ -171,52 +171,38 @@ namespace DAL
 
         public void UpdateVisitor(Visitor visitor)
         {
-            try
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                string query = @"UPDATE Visitors SET
+                         FirstName = @FirstName, LastName = @LastName, Age = @Age, 
+                         VisitorType = @VisitorType, IsPWD = @IsPWD, Gender = @Gender, 
+                         CityMunicipality = @CityMunicipality, ForeignCountry = @ForeignCountry,
+                         PaymentAmount = @PaymentAmount, RfidTagNumberId = @RfidTagNumberId,  
+                         VisitorStatus = @VisitorStatus, UserAccountId = @UserAccountId
+                         WHERE VisitorId = @VisitorId";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    string query = @"UPDATE Visitors 
-                 SET FirstName = @FirstName, 
-                     LastName = @LastName, 
-                     Age = @Age, 
-                     VisitorType = @VisitorType,  
-                     IsPWD = @IsPWD, 
-                     Gender = @Gender, 
-                     CityMunicipality = @CityMunicipality, 
-                     ForeignCountry = @ForeignCountry, 
-                     PaymentAmount = @PaymentAmount, 
-                     RfidTagNumberId = @RfidTagNumberId,  
-                     VisitorStatus = @VisitorStatus, 
-                     UserAccountId = @UserAccountId
-                 WHERE VisitorId = @VisitorId";
+                    command.Parameters.AddWithValue("@VisitorId", visitor.VisitorId);
+                    command.Parameters.AddWithValue("@FirstName", visitor.FirstName);
+                    command.Parameters.AddWithValue("@LastName", visitor.LastName);
+                    command.Parameters.AddWithValue("@Age", visitor.Age);
+                    command.Parameters.AddWithValue("@VisitorType", visitor.VisitorType);
+                    command.Parameters.AddWithValue("@IsPWD", visitor.IsPWD);
+                    command.Parameters.AddWithValue("@Gender", visitor.Gender);
+                    command.Parameters.AddWithValue("@CityMunicipality", visitor.CityMunicipality ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@ForeignCountry", visitor.ForeignCountry ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
+                    command.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
+                    command.Parameters.AddWithValue("@VisitorStatus", visitor.VisitorStatus);
+                    command.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId ?? (object)DBNull.Value);
 
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.Add("@VisitorId", SqlDbType.Int).Value = visitor.VisitorId;
-                        command.Parameters.Add("@FirstName", SqlDbType.VarChar).Value = visitor.FirstName;
-                        command.Parameters.Add("@LastName", SqlDbType.VarChar).Value = visitor.LastName;
-                        command.Parameters.Add("@Age", SqlDbType.Int).Value = visitor.Age;
-                        command.Parameters.Add("@VisitorType", SqlDbType.VarChar).Value = visitor.VisitorType;
-                        command.Parameters.Add("@IsPWD", SqlDbType.Bit).Value = visitor.IsPWD;
-                        command.Parameters.Add("@Gender", SqlDbType.VarChar).Value = visitor.Gender;
-                        command.Parameters.Add("@CityMunicipality", SqlDbType.VarChar).Value = visitor.CityMunicipality ?? (object)DBNull.Value;
-                        command.Parameters.Add("@ForeignCountry", SqlDbType.VarChar).Value = visitor.ForeignCountry ?? (object)DBNull.Value;
-                        command.Parameters.Add("@PaymentAmount", SqlDbType.Decimal).Value = visitor.PaymentAmount;
-                        command.Parameters.Add("@RfidTagNumberId", SqlDbType.Int).Value = (visitor.RfidTagNumberId > 0) ? (object)visitor.RfidTagNumberId : DBNull.Value;
-                        command.Parameters.AddWithValue("@VisitorStatus", visitor.VisitorStatus);
-                        command.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId);
-
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                    }
+                    connection.Open();
+                    command.ExecuteNonQuery();
                 }
             }
-            catch (SqlException ex)  // Catch more specific exceptions if possible
-            {
-                // Log the exception here
-                throw new ApplicationException("Failed to update visitor information.", ex);
-            }
         }
+
 
         public List<Visitor> SearchVisitors(string keyword, int? userAccountId = null)
         {
@@ -431,8 +417,8 @@ namespace DAL
         public List<RFIDTag> GetAvailableRFIDTagsToDisplay()
         {
             List<RFIDTag> rfidTags = new List<RFIDTag>();
-            try
-            {
+           
+            
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     // Only select RFID tags that have 'Available' status
@@ -455,12 +441,8 @@ namespace DAL
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                // Consider logging the exception details here
-                throw; // Re-throw the same exception to preserve the stack trace
-            }
+            
+          
             return rfidTags;
         }
 

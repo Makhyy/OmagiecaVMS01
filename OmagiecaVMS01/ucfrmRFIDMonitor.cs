@@ -118,6 +118,9 @@ namespace OmagiecaVMS01
         {
             mySerialPort = new SerialPort("COM5");
             //mySerialPort = new SerialPort("COM7");  // Adjust the COM port as needed
+
+           
+
             mySerialPort.BaudRate = 9600;
             mySerialPort.Parity = Parity.None;
             mySerialPort.StopBits = StopBits.One;

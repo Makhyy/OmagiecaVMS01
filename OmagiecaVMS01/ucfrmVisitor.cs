@@ -37,10 +37,11 @@ namespace OmagiecaVMS01
             txtForeignCountry.TextChanged += TextBox_TextChanged;
 
             dgvVisitors.Columns["UserAccountId"].Visible = false;
+            dgvVisitors.Columns["VisitorId"].Visible = false;
 
-            ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
-            rfidMonitor.Dock = DockStyle.Fill;
-            pnlRFIDMonitor.Controls.Add(rfidMonitor);
+            //  ucfrmRFIDMonitor rfidMonitor = new ucfrmRFIDMonitor();
+            // rfidMonitor.Dock = DockStyle.Fill;
+            //pnlRFIDMonitor.Controls.Add(rfidMonitor);
             dgvVisitors.Columns["EntryTime"].Visible = false;
             dgvVisitors.Columns["ExitTime"].Visible = false;
             dgvVisitors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -239,34 +240,31 @@ namespace OmagiecaVMS01
 
                 Visitor visitor = new Visitor
                 {
-                    VisitorId = (int)dgvVisitors.SelectedRows[0].Cells["VisitorId"].Value,
-                    VisitorType = cboVisitorType.SelectedItem.ToString(),
+                    VisitorId = Convert.ToInt32(dgvVisitors.SelectedRows[0].Cells["VisitorId"].Value),
                     FirstName = txtFirstName.Text,
                     LastName = txtLastName.Text,
                     Age = int.Parse(txtAge.Text),
+                    VisitorType = cboVisitorType.SelectedItem.ToString(),
                     IsPWD = chkIsPWD.Checked,
                     Gender = cboGender.SelectedItem.ToString(),
                     CityMunicipality = txtCityMunicipality.Text,
                     ForeignCountry = txtForeignCountry.Text,
                     PaymentAmount = decimal.Parse(txtPaymentAmount.Text),
-                    RfidTagNumberId = Convert.ToInt32(txtPaymentAmount.SelectedValue),
-                    DateRegistered = DateTime.Now
+                    RfidTagNumberId = Convert.ToInt32(cboRFIDTag.SelectedValue),
+                   UserAccountId = CurrentSession.UserAccountId,  // Ensure this is valid or handled if null
+                    VisitorStatus = "Registered"  // Or other status based on your application logic
                 };
 
-                VisitorBLL visitorBLL = new VisitorBLL();
                 visitorBLL.UpdateVisitor(visitor);
-
                 MessageBox.Show("Visitor updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadVisitors(); // Refresh visitors
-                ClearInputs();
-                //LoadRFIDTags();
-                LoadAvailableRFIDTagsToDisplay();
+                LoadVisitors(); // Refresh the visitor grid
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred while updating the visitor: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -646,6 +644,11 @@ namespace OmagiecaVMS01
         }
 
         private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtLastName_TextChanged(object sender, EventArgs e)
         {
 
         }

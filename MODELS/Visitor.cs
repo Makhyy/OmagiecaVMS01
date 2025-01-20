@@ -19,12 +19,12 @@ namespace MODELS
         public string CityMunicipality { get; set; }
         public string ForeignCountry { get; set; }
         public decimal PaymentAmount { get; set; }
-        public int RfidTagNumberId { get; set; }
+        public int? RfidTagNumberId { get; set; }
         public DateTime DateRegistered { get; set; }
         public int? GroupId { get; set; }
 
         public string VisitorStatus { get; set; }
-        public int UserAccountId { get; set; }
+        public int? UserAccountId { get; set; }
 
         public GroupRegistration Group { get; set; }
         public RFIDTag RFIDTag { get; set; }

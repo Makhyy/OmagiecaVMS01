@@ -171,7 +171,7 @@ namespace BLL
             }
         }
 
-        
+
 
 
 
@@ -180,16 +180,12 @@ namespace BLL
         {
             try
             {
-                // Validate data before updating
-                ValidateVisitor(visitor);
-
-                // Pass the visitor to DAL for update
-                _visitorDAL.UpdateVisitor(visitor);
+                ValidateVisitor(visitor);  // Perform all necessary validations
+                visitorDAL.UpdateVisitor(visitor);  // Pass to DAL for update
             }
             catch (Exception ex)
             {
-                // Wrap and rethrow the exception with additional context
-                throw new Exception("An error occurred while updating the visitor.", ex);
+                throw new ApplicationException("Failed to update visitor: " + ex.Message, ex);
             }
         }
 
