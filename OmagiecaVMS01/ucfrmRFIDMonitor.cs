@@ -1,13 +1,6 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL;
@@ -18,14 +11,12 @@ namespace OmagiecaVMS01
     {
         private SerialPort mySerialPort;
         private RFIDMonitorBLL rfidMonitorBLL;
-        
+
         public ucfrmRFIDMonitor()
         {
             InitializeComponent();
             InitializeSerialPort();
             rfidMonitorBLL = new RFIDMonitorBLL();
-            
-            
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
@@ -44,15 +35,15 @@ namespace OmagiecaVMS01
             }
             catch (Exception ex)
             {
-                ShowErrorTimedMessage("The Entrance RFID Reader is Disconnected " , 1500);
+                ShowErrorTimedMessage("The Entrance RFID Reader is Disconnected ", 1500);
             }
-
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
             CloseSerialPort();
         }
+
         private void CloseSerialPort()
         {
             try
@@ -65,17 +56,17 @@ namespace OmagiecaVMS01
             }
             catch (Exception ex)
             {
-                
                 ShowErrorTimedMessage("Error stopping RFID monitor: " + ex.Message, 1500);
             }
         }
+
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
-            string rfidUID = sp.ReadLine().Trim();  // Read the RFID UID from the serial port
-            UpdateVisitorStatus(rfidUID);  // Delegate to update visitor status
-           
+            string rfidUID = sp.ReadLine().Trim(); // Read the RFID UID from the serial port
+            UpdateVisitorStatus(rfidUID); // Delegate to update visitor status
         }
+
         private void UpdateVisitorStatus(string rfidUID)
         {
             if (this.InvokeRequired)
@@ -86,56 +77,43 @@ namespace OmagiecaVMS01
             {
                 try
                 {
-                    
-                    // Assuming GetCurrentVisitorStatus is a method that fetches the current status
                     string currentStatus = rfidMonitorBLL.GetCurrentVisitorStatus(rfidUID);
 
-                    // Check the current status before updating
-                    if (currentStatus != "Entered")
+                    if (currentStatus != "Registered")
                     {
-                        rfidMonitorBLL.UpdateVisitorStatus(rfidUID, "Entered");
-                        ShowTimedMessage("Visitor has Entered!.", 1500);
-                        
-
-
+                        SendCommandToArduino("RED_ON");  // Turn on the red LED if not registered
+                        ShowErrorTimedMessage("Visitor status: Not Registered", 1500);
                     }
                     else
                     {
-                        // Handle the case where status is already 'Entered', e.g., log or notify
-                        ShowTimedMessage("RFID Tag has already been scanned!", 1500);
+                        rfidMonitorBLL.UpdateVisitorStatus(rfidUID, "Entered");
+                        ShowTimedMessage("Visitor has Entered!.", 1500);
                     }
                 }
-
                 catch (Exception ex)
                 {
                     ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 1500);
-
+                    SendCommandToArduino("RED_ON");  // Ensure red light in case of any exception
                 }
             }
         }
 
-
         private void InitializeSerialPort()
         {
             mySerialPort = new SerialPort("COM5");
-            //mySerialPort = new SerialPort("COM7");  // Adjust the COM port as needed
-
-           
-
             mySerialPort.BaudRate = 9600;
             mySerialPort.Parity = Parity.None;
             mySerialPort.StopBits = StopBits.One;
             mySerialPort.DataBits = 8;
             mySerialPort.Handshake = Handshake.None;
             mySerialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-
-
         }
 
         private void ucfrmRFIDMonitor_Load(object sender, EventArgs e)
         {
-
+            // Load event logic here if needed
         }
+
         private void ShowTimedMessage(string message, int duration)
         {
             using (TimedMessageBoxForm timedMessage = new TimedMessageBoxForm(message, duration))
@@ -144,21 +122,24 @@ namespace OmagiecaVMS01
                 timedMessage.ShowDialog();
             }
         }
+
         private void ShowErrorTimedMessage(string message, int duration)
         {
             using (TimedMessageErrorBoxForm timedMessage = new TimedMessageErrorBoxForm(message, duration))
             {
                 timedMessage.StartPosition = FormStartPosition.CenterParent;
                 timedMessage.ShowDialog();
+                SendCommandToArduino("RED_ON");  // Send command to turn on the red LED
             }
-
+            // Optional: turn off the red LED after a certain delay
+            Task.Delay(duration).ContinueWith(_ => SendCommandToArduino("RED_OFF"));
         }
 
         private void SendCommandToArduino(string command)
         {
             if (mySerialPort.IsOpen)
             {
-                mySerialPort.WriteLine(command); // Send the command to Arduino
+                mySerialPort.WriteLine(command + "\n"); // Ensure the command is terminated with a newline for Arduino to process it correctly
             }
             else
             {
