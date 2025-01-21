@@ -33,7 +33,7 @@ namespace OmagiecaVMS01
             {
                 MessageBox.Show("Access denied. Port might be in use or locked by another process.\n" + ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 ShowErrorTimedMessage("The Entrance RFID Reader is Disconnected ", 1500);
             }
@@ -77,7 +77,7 @@ namespace OmagiecaVMS01
             {
                 try
                 {
-                    string currentStatus = rfidMonitorBLL.GetCurrentVisitorStatus(rfidUID);
+                    string currentStatus = rfidMonitorBLL.GetVisitStatusByRfidTag(rfidUID);
 
                     if (currentStatus != "Registered")
                     {
@@ -86,7 +86,7 @@ namespace OmagiecaVMS01
                     }
                     else
                     {
-                        rfidMonitorBLL.UpdateVisitorStatus(rfidUID, "Entered");
+                        rfidMonitorBLL.UpdateVisitStatus(rfidUID, "Entered");
                         ShowTimedMessage("Visitor has Entered!.", 1500);
                     }
                 }

@@ -27,9 +27,10 @@ namespace OmagiecaVMS01
             dgvVisitors.Columns["PaymentAmount"].Visible = false;
             dgvVisitors.Columns["UserAccountId"].Visible = false;
             dgvVisitors.Columns["DateRegistered"].Visible = false;
+            
 
             //dgvVisitors.Columns["EntryTime"].DefaultCellStyle.NullValue = "Not Entered";
-           // dgvVisitors.Columns["ExitTime"].DefaultCellStyle.NullValue = "Not Exited";
+            // dgvVisitors.Columns["ExitTime"].DefaultCellStyle.NullValue = "Not Exited";
         }
 
         private void LoadVisitors()

@@ -29,12 +29,32 @@ namespace DAL
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT V.VisitorId, V.FirstName, V.LastName, V.Age, V.VisitorType,
-                             V.IsPWD, V.Gender, V.CityMunicipality, V.ForeignCountry, V.PaymentAmount, 
-                             R.RFIDTagNumber, V.DateRegistered, V.VisitorStatus, V.UserAccountId, VIS.EntryTime, VIS.ExitTime
-                      FROM Visitors V
-                      JOIN RFIDTag R ON V.RfidTagNumberId = R.RfidTagNumberId
-                      LEFT JOIN Visit VIS ON V.VisitorId = VIS.VisitorId";
+                    string query = @"
+                SELECT 
+                    V.VisitorId,
+                    V.FirstName,
+                    V.LastName,
+                    V.Age,
+                    V.VisitorType,
+                    V.IsPWD,
+                    V.Gender,
+                    V.CityMunicipality,
+                    V.ForeignCountry,
+                    V.PaymentAmount,
+                    R.RFIDTagNumber,
+                    V.DateRegistered,
+                    S.VisitStatus AS VisitStatus,
+                    V.UserAccountId,
+                    VIS.EntryTime,
+                    VIS.ExitTime
+                FROM 
+                    Visitors V
+                JOIN 
+                    RFIDTag R ON V.RfidTagNumberId = R.RfidTagNumberId
+                LEFT JOIN 
+                    Visit VIS ON V.VisitorId = VIS.VisitorId
+                LEFT JOIN 
+                    Status S ON VIS.VisitStatusId = S.VisitStatusId";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable visitorTable = new DataTable();
@@ -48,6 +68,7 @@ namespace DAL
                 throw new Exception("An error occurred while retrieving visitors: " + ex.Message, ex);
             }
         }
+
 
         public DataTable GetVisitorsReport()
         {

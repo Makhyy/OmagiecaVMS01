@@ -39,7 +39,7 @@ namespace OmagiecaVMS01
             {
                 MessageBox.Show("Access denied. Port might be in use or locked by another process.\n" + ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 ShowErrorTimedMessage("The Exit RFID Reader is Disconnected ", 1500);
@@ -69,31 +69,29 @@ namespace OmagiecaVMS01
         {
             SerialPort sp = (SerialPort)sender;
             string rfidUID = sp.ReadLine().Trim();  // Read the RFID UID from the serial port
-            UpdateVisitorStatusExit(rfidUID);  // Delegate to update visitor status
+            UpdateVisitStatusExit(rfidUID);  // Delegate to update visitor status
         }
-        private void UpdateVisitorStatusExit(string rfidUID)
+        private void UpdateVisitStatusExit(string rfidUID)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke((MethodInvoker)delegate { UpdateVisitorStatusExit(rfidUID); });
+                this.Invoke((MethodInvoker)delegate { UpdateVisitStatusExit(rfidUID); });
             }
             else
             {
                 try
                 {
-                    // Assuming GetCurrentVisitorStatus is a method that fetches the current status
-                    string currentStatus = rfidMonitorBLL.GetCurrentVisitorStatus(rfidUID);
+                    string currentStatus = rfidMonitorBLL.GetVisitStatusByRfidTag(rfidUID);
 
-                    // Check the current status before updating
-                    if (currentStatus != "Exited")
+                    if (currentStatus != "Entered")
                     {
-                        rfidMonitorBLL.UpdateVisitorStatusExit(rfidUID, "Exited");
-                        ShowTimedMessage("Visitor has Exited!.", 1500);
+                        SendCommandToArduino("RED_ON");  // Turn on the red LED if not registered
+                        ShowErrorTimedMessage("Visitor status: Not Entered", 1500);
                     }
                     else
                     {
-                        // Handle the case where status is already 'Entered', e.g., log or notify
-                        ShowTimedMessage("RFID Tag has already been scanned!", 2000);
+                        rfidMonitorBLL.UpdateVisitStatusExit(rfidUID, "Exited");
+                        ShowTimedMessage("Visitor has Exited!.", 1500);
                     }
                 }
                 catch (Exception ex)
@@ -140,12 +138,26 @@ namespace OmagiecaVMS01
                 timedMessage.ShowDialog();
             }
         }
-        private void ShowErrorTimedMessage(string messages, int durations)
+        private void ShowErrorTimedMessage(string message, int duration)
         {
-            using (TimedMessageErrorBoxForm timedMessage = new TimedMessageErrorBoxForm(messages, durations))
+            using (TimedMessageErrorBoxForm timedMessage = new TimedMessageErrorBoxForm(message, duration))
             {
                 timedMessage.StartPosition = FormStartPosition.CenterParent;
                 timedMessage.ShowDialog();
+                SendCommandToArduino("RED_ON");  // Send command to turn on the red LED
+            }
+            // Optional: turn off the red LED after a certain delay
+            Task.Delay(duration).ContinueWith(_ => SendCommandToArduino("RED_OFF"));
+        }
+        private void SendCommandToArduino(string command)
+        {
+            if (mySerialPortExit.IsOpen)
+            {
+                mySerialPortExit.WriteLine(command + "\n"); // Ensure the command is terminated with a newline for Arduino to process it correctly
+            }
+            else
+            {
+                MessageBox.Show("Unable to send command to Arduino. Serial port is not open.", "Communication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

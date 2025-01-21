@@ -156,63 +156,116 @@ namespace OmagiecaVMS01
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ExportToExcel(dgvVisitorsReport);
+            ExportToExcelWithTwoSheets(dgvVisitorsReport);
+            
+
         }
 
-        private void ExportToExcel(DataGridView dataGridView)
+        private void ExportToExcelWithTwoSheets(DataGridView dataGridView)
         {
-            if (dataGridView.Rows.Count == 0)
+            try
             {
-                MessageBox.Show("No data to export.");
-                return;
-            }
-
-            Excel.Application excelApp = new Excel.Application();
-            if (excelApp == null)
-            {
-                MessageBox.Show("Excel is not installed on this system.");
-                return;
-            }
-
-            Excel.Workbook workbook = excelApp.Workbooks.Add(Type.Missing);
-            Excel.Worksheet worksheet = (Excel.Worksheet)workbook.ActiveSheet;
-
-            // Adding column headers
-            for (int i = 1; i <= dataGridView.Columns.Count; i++)
-            {
-                worksheet.Cells[1, i] = dataGridView.Columns[i - 1].HeaderText;
-            }
-
-            // Adding row data
-            for (int i = 0; i < dataGridView.Rows.Count; i++)
-            {
-                for (int j = 0; j < dataGridView.Columns.Count; j++)
+                if (dataGridView.Rows.Count == 0)
                 {
-                    worksheet.Cells[i + 2, j + 1] = dataGridView.Rows[i].Cells[j].Value;
+                    MessageBox.Show("No data to export.");
+                    return;
                 }
+
+                // Initialize Excel application
+                Excel.Application excelApp = new Excel.Application();
+                if (excelApp == null)
+                {
+                    MessageBox.Show("Excel is not installed on this system.");
+                    return;
+                }
+
+                // Create a new workbook
+                Excel.Workbook workbook = excelApp.Workbooks.Add(Type.Missing);
+
+                // Sheet 1: Table View
+                Excel.Worksheet tableSheet = (Excel.Worksheet)workbook.Sheets[1];
+                tableSheet.Name = "Visitor Data";
+
+                // Add column headers to Sheet 1
+                for (int i = 1; i <= dataGridView.Columns.Count; i++)
+                {
+                    tableSheet.Cells[1, i] = dataGridView.Columns[i - 1].HeaderText;
+                }
+
+                // Add row data to Sheet 1
+                for (int i = 0; i < dataGridView.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dataGridView.Columns.Count; j++)
+                    {
+                        tableSheet.Cells[i + 2, j + 1] = dataGridView.Rows[i].Cells[j].Value;
+                    }
+                }
+
+                // Add total visitors row to Sheet 1
+                int totalRow = dataGridView.Rows.Count + 2;
+                tableSheet.Cells[totalRow, 1] = "Total Visitors";
+                tableSheet.Cells[totalRow, 2] = labelTotalRecords.Text.Replace("Total Visitors: ", "");
+                Excel.Range totalRange = tableSheet.Range[tableSheet.Cells[totalRow, 1], tableSheet.Cells[totalRow, 2]];
+                totalRange.Font.Bold = true;
+
+                // Sheet 2: Chart View
+                Excel.Worksheet chartSheet = (Excel.Worksheet)workbook.Sheets.Add();
+                chartSheet.Name = "Visitor Chart";
+
+                // Add data for the chart to Sheet 2
+                chartSheet.Cells[1, 1] = "Visitor Type";
+                chartSheet.Cells[1, 2] = "Visitor Count";
+
+                // Extract chart data from the application chart
+                int row = 2;
+                foreach (var point in chart1.Series[0].Points)
+                {
+                    chartSheet.Cells[row, 1] = point.AxisLabel;  // Visitor type
+                    chartSheet.Cells[row, 2] = point.YValues[0]; // Count
+                    row++;
+                }
+
+                // Create and embed the chart in Sheet 2
+                Excel.ChartObjects charts = (Excel.ChartObjects)chartSheet.ChartObjects(Type.Missing);
+                Excel.ChartObject chartObject = charts.Add(60, 10, 500, 300); // Adjust position and size
+                Excel.Chart chart = chartObject.Chart;
+
+                // Set the chart's data range
+                Excel.Range chartRange = chartSheet.Range[
+                    chartSheet.Cells[2, 1],
+                    chartSheet.Cells[row - 1, 2]
+                ];
+                chart.SetSourceData(chartRange);
+
+                // Customize the chart
+                chart.ChartType = Excel.XlChartType.xlColumnClustered;
+                chart.HasTitle = true;
+                chart.ChartTitle.Text = "Visitor Count by Type";
+
+                // Save the workbook
+                string filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "VisitorReport.xlsx");
+                workbook.SaveAs(filePath);
+
+                // Show Excel
+                excelApp.Visible = true;
+
+                MessageBox.Show($"Export successful! File saved to: {filePath}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Cleanup
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(tableSheet);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(chartSheet);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
             }
-
-            // Adding total visitors
-            int totalRow = dataGridView.Rows.Count + 2; // Adjust this index based on your actual row count + 1 for the empty space
-            worksheet.Cells[dataGridView.Rows.Count + 2, 1] = "Total Visitors";
-            worksheet.Cells[dataGridView.Rows.Count + 2, 2] = labelTotalRecords.Text.Replace("Total Visitors: ", "");
-
-            // Optional: Formatting the total row
-            Excel.Range totalRange = worksheet.Range[worksheet.Cells[totalRow, 1], worksheet.Cells[totalRow, 2]];
-            totalRange.Font.Bold = true;
-            totalRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Green);
-
-            // Setting Excel properties
-            worksheet.Columns.AutoFit();
-            excelApp.Visible = true;
-
-            // Cleanup
-            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(worksheet);
-            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(workbook);
-            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excelApp);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-     
+
+
+
         private void chart1_Click(object sender, EventArgs e)
         {
             // Assuming you have a chart control named 'chart1' and a DataGridView named 'dataGridView1'
