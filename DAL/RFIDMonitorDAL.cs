@@ -87,13 +87,13 @@ namespace DAL
                     string query = @"
                 SELECT CASE 
                            WHEN EXISTS (
-                               SELECT 1
+                               SELECT 2
                                FROM RFIDTag R
                                INNER JOIN Visit V ON R.RfidTagNumberId = V.RfidTagNumberId
                                INNER JOIN Status S ON V.VisitStatusId = S.VisitStatusId
                                WHERE R.RfidTagUID = @RfidTagUID AND S.VisitStatus = 'Entered'
                            )
-                           THEN 1
+                           THEN 2
                            ELSE 0
                        END";
 
@@ -186,7 +186,7 @@ namespace DAL
                 throw new ApplicationException("An error occurred while fetching the visit status.", ex);
             }
         }
-        //using
+        //entrance
         public void UpdateVisitStatus(string rfidUID, string newStatus)
         {
             if (string.IsNullOrWhiteSpace(rfidUID))
@@ -223,7 +223,7 @@ namespace DAL
                 throw new ApplicationException("An error occurred while updating the visitor status.", ex);
             }
         }
-        //using2
+        //exit
         public void UpdateVisitStatusExit(string rfidUID, string newStatus)
         {
             if (string.IsNullOrWhiteSpace(rfidUID))
@@ -237,7 +237,7 @@ namespace DAL
                     string query = @"
                 UPDATE Visit
                 SET VisitStatusId = (SELECT VisitStatusId FROM Status WHERE VisitStatus = @NewStatus),
-                    ExitTime = CASE WHEN @NewStatus = 'Exited' THEN GETDATE() ELSE Exitime END
+                    ExitTime = CASE WHEN @NewStatus = 'Exited' THEN GETDATE() ELSE ExitTime END
                 WHERE RfidTagNumberId = (SELECT RfidTagNumberId FROM RFIDTag WHERE RfidTagUID = @RfidTagUID)
                   AND ExitTime IS NULL;";
 

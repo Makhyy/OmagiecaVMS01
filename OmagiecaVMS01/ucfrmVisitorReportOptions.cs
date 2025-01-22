@@ -225,9 +225,18 @@ namespace OmagiecaVMS01
                     row++;
                 }
 
+                // Define chart dimensions
+                double chartWidth = 500; // Width of the chart
+                double chartHeight = 300; // Height of the chart
+
+                // Position the chart dynamically below the data table
+                int dataEndRow = row + 1; // Data ends after all rows are added
+                double chartTop = dataEndRow * chartSheet.Rows[1].Height; // Position below data
+                double chartLeft = 100; // Add some left margin
+
                 // Create and embed the chart in Sheet 2
                 Excel.ChartObjects charts = (Excel.ChartObjects)chartSheet.ChartObjects(Type.Missing);
-                Excel.ChartObject chartObject = charts.Add(60, 10, 500, 300); // Adjust position and size
+                Excel.ChartObject chartObject = charts.Add(chartLeft, chartTop, chartWidth, chartHeight);
                 Excel.Chart chart = chartObject.Chart;
 
                 // Set the chart's data range
@@ -262,6 +271,11 @@ namespace OmagiecaVMS01
                 MessageBox.Show($"An error occurred: {ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
+
+
 
 
 

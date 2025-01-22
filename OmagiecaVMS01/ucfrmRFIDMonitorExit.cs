@@ -69,13 +69,13 @@ namespace OmagiecaVMS01
         {
             SerialPort sp = (SerialPort)sender;
             string rfidUID = sp.ReadLine().Trim();  // Read the RFID UID from the serial port
-            UpdateVisitStatusExit(rfidUID);  // Delegate to update visitor status
+            UpdateVisitorExitStatus(rfidUID);  // Delegate to update visitor status
         }
-        private void UpdateVisitStatusExit(string rfidUID)
+        private void UpdateVisitorExitStatus(string rfidUID)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke((MethodInvoker)delegate { UpdateVisitStatusExit(rfidUID); });
+                this.Invoke((MethodInvoker)delegate { UpdateVisitorExitStatus(rfidUID); });
             }
             else
             {
@@ -83,23 +83,26 @@ namespace OmagiecaVMS01
                 {
                     string currentStatus = rfidMonitorBLL.GetVisitStatusByRfidTag(rfidUID);
 
-                    if (currentStatus != "Entered")
+                    if (currentStatus == "Entered")
                     {
-                        SendCommandToArduino("RED_ON");  // Turn on the red LED if not registered
-                        ShowErrorTimedMessage("Visitor status: Not Entered", 1500);
+                        rfidMonitorBLL.UpdateVisitStatusExit(rfidUID, "Exited");
+                        SendCommandToArduino("GREEN_ON");  // Turn on the green LED to indicate a successful exit
+                        ShowTimedMessage("Visitor has Exited!", 1500);
                     }
                     else
                     {
-                        rfidMonitorBLL.UpdateVisitStatusExit(rfidUID, "Exited");
-                        ShowTimedMessage("Visitor has Exited!.", 1500);
+                        SendCommandToArduino("RED_ON");  // Turn on the red LED if the status is not 'Entered'
+                        ShowErrorTimedMessage("Exit Denied. Visitor status: " + currentStatus, 1500);
                     }
                 }
                 catch (Exception ex)
                 {
-                    ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 1500);
+                    ShowErrorTimedMessage("Error updating visitor exit status: " + ex.Message, 1500);
+                    SendCommandToArduino("RED_ON");  // Ensure red light in case of any exception
                 }
             }
         }
+
         private void InitializeSerialPort()
         {
             //mySerialPort = new SerialPort("COM5");
@@ -110,24 +113,7 @@ namespace OmagiecaVMS01
             mySerialPortExit.DataBits = 8;
             mySerialPortExit.Handshake = Handshake.None;
             mySerialPortExit.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-            /*
-           try
-           {
-                mySerialPort.Open();
-                MessageBox.Show("Port opened successfully.");
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                MessageBox.Show("Access denied. Port might be in use or locked by another process.\n" + ex.Message);
-            }
-            catch (IOException ex)
-            {
-                MessageBox.Show("IO Exception, check port settings and device connection.\n" + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("General error when trying to open port.\n" + ex.Message);
-            }*/
+            
 
         }
         private void ShowTimedMessage(string message, int duration)

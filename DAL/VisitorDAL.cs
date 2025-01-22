@@ -98,10 +98,10 @@ namespace DAL
         {
             string addVisitorQuery = @"
         INSERT INTO Visitors 
-        (FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, DateRegistered, RfidTagNumberId, VisitorStatus, UserAccountId)
+        (FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, DateRegistered, RfidTagNumberId,  UserAccountId)
         OUTPUT INSERTED.VisitorId
         VALUES 
-        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @DateRegistered, @RfidTagNumberId, @VisitorStatus, @UserAccountId)";
+        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @DateRegistered, @RfidTagNumberId, @UserAccountId)";
 
             string logVisitQuery = @"
         INSERT INTO Visit 
@@ -132,7 +132,7 @@ namespace DAL
                     visitorCommand.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
                     visitorCommand.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
                     visitorCommand.Parameters.AddWithValue("@DateRegistered", visitor.DateRegistered);
-                    visitorCommand.Parameters.AddWithValue("@VisitorStatus", visitor.VisitorStatus ?? "Registered");
+                   
                     visitorCommand.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId);
 
                     int visitorId = (int)visitorCommand.ExecuteScalar();
@@ -215,7 +215,7 @@ namespace DAL
                     command.Parameters.AddWithValue("@ForeignCountry", visitor.ForeignCountry ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
                     command.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
-                    command.Parameters.AddWithValue("@VisitorStatus", visitor.VisitorStatus);
+                    
                     command.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId ?? (object)DBNull.Value);
 
                     connection.Open();
@@ -266,7 +266,7 @@ namespace DAL
                             PaymentAmount = (decimal)reader["PaymentAmount"],
                             RfidTagNumberId = reader.IsDBNull(reader.GetOrdinal("RfidTagNumberId")) ? 0 : (int)reader["RfidTagNumberId"],
                             DateRegistered = (DateTime)reader["DateRegistered"],
-                            VisitorStatus = reader["VisitorStatus"].ToString(),
+
                             UserAccountId = (int)reader["UserAccountId"]
                         });
                     }

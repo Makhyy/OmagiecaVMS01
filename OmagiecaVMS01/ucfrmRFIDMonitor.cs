@@ -79,16 +79,18 @@ namespace OmagiecaVMS01
                 {
                     string currentStatus = rfidMonitorBLL.GetVisitStatusByRfidTag(rfidUID);
 
-                    if (currentStatus != "Registered")
+                    if (currentStatus == "Registered" && currentStatus != "Exited")
                     {
-                        SendCommandToArduino("RED_ON");  // Turn on the red LED if not registered
-                        ShowErrorTimedMessage("Visitor status: Not Registered", 1500);
+                        rfidMonitorBLL.UpdateVisitStatus(rfidUID, "Entered");
+                        SendCommandToArduino("GREEN_ON");  // Assuming you have a green LED for valid entries
+                        ShowTimedMessage("Visitor has Entered!", 1500);
                     }
                     else
                     {
-                        rfidMonitorBLL.UpdateVisitStatus(rfidUID, "Entered");
-                        ShowTimedMessage("Visitor has Entered!.", 1500);
+                        SendCommandToArduino("RED_ON");
+                        ShowErrorTimedMessage("Access Denied. Visitor status: " + currentStatus, 1500);
                     }
+
                 }
                 catch (Exception ex)
                 {

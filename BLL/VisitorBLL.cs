@@ -129,9 +129,7 @@ namespace BLL
                 if (visitor.UserAccountId <= 0)
                     throw new ArgumentException("Invalid UserAccountId. Please ensure a user is logged in.");
 
-                // Set default VisitorStatus if not provided
-                if (string.IsNullOrEmpty(visitor.VisitorStatus))
-                    visitor.VisitorStatus = "Registered";
+               
 
                 // Validate visitor data
                 ValidateVisitor(visitor);
@@ -260,8 +258,7 @@ namespace BLL
                 {
                     throw new Exception("Invalid RFID Tag Number.");
                 }
-                if (!new[] { "Registered", "Entered", "Exited" }.Contains(visitor.VisitorStatus))
-                    throw new ArgumentException("Invalid VisitorStatus value.");
+               
 
 
             }

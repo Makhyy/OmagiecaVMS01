@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace OmagiecaVMS01
@@ -41,14 +42,16 @@ namespace OmagiecaVMS01
 
                 if (userAccount != null)
                 {
-                    CurrentSession.UserAccountId = userAccount.UserAccountId; // Set the session user ID
-                    CurrentSession.Username = userAccount.Username; // Set the session username
-                    CurrentSession.UserRole = userAccount.UserRole; // Set the session user role
-                    CurrentSession.FirstName = userAccount.FirstName; // Set the session first name
-                    CurrentSession.LastName = userAccount.LastName; // Set the session last name
-                    MessageBox.Show($"Welcome, {userAccount.FirstName} {userAccount.LastName}! ",
-                 "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Set session variables
+                    CurrentSession.UserAccountId = userAccount.UserAccountId;
+                    CurrentSession.Username = userAccount.Username;
+                    CurrentSession.UserRole = userAccount.UserRole;
+                    CurrentSession.FirstName = userAccount.FirstName;
+                    CurrentSession.LastName = userAccount.LastName;
 
+                    // Show success message
+                    MessageBox.Show($"Welcome, {userAccount.FirstName} {userAccount.LastName}! ",
+                        "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     this.Hide(); // Hide the login form
 
@@ -72,17 +75,31 @@ namespace OmagiecaVMS01
                 }
                 else
                 {
+                    // Show error message for invalid login
                     MessageBox.Show("Invalid username or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    txtPassword.Clear();
+
+                    
+
+                    // Reset the placeholders (if using watermarks)
+                    txtUsername.Text = "Username";
+                    txtPassword.Text = "Password";
+
+                    // Set focus back to the username field
                     txtUsername.Focus();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred while attempting to log in: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClearTextBoxes();
             }
         }
 
+        private void ClearTextBoxes()
+        {
+            txtUsername.Text = string.Empty;
+            txtPassword.Text = string.Empty;
+        }
 
 
 

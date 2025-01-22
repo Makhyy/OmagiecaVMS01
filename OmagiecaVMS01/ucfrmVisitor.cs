@@ -252,7 +252,7 @@ namespace OmagiecaVMS01
                     PaymentAmount = decimal.Parse(txtPaymentAmount.Text),
                     RfidTagNumberId = Convert.ToInt32(cboRFIDTag.SelectedValue),
                    UserAccountId = CurrentSession.UserAccountId,  // Ensure this is valid or handled if null
-                    VisitorStatus = "Registered"  // Or other status based on your application logic
+                    
                 };
 
                 visitorBLL.UpdateVisitor(visitor);
@@ -343,6 +343,7 @@ namespace OmagiecaVMS01
                 {
                     visitorType = "Child";
                 }
+               
                 else if (age >= 13 && age <= 59)
                 {
                     visitorType = "Adult";

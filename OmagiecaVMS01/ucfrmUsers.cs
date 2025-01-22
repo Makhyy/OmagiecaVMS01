@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -69,7 +70,18 @@ namespace OmagiecaVMS01
                     return;
                 }
 
-                // Step 3: Proceed with adding the user
+                // Step 3: Validate the password for special characters
+                if (!IsPasswordValid(txtPassword.Text.Trim()))
+                {
+                    MessageBox.Show("Password must include at least one special character (!@#$%^&*).",
+                                    "Invalid Password",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+                    txtPassword.Focus();
+                    return;
+                }
+
+                // Step 4: Proceed with adding the user
                 UserAccount userAccount = new UserAccount
                 {
                     FirstName = txtFirstName.Text.Trim(),
@@ -78,14 +90,14 @@ namespace OmagiecaVMS01
                     Gender = cboGender.SelectedItem.ToString(),
                     Address = txtAddress.Text.Trim(),
                     Username = txtUsername.Text.Trim(),
-                    Password = txtPassword.Text.Trim(), // Hash passwords in production
+                    Password = txtPassword.Text.Trim(), // Ensure security in production by hashing passwords
                     UserRole = cboUserRole.SelectedItem.ToString(),
                     UserStatus = cboUserStatus.SelectedItem.ToString(),
                     SecurityQuestion = cboSecurityQuestion.SelectedItem.ToString(),
                     SecurityAnswer = txtSecurityAnswer.Text.Trim()
                 };
 
-                // Step 4: Add the user account
+                // Step 5: Add the user account
                 userAccountBLL.AddUserAccount(userAccount);
 
                 MessageBox.Show("User account added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -95,9 +107,16 @@ namespace OmagiecaVMS01
             catch (Exception ex)
             {
                 // Handle unexpected errors
-                MessageBox.Show(" error occurred while adding the user account: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("An error occurred while adding the user account: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private bool IsPasswordValid(string password)
+        {
+            // Regular expression to check for at least one special character
+            string pattern = @"(?=.*[!@#$%^&*(),.?\"":{ }|<>])";
+            return Regex.IsMatch(password, pattern);
+        }
+
 
 
 
