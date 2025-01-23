@@ -72,7 +72,7 @@ namespace OmagiecaVMS01
         {
             frmUserProfileEdit frmUserProfileEdit = new frmUserProfileEdit(userId);
             frmUserProfileEdit.ShowDialog();
-           this.Close();
+           this.Hide();
 
         }
     }

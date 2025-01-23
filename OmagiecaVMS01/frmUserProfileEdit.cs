@@ -64,11 +64,8 @@ namespace OmagiecaVMS01
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            frmUserProfile frmup = new frmUserProfile(userId);
-            frmup.Show();
-
-            
-
+            this.Close();
+       
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {

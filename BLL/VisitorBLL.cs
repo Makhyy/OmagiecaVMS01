@@ -150,12 +150,6 @@ namespace BLL
             }
         }
 
-
-
-
-
-
-
         public int FetchDefaultStatusId()
         {
             try
@@ -168,11 +162,6 @@ namespace BLL
                 throw new Exception("Failed to retrieve the default status ID.", ex);
             }
         }
-
-
-
-
-
 
         public void UpdateVisitor(Visitor visitor)
         {
@@ -206,9 +195,6 @@ namespace BLL
             }
         }
 
-
-
-
         public List<Visitor> SearchVisitors(string keyword)
         {
             try
@@ -223,10 +209,6 @@ namespace BLL
                 throw new Exception("An error occurred while searching for visitors.", ex);
             }
         }
-
-
-
-
 
         private void ValidateVisitor(Visitor visitor)
         {
@@ -251,15 +233,13 @@ namespace BLL
                 {
                     throw new Exception("Payment Amount cannot be negative.");
                 }
-
-               
+          
 
                 if (visitor.RfidTagNumberId < 0)
                 {
                     throw new Exception("Invalid RFID Tag Number.");
                 }
                
-
 
             }
             catch (Exception ex)
@@ -402,7 +382,22 @@ namespace BLL
                 throw new Exception("Failed to retrieve status ID: " + ex.Message);
             }
         }
-       
+
+
+        public DataTable GetRecentVisitors()
+        {
+            try
+            {
+                // Directly call the DAL method
+                return _visitorDAL.GetRecentVisitors();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving recent visitors: " + ex.Message, ex);
+            }
+        }
+
+
 
         public DataTable GetRevenueByDateRange(DateTime startDate, DateTime endDate)
         {

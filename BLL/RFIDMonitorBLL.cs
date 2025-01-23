@@ -15,10 +15,7 @@ namespace BLL
         {
             rfidMonitorDAL = new RFIDMonitorDAL();  // Initialize the DAL instance
         }
-        public string GetCurrentVisitorStatus(string rfidTagUID)
-        {
-            return rfidMonitorDAL.GetCurrentVisitorStatus(rfidTagUID);
-        }
+       
         public string GetVisitStatusByRfidTag(string rfidTagUID)
         {
             if (string.IsNullOrWhiteSpace(rfidTagUID))
@@ -27,96 +24,56 @@ namespace BLL
             return rfidMonitorDAL.GetCurrentVisitStatus(rfidTagUID);
         }
 
-        public void UpdateVisitorStatus(string rfidTag, string newStatus)
+
+        // Generic method for updating visitor status
+        private void UpdateVisitorStatus(string rfidTag, string newStatus, Func<string, bool> validationMethod, Action<string, string> updateMethod, string errorMessage)
         {
             try
             {
-                // First, validate the RFID tag is associated with a registered visitor
-                if (rfidMonitorDAL.IsValidRFIDVisit(rfidTag))
+                // Validate the RFID tag
+                if (validationMethod(rfidTag))
                 {
-                    // Update the visitor status if the RFID is valid and the visitor is registered
-                    rfidMonitorDAL.UpdateVisitorStatus(rfidTag, newStatus);
+                    // Update the visitor status
+                    updateMethod(rfidTag, newStatus);
                 }
                 else
                 {
-                    // Optionally handle logic for invalid RFID tags, e.g., logging or alerting
-                    throw new InvalidOperationException("RFID tag is not valid or visitor is not in a 'Registered' status.");
+                    // Handle invalid RFID tag or status
+                    throw new InvalidOperationException(errorMessage);
                 }
             }
             catch (Exception ex)
             {
-                // Log or handle exceptions as necessary
-                throw new Exception("Failed to update visitor status: " + ex.Message, ex);
-            }
-        }
-        //using
-        public void UpdateVisitStatus(string rfidTag, string newStatus)
-        {
-            try
-            {
-                // First, validate the RFID tag is associated with a registered visitor
-                if (rfidMonitorDAL.IsValidRFIDVisit(rfidTag))
-                {
-                    // Update the visitor status if the RFID is valid and the visitor is registered
-                    rfidMonitorDAL.UpdateVisitStatus(rfidTag, newStatus);
-                }
-                else
-                {
-                    // Optionally handle logic for invalid RFID tags, e.g., logging or alerting
-                    throw new InvalidOperationException("RFID tag is not valid or visitor is not in a 'Registered' status.");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log or handle exceptions as necessary
-                throw new Exception("Failed to update visitor status: " + ex.Message, ex);
-            }
-        }
-        //using2
-        public void UpdateVisitStatusExit(string rfidTag, string newStatus)
-        {
-            try
-            {
-                // First, validate the RFID tag is associated with a registered visitor
-                if (rfidMonitorDAL.IsValidRFIDVisitExit(rfidTag))
-                {
-                    // Update the visitor status if the RFID is valid and the visitor is registered
-                    rfidMonitorDAL.UpdateVisitStatusExit(rfidTag, newStatus);
-                }
-                else
-                {
-                    // Optionally handle logic for invalid RFID tags, e.g., logging or alerting
-                    throw new InvalidOperationException("RFID tag is not valid or visitor is not in a 'Registered' status.");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log or handle exceptions as necessary
-                throw new Exception("Failed to update visitor status: " + ex.Message, ex);
-            }
-        }
-        public void UpdateVisitorStatusExit(string rfidTag, string newStatus)
-        {
-            try
-            {
-                // First, validate the RFID tag is associated with a registered visitor
-                if (rfidMonitorDAL.IsValidRFIDVisitExit(rfidTag))
-                {
-                    // Update the visitor status if the RFID is valid and the visitor is registered
-                    rfidMonitorDAL.UpdateVisitorStatusExit(rfidTag, newStatus);
-                }
-                else
-                {
-                    // Optionally handle logic for invalid RFID tags, e.g., logging or alerting
-                    throw new InvalidOperationException("RFID tag is not valid or visitor is not in a 'Entered' status.");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log or handle exceptions as necessary
-                throw new Exception("Failed to update visitor status: " + ex.Message, ex);
+                // Log or handle exceptions
+                // Example: logger.LogError(ex, "Failed to update visitor status.");
+                throw new InvalidOperationException("Failed to update visitor status: " + ex.Message, ex);
             }
         }
 
+        // Entrance BLL
+        public void UpdateVisitStatus(string rfidTag, string newStatus)
+        {
+            UpdateVisitorStatus(
+                rfidTag,
+                newStatus,
+                rfidMonitorDAL.IsValidRFIDVisitEntrance,
+                rfidMonitorDAL.UpdateVisitStatus,
+                "RFID tag is not valid or visitor is not in a 'Registered' status."
+            );
+        }
+
+        // Exit BLL
+        public void UpdateVisitStatusExit(string rfidTag, string newStatus)
+        {
+            UpdateVisitorStatus(
+                rfidTag,
+                newStatus,
+                rfidMonitorDAL.IsValidRFIDVisitExit,
+                rfidMonitorDAL.UpdateVisitStatusExit,
+                "RFID tag is not valid or visitor is not in an 'Entered' status."
+            );
+        }
     }
+
+
 }

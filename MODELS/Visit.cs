@@ -13,8 +13,8 @@ namespace MODELS
             public int VisitId { get; set; } // Primary key
             public int VisitorId { get; set; }
             public int RfidTagNumberId { get; set; }
-            public DateTime? EntryTime { get; set; }
-            public DateTime? ExitTime { get; set; } // Nullable for initial creation
+            public TimeSpan? EntryTime { get; set; }
+            public TimeSpan? ExitTime { get; set; } // Nullable for initial creation
             public int VisitStatusId { get; set; }
             
             

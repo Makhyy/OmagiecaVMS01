@@ -116,25 +116,44 @@ namespace OmagiecaVMS01
         {
             try
             {
+                // Step 1: Get the selected dates
                 DateTime startDate = dateTimePickerStartDate.Value.Date;
                 DateTime endDate = dateTimePickerEndDate.Value.Date;
 
+                // Step 2: Validate the date range
                 if (endDate < startDate)
                 {
-                    MessageBox.Show("End date must be after start date.", "Invalid Date Range", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("End date must be on or after the start date.", "Invalid Date Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
+                // Step 3: Fetch filtered data for the date range
                 VisitorBLL visitorManager = new VisitorBLL();
                 DataTable filteredData = visitorManager.GetVisitorsForDateRange(startDate, endDate);
-                dgvVisitorsReport.DataSource = filteredData;
-                labelTotalRecords.Text = $"Total Visitors from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}: {filteredData.Rows.Count}";
+
+                if (filteredData.Rows.Count > 0)
+                {
+                    // Step 4: Bind the data to the DataGridView
+                    dgvVisitorsReport.DataSource = filteredData;
+
+                    // Step 5: Update the total visitors count label
+                    labelTotalRecords.Text = $"Total Visitors from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}: {filteredData.Rows.Count}";
+                }
+                else
+                {
+                    // Step 6: Handle the case where no data is found
+                    dgvVisitorsReport.DataSource = null;
+                    labelTotalRecords.Text = $"No visitors found from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}.";
+                    MessageBox.Show("No records found for the selected date range.", "No Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error Loading Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Step 7: Handle unexpected errors
+                MessageBox.Show($"An error occurred while loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnAll_Click(object sender, EventArgs e)
         {

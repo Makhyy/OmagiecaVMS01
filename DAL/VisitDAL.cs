@@ -135,6 +135,37 @@ namespace DAL
             }
         }
 
+        public DataTable GetVisitData()
+        {
+            DataTable visitTable = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+            SELECT 
+                V.VisitId,
+                V.VisitorId,
+                V.RfidTagNumberId,
+                S.VisitStatus,
+                V.EntryTime,
+                V.ExitTime
+            FROM Visit V
+            INNER JOIN Status S ON V.VisitStatusId = S.VisitStatusId";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(visitTable);
+                    }
+                }
+            }
+
+            return visitTable;
+        }
+
+
     }
 
 }

@@ -315,7 +315,7 @@
             this.panel3.Controls.Add(this.labelTotalRecords);
             this.panel3.Location = new System.Drawing.Point(7, 40);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(369, 42);
+            this.panel3.Size = new System.Drawing.Size(355, 42);
             this.panel3.TabIndex = 312;
             // 
             // labelTotalRecords

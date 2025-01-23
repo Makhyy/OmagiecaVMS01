@@ -21,8 +21,13 @@ namespace BLL
 
         public DataTable GetVisitorInformation()
         {
-           VisitDAL _visitDAL = new VisitDAL(); // Assuming DAL class name
+           
             return _visitDAL.GetVisitorDetails();
+        }
+
+        public DataTable GetVisitData()
+        {
+            return _visitDAL.GetVisitData(); // Call the DAL method
         }
 
 

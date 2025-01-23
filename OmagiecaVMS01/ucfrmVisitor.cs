@@ -22,6 +22,7 @@ namespace OmagiecaVMS01
         private VisitorBLL visitorBLL;
         private RFIDTagBLL rfidTagBLL = new RFIDTagBLL();
 
+        private VisitorBLL _visitorBLL = new VisitorBLL();
 
         private List<VisitorType> VisitorTypes;
         public ucfrmVisitor()
@@ -46,6 +47,24 @@ namespace OmagiecaVMS01
             dgvVisitors.Columns["ExitTime"].Visible = false;
             dgvVisitors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVisitors.MultiSelect = true;
+            LoadRecentVisitors();
+
+        }
+
+        private void LoadRecentVisitors()
+        {
+            try
+            {
+                // Fetch visitors for the last 24 hours from BLL
+                DataTable visitors = _visitorBLL.GetRecentVisitors();
+
+                // Bind the filtered data to the DataGridView
+                dgvVisitors.DataSource = visitors;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while loading visitors: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void visitorBindingNavigatorSaveItem_Click(object sender, EventArgs e)

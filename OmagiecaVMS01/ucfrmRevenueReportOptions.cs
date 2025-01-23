@@ -171,20 +171,44 @@ namespace OmagiecaVMS01
 
 
 
-        private void btnCalculateRange_Click(object sender, EventArgs e)
+       private void btnCalculateRange_Click(object sender, EventArgs e)
+{
+    try
+    {
+        // Step 1: Get the selected date range
+        DateTime startDate = dtpStartDate.Value.Date;
+        DateTime endDate = dtpEndDate.Value.Date;
+
+        // Step 2: Validate the date range
+        if (endDate < startDate)
         {
-            DateTime startDate = dtpStartDate.Value.Date;
-            DateTime endDate = dtpEndDate.Value.Date;
-            try
-            {
-                decimal totalPayment = visitorBLL.GetTotalRevenueByDateRange(startDate, endDate);
-                lblTotalRevenue.Text = $"Total Payment from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}: {totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message);
-            }
+            MessageBox.Show("End date must be on or after the start date.", "Invalid Date Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
         }
+
+        // Step 3: Calculate total payment for the date range
+        decimal totalPayment = visitorBLL.GetTotalRevenueByDateRange(startDate, endDate);
+
+        // Step 4: Display the total revenue
+        if (totalPayment > 0)
+        {
+            lblTotalRevenue.Text = $"Total Payment from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}: " +
+                                   $"{totalPayment.ToString("C", new System.Globalization.CultureInfo("en-PH"))}";
+        }
+        else
+        {
+            // Step 5: Handle the case where no revenue is found
+            lblTotalRevenue.Text = $"No revenue recorded from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}.";
+            MessageBox.Show("No revenue data found for the selected date range.", "No Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+    catch (Exception ex)
+    {
+        // Step 6: Handle unexpected errors
+        MessageBox.Show($"An error occurred while calculating revenue: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+
 
         private void button3_Click(object sender, EventArgs e)
         {
