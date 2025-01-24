@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MODELS;
 using DAL;
+using System.Data;
 
 namespace BLL
 {
@@ -117,6 +118,10 @@ namespace BLL
             {
                 throw new Exception("An error occurred while retrieving group registrations: " + ex.Message, ex);
             }
+        }
+        public DataTable GetAllGroupRegistrations()
+        {
+            return groupRegistrationDAL.GetAllGroupRegistrationsData();
         }
     }
 }

@@ -421,5 +421,21 @@ namespace BLL
         {
             return _visitorDAL.GetRemainingVisitorCount();
         }
+        public DataTable GetVisitorsData()
+        {
+            return _visitorDAL.GetAllVisitorsData();
+        }
+        public DataTable SearchVisitorsData(string searchTerm)
+        {
+            return _visitorDAL.SearchVisitorsData(searchTerm);
+        }
+        public DataTable GetDistinctVisitorTypes()
+        {
+            return visitorDAL.GetDistinctVisitorTypes();
+        }
+        public DataTable GetCombinedLocations()
+        {
+            return visitorDAL.GetCombinedLocations();
+        }
     }
 }

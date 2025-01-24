@@ -188,6 +188,7 @@
             this.txtForeignCountry.Name = "txtForeignCountry";
             this.txtForeignCountry.Size = new System.Drawing.Size(189, 27);
             this.txtForeignCountry.TabIndex = 301;
+            this.txtForeignCountry.TextChanged += new System.EventHandler(this.txtForeignCountry_TextChanged);
             // 
             // label1
             // 
@@ -208,6 +209,7 @@
             this.txtCityMunicipality.Name = "txtCityMunicipality";
             this.txtCityMunicipality.Size = new System.Drawing.Size(189, 27);
             this.txtCityMunicipality.TabIndex = 299;
+            this.txtCityMunicipality.TextChanged += new System.EventHandler(this.txtCityMunicipality_TextChanged);
             // 
             // txtPaymentAmount
             // 

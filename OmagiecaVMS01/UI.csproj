@@ -71,11 +71,23 @@
     <Compile Include="frmForgotPassword.Designer.cs">
       <DependentUpon>frmForgotPassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmGroupMember.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGroupMember.Designer.cs">
+      <DependentUpon>frmGroupMember.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmGroupRegister.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmGroupRegister.Designer.cs">
       <DependentUpon>frmGroupRegister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGroupRegistration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGroupRegistration.Designer.cs">
+      <DependentUpon>frmGroupRegistration.cs</DependentUpon>
     </Compile>
     <Compile Include="frmLogin.cs">
       <SubType>Form</SubType>
@@ -118,6 +130,12 @@
     </Compile>
     <Compile Include="frmVisit.Designer.cs">
       <DependentUpon>frmVisit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmVisitorsData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVisitorsData.Designer.cs">
+      <DependentUpon>frmVisitorsData.cs</DependentUpon>
     </Compile>
     <Compile Include="OmagiecaVMS01DBDataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -249,8 +267,14 @@
     <EmbeddedResource Include="frmForgotPassword.resx">
       <DependentUpon>frmForgotPassword.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmGroupMember.resx">
+      <DependentUpon>frmGroupMember.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmGroupRegister.resx">
       <DependentUpon>frmGroupRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGroupRegistration.resx">
+      <DependentUpon>frmGroupRegistration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
@@ -272,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmVisit.resx">
       <DependentUpon>frmVisit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVisitorsData.resx">
+      <DependentUpon>frmVisitorsData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

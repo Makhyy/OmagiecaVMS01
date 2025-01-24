@@ -68,7 +68,8 @@ namespace DAL
                     S.VisitStatus AS VisitStatus,
                     V.UserAccountId,
                     VIS.EntryTime,
-                    VIS.ExitTime
+                    VIS.ExitTime,
+                    V.GroupId
                 FROM 
                     Visitors V
                 JOIN 
@@ -77,6 +78,8 @@ namespace DAL
                     Visit VIS ON V.VisitorId = VIS.VisitorId
                 LEFT JOIN 
                     Status S ON VIS.VisitStatusId = S.VisitStatusId";
+               
+
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable visitorTable = new DataTable();
@@ -1039,7 +1042,70 @@ WHERE DATEDIFF(day, DateRegistered, GETDATE()) = 0";
             return Math.Max(0, remainingVisitors);
         }
 
-       
+        public DataTable GetAllVisitorsData()
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Visitors", con);
+                cmd.CommandType = CommandType.Text;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+        public DataTable SearchVisitorsData(string searchTerm)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM Visitors WHERE FirstName LIKE @SearchTerm OR LastName LIKE @SearchTerm OR CityMunicipality LIKE @SearchTerm", con);
+                    cmd.Parameters.AddWithValue("@SearchTerm", $"%{searchTerm}%");
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception )
+                {
+                    // Log the exception here
+                    
+                    throw; // Rethrow the exception to be handled by the BLL
+                }
+            }
+            return dt;
+        }
+
+        public DataTable GetDistinctVisitorTypes()
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter("SELECT DISTINCT VisitorType FROM Visitors", conn);
+                adapter.Fill(dataTable);
+            }
+            return dataTable;
+        }
+
+        public DataTable GetCombinedLocations()
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                // Assuming CityMunicipality and ForeignCountry are from the same table, adjust if not.
+                SqlCommand cmd = new SqlCommand(@"
+            SELECT DISTINCT CityMunicipality AS Location, 'City/Municipality' AS Type FROM Visitors WHERE CityMunicipality IS NOT NULL
+            UNION
+            SELECT DISTINCT ForeignCountry AS Location, 'Foreign Country' AS Type FROM Visitors WHERE ForeignCountry IS NOT NULL
+            ORDER BY Location", conn);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(dataTable);
+            }
+            return dataTable;
+        }
+
 
     }
 }

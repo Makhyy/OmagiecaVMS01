@@ -18,6 +18,8 @@ namespace OmagiecaVMS01
         public ucfrmGroupRegister()
         {
             InitializeComponent();
+            txtCityMunicipality.TextChanged += TextBox_TextChanged;
+            txtForeignCountry.TextChanged += TextBox_TextChanged;
         }
        
 
@@ -107,7 +109,22 @@ namespace OmagiecaVMS01
 
             return members;
         }
+        private void TextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Check if textBox1 has text and adjust textBox2's enabled state
+            txtForeignCountry.Enabled = string.IsNullOrEmpty(txtCityMunicipality.Text);
 
+            // Check if textBox2 has text and adjust textBox1's enabled state
+            txtCityMunicipality.Enabled = string.IsNullOrEmpty(txtForeignCountry.Text);
+        }
+        private void txtForeignCountry_TextChanged(object sender, EventArgs e)
+        {
 
+        }
+
+        private void txtCityMunicipality_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
