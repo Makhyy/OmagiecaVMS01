@@ -18,10 +18,11 @@ namespace OmagiecaVMS01
         public decimal PaymentAmount { get; set; }
         public bool    IsPWD { get; set; }
         public int RfidTagNumberId { get; set; }
+        public int VisitId { get; set; }    
         public frmAddmember()
         {
             InitializeComponent();
-            LoadRFIDTags();
+            LoadAvailableRFIDTagsToDisplay();
             chkIsPWD.CheckedChanged += chkIsPWD_CheckedChanged;
         }
        
@@ -91,12 +92,12 @@ namespace OmagiecaVMS01
                 MessageBox.Show($"An error occurred while populating visitor type and payment amount: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void LoadRFIDTags()
+        private void LoadAvailableRFIDTagsToDisplay()
         {
             try
             {
                 VisitorBLL visitorBLL = new VisitorBLL();
-                var rfidTags = visitorBLL.GetRFIDTags(); // Fetch RFID tags from BLL
+                var rfidTags = visitorBLL.GetAvailableRFIDTagsToDisplay(); // Fetch RFID tags from BLL
 
                 if (rfidTags == null || rfidTags.Count == 0)
                 {

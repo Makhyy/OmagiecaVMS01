@@ -124,31 +124,7 @@ namespace OmagiecaVMS01
             }
         }
 
-        /*
-
-        private void LoadRFIDTags()
-        {
-            try
-            {
-                VisitorBLL visitorBLL = new VisitorBLL();
-                var rfidTags = visitorBLL.GetRFIDTags(); // Fetch RFID tags from BLL
-
-                if (rfidTags == null || rfidTags.Count == 0)
-                {
-                    MessageBox.Show("No RFID tags found in the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                cboRFIDTag.DataSource = rfidTags;
-                cboRFIDTag.DisplayMember = "RfidTagNumber"; // Column to display
-                cboRFIDTag.ValueMember = "RfidTagNumberId"; // Column for SelectedValue
-                cboRFIDTag.SelectedIndex = -1; // Reset selection
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while loading RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }*/
+       
         private void LoadAvailableRFIDTagsToDisplay()
         {
             try
@@ -172,30 +148,7 @@ namespace OmagiecaVMS01
                 MessageBox.Show("An error occurred while loading RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        /*
-        private void LoadAvailableRFIDTagsIntoComboBox()
-        {
-            try
-            {
-                RFIDTagBLL rfidTagBLL = new RFIDTagBLL();
-
-                var rfidTags = visitorBLL.GetAvailableRFIDTags();  // Fetch RFID tags from BLL
-
-                if (rfidTags == null || rfidTags.Count == 0)
-                {
-                    MessageBox.Show("No RFID tags found in the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                cboRFIDTag.DataSource = rfidTags; // Assuming you have a ComboBox named comboBoxAvailableRFIDTags
-                cboRFIDTag.DisplayMember = "RfidTagNumber"; // Display the RFID Tag Number to the user
-                cboRFIDTag.ValueMember = "RfidTagNumberId"; // Use the RFID Tag Number ID as the underlying value
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading RFID tags: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        */
+       
 
         private void btnRegisterVisitor_Click(object sender, EventArgs e)
         {
@@ -671,6 +624,12 @@ namespace OmagiecaVMS01
         private void txtLastName_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnGroupMember_Click(object sender, EventArgs e)
+        {
+            frmGroupMember groupMember = new frmGroupMember();
+            groupMember.ShowDialog();
         }
     }
 }

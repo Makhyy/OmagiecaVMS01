@@ -27,5 +27,18 @@ namespace DAL
             }
             return dt;
         }
+        public DataTable GetGroupData()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Update the column name in the query below
+                SqlDataAdapter adapter = new SqlDataAdapter("SELECT GroupId FROM Visitors", connection);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                return dataTable;
+            }
+        }
+
+
     }
 }

@@ -16,10 +16,15 @@ namespace OmagiecaVMS01
     public partial class frmGroupRegister : Form
     {
         GroupRegistrationBLL groupRegistrationBLL = new GroupRegistrationBLL();
+        private RFIDTagBLL rfidTagBLL = new RFIDTagBLL();
+
+        private VisitorBLL _visitorBLL = new VisitorBLL();
         public frmGroupRegister()
         {
             InitializeComponent();
-            LoadRFIDTags();
+            LoadAvailableRFIDTagsToDisplay();
+            txtCityMunicipality.TextChanged += TextBox_TextChanged;
+            txtForeignCountry.TextChanged += TextBox_TextChanged;
         }
 
         private void ucfrmGroupRegister_Load(object sender, EventArgs e)
@@ -188,29 +193,7 @@ namespace OmagiecaVMS01
                 DateRegistered = registrationDate
             };
         }
-        private void LoadRFIDTags()
-        {
-            try
-            {
-                VisitorBLL visitorBLL = new VisitorBLL();
-                var rfidTags = visitorBLL.GetRFIDTags(); // Fetch RFID tags from BLL
-
-                if (rfidTags == null || rfidTags.Count == 0)
-                {
-                    MessageBox.Show("No RFID tags found in the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                cboRFIDTag.DataSource = rfidTags;
-                cboRFIDTag.DisplayMember = "RfidTagNumber"; // Column to display
-                cboRFIDTag.ValueMember = "RfidTagNumberId"; // Column for SelectedValue
-                cboRFIDTag.SelectedIndex = -1; // Reset selection
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while loading RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+       
 
         private int GetSafeRfidTagNumber()
         {
@@ -507,6 +490,38 @@ namespace OmagiecaVMS01
         {
             this.Close();
 
+        }
+        private void TextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Check if textBox1 has text and adjust textBox2's enabled state
+            txtForeignCountry.Enabled = string.IsNullOrEmpty(txtCityMunicipality.Text);
+
+            // Check if textBox2 has text and adjust textBox1's enabled state
+            txtCityMunicipality.Enabled = string.IsNullOrEmpty(txtForeignCountry.Text);
+        }
+
+        private void LoadAvailableRFIDTagsToDisplay()
+        {
+            try
+            {
+                VisitorBLL visitorBLL = new VisitorBLL();
+                var rfidTags = visitorBLL.GetAvailableRFIDTagsToDisplay(); // Fetch RFID tags from BLL
+
+                if (rfidTags == null || rfidTags.Count == 0)
+                {
+                    MessageBox.Show("No RFID tags found in the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                cboRFIDTag.DataSource = rfidTags;
+                cboRFIDTag.DisplayMember = "RfidTagNumber"; // Column to display
+                cboRFIDTag.ValueMember = "RfidTagNumberId"; // Column for SelectedValue
+                cboRFIDTag.SelectedIndex = -1; // Reset selection
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while loading RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

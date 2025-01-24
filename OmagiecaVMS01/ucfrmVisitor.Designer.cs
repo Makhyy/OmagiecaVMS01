@@ -71,11 +71,13 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.btnGroupMember = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.visitorBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).BeginInit();
             this.panel4.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // omagiecaVMS01DBDataSet2
@@ -229,12 +231,12 @@
             this.label9.AutoSize = true;
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(522, 190);
+            this.label9.Location = new System.Drawing.Point(513, 140);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(233, 32);
+            this.label9.Size = new System.Drawing.Size(242, 32);
             this.label9.TabIndex = 201;
-            this.label9.Text = "Payment Amount  ₱";
+            this.label9.Text = "Payment Amount (₱)";
             // 
             // cboVisitorType
             // 
@@ -592,11 +594,30 @@
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.OldLace;
+            this.panel6.Controls.Add(this.btnGroupMember);
+            this.panel6.Controls.Add(this.label9);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(0, 48);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(1261, 651);
             this.panel6.TabIndex = 282;
+            // 
+            // btnGroupMember
+            // 
+            this.btnGroupMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGroupMember.BackColor = System.Drawing.Color.DimGray;
+            this.btnGroupMember.FlatAppearance.BorderSize = 2;
+            this.btnGroupMember.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.btnGroupMember.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGroupMember.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGroupMember.ForeColor = System.Drawing.Color.White;
+            this.btnGroupMember.Location = new System.Drawing.Point(1112, 121);
+            this.btnGroupMember.Name = "btnGroupMember";
+            this.btnGroupMember.Size = new System.Drawing.Size(139, 56);
+            this.btnGroupMember.TabIndex = 220;
+            this.btnGroupMember.Text = "Group Members";
+            this.btnGroupMember.UseVisualStyleBackColor = false;
+            this.btnGroupMember.Click += new System.EventHandler(this.btnGroupMember_Click);
             // 
             // ucfrmVisitor
             // 
@@ -622,7 +643,6 @@
             this.Controls.Add(this.txtCityMunicipality);
             this.Controls.Add(this.txtPaymentAmount);
             this.Controls.Add(this.chkIsPWD);
-            this.Controls.Add(this.label9);
             this.Controls.Add(this.cboVisitorType);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
@@ -645,6 +665,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -692,5 +714,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Button btnGroupMember;
     }
 }

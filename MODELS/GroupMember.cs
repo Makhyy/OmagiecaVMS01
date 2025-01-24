@@ -15,6 +15,7 @@ namespace MODELS
         public bool IsPWD { get; set; }
         public decimal PaymentAmount { get; set; } 
         public int RfidTagNumberId { get; set; } 
+        public int VisitId { get; set; }    
     }
 
 }
