@@ -62,6 +62,8 @@ namespace DAL
 
                     int groupId = (int)groupCommand.ExecuteScalar();
 
+                    //Insert Visit
+
                     // Insert into GroupMember
                     string memberQuery = @"
                 INSERT INTO GroupMember (GroupId, Age, VisitorType, PaymentAmount, RfidTagNumberId)
