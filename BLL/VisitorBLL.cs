@@ -384,19 +384,7 @@ namespace BLL
         }
 
 
-        public DataTable GetRecentVisitors()
-        {
-            try
-            {
-                // Directly call the DAL method
-                return _visitorDAL.GetRecentVisitors();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while retrieving recent visitors: " + ex.Message, ex);
-            }
-        }
-
+     
 
 
         public DataTable GetRevenueByDateRange(DateTime startDate, DateTime endDate)

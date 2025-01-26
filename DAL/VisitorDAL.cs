@@ -20,26 +20,7 @@ namespace DAL
             // Set additional command properties here if needed
             return command;
         }
-        public DataTable GetRecentVisitors()
-        {
-            string query = @"
-        SELECT * 
-        FROM Visitors 
-        WHERE DateRegistered >= @Last24Hours"; // Adjust 'DateRegistered' to your actual column name
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add a parameter for the last 24 hours
-                command.Parameters.AddWithValue("@Last24Hours", DateTime.Now.AddDays(-1));
-
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
-                DataTable visitors = new DataTable();
-                adapter.Fill(visitors);
-                return visitors;
-            }
-        }
+      
 
 
 

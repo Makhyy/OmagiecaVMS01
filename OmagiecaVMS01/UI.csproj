@@ -137,6 +137,12 @@
     <Compile Include="frmVisitorsData.Designer.cs">
       <DependentUpon>frmVisitorsData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Notify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Notify.Designer.cs">
+      <DependentUpon>Notify.cs</DependentUpon>
+    </Compile>
     <Compile Include="OmagiecaVMS01DBDataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -300,6 +306,9 @@
     <EmbeddedResource Include="frmVisitorsData.resx">
       <DependentUpon>frmVisitorsData.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Notify.resx">
+      <DependentUpon>Notify.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -429,6 +438,11 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Sound\alarm-ringtone-download-for-mobile.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
