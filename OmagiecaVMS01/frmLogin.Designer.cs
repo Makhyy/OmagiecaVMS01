@@ -62,7 +62,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtUsername);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(356, 150);
+            this.groupBox1.Location = new System.Drawing.Point(360, 184);
             this.groupBox1.MinimumSize = new System.Drawing.Size(758, 487);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(758, 487);
@@ -187,7 +187,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Green;
-            this.label4.Location = new System.Drawing.Point(386, 84);
+            this.label4.Location = new System.Drawing.Point(386, 125);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(732, 44);
             this.label4.TabIndex = 2;
@@ -197,7 +197,7 @@
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(370, 81);
+            this.pictureBox1.Location = new System.Drawing.Point(370, 122);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(55, 56);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -215,7 +215,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "frmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Login";
+            this.Text = "LOGIN";
             this.Load += new System.EventHandler(this.frmLogin_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

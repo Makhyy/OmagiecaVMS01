@@ -84,7 +84,7 @@
             this.btnVisitorManagement.ForeColor = System.Drawing.Color.White;
             this.btnVisitorManagement.Image = ((System.Drawing.Image)(resources.GetObject("btnVisitorManagement.Image")));
             this.btnVisitorManagement.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnVisitorManagement.Location = new System.Drawing.Point(8, 504);
+            this.btnVisitorManagement.Location = new System.Drawing.Point(6, 262);
             this.btnVisitorManagement.Margin = new System.Windows.Forms.Padding(4);
             this.btnVisitorManagement.Name = "btnVisitorManagement";
             this.btnVisitorManagement.Size = new System.Drawing.Size(196, 49);
@@ -146,10 +146,10 @@
             this.btnReports.ForeColor = System.Drawing.Color.White;
             this.btnReports.Image = ((System.Drawing.Image)(resources.GetObject("btnReports.Image")));
             this.btnReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnReports.Location = new System.Drawing.Point(8, 261);
+            this.btnReports.Location = new System.Drawing.Point(9, 504);
             this.btnReports.Margin = new System.Windows.Forms.Padding(4);
             this.btnReports.Name = "btnReports";
-            this.btnReports.Size = new System.Drawing.Size(194, 49);
+            this.btnReports.Size = new System.Drawing.Size(195, 49);
             this.btnReports.TabIndex = 12;
             this.btnReports.Text = "Reports ";
             this.btnReports.UseVisualStyleBackColor = false;
@@ -165,7 +165,7 @@
             this.btnRFIDTags.ForeColor = System.Drawing.Color.White;
             this.btnRFIDTags.Image = ((System.Drawing.Image)(resources.GetObject("btnRFIDTags.Image")));
             this.btnRFIDTags.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRFIDTags.Location = new System.Drawing.Point(9, 319);
+            this.btnRFIDTags.Location = new System.Drawing.Point(9, 383);
             this.btnRFIDTags.Margin = new System.Windows.Forms.Padding(4);
             this.btnRFIDTags.Name = "btnRFIDTags";
             this.btnRFIDTags.Size = new System.Drawing.Size(195, 56);
@@ -214,7 +214,7 @@
             this.btnPayment.ForeColor = System.Drawing.Color.White;
             this.btnPayment.Image = ((System.Drawing.Image)(resources.GetObject("btnPayment.Image")));
             this.btnPayment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnPayment.Location = new System.Drawing.Point(9, 383);
+            this.btnPayment.Location = new System.Drawing.Point(8, 319);
             this.btnPayment.Margin = new System.Windows.Forms.Padding(4);
             this.btnPayment.Name = "btnPayment";
             this.btnPayment.Size = new System.Drawing.Size(195, 56);
@@ -303,10 +303,10 @@
             // lblCurrentUser
             // 
             this.lblCurrentUser.AutoSize = true;
-            this.lblCurrentUser.Font = new System.Drawing.Font("Segoe UI Semilight", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrentUser.Font = new System.Drawing.Font("Segoe UI Semilight", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCurrentUser.Location = new System.Drawing.Point(6, 59);
             this.lblCurrentUser.Name = "lblCurrentUser";
-            this.lblCurrentUser.Size = new System.Drawing.Size(75, 20);
+            this.lblCurrentUser.Size = new System.Drawing.Size(83, 20);
             this.lblCurrentUser.TabIndex = 50;
             this.lblCurrentUser.Text = "Username";
             this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);

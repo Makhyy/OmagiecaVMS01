@@ -153,6 +153,8 @@
             // 
             // dgvPayments
             // 
+            this.dgvPayments.AllowUserToResizeColumns = false;
+            this.dgvPayments.AllowUserToResizeRows = false;
             this.dgvPayments.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.dgvPayments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvPayments.BackgroundColor = System.Drawing.Color.LavenderBlush;

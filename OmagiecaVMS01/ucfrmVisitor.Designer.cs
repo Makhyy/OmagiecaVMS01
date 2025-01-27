@@ -58,10 +58,6 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.btnGroupRegister = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.dgvVisitors = new System.Windows.Forms.DataGridView();
             this.btnClear = new System.Windows.Forms.Button();
@@ -71,10 +67,10 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.btnVisitorsData = new System.Windows.Forms.Button();
             this.btnGroupMember = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.visitorBindingSource)).BeginInit();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -424,57 +420,6 @@
             this.btnGroupRegister.UseVisualStyleBackColor = false;
             this.btnGroupRegister.Click += new System.EventHandler(this.btnGroupRegister_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.LightPink;
-            this.panel1.Controls.Add(this.label8);
-            this.panel1.Controls.Add(this.txtSearch);
-            this.panel1.Controls.Add(this.btnSearch);
-            this.panel1.Location = new System.Drawing.Point(802, 343);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(439, 41);
-            this.panel1.TabIndex = 220;
-            // 
-            // label8
-            // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(4, 10);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(60, 20);
-            this.label8.TabIndex = 223;
-            this.label8.Text = "Search";
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(69, 6);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(277, 27);
-            this.txtSearch.TabIndex = 222;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.btnSearch.FlatAppearance.BorderSize = 2;
-            this.btnSearch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
-            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(351, 4);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(86, 31);
-            this.btnSearch.TabIndex = 221;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
             // btnDelete
             // 
             this.btnDelete.BackColor = System.Drawing.Color.Firebrick;
@@ -494,6 +439,8 @@
             // 
             // dgvVisitors
             // 
+            this.dgvVisitors.AllowUserToResizeColumns = false;
+            this.dgvVisitors.AllowUserToResizeRows = false;
             this.dgvVisitors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -521,6 +468,7 @@
             this.dgvVisitors.Location = new System.Drawing.Point(0, 414);
             this.dgvVisitors.Name = "dgvVisitors";
             this.dgvVisitors.ReadOnly = true;
+            this.dgvVisitors.RowHeadersVisible = false;
             this.dgvVisitors.Size = new System.Drawing.Size(1261, 285);
             this.dgvVisitors.TabIndex = 221;
             this.dgvVisitors.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvVisitors_CellContentClick_1);
@@ -594,6 +542,7 @@
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.OldLace;
+            this.panel6.Controls.Add(this.btnVisitorsData);
             this.panel6.Controls.Add(this.btnGroupMember);
             this.panel6.Controls.Add(this.label9);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -601,6 +550,23 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(1261, 651);
             this.panel6.TabIndex = 282;
+            // 
+            // btnVisitorsData
+            // 
+            this.btnVisitorsData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnVisitorsData.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnVisitorsData.FlatAppearance.BorderSize = 2;
+            this.btnVisitorsData.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.btnVisitorsData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVisitorsData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVisitorsData.ForeColor = System.Drawing.Color.White;
+            this.btnVisitorsData.Location = new System.Drawing.Point(1112, 203);
+            this.btnVisitorsData.Name = "btnVisitorsData";
+            this.btnVisitorsData.Size = new System.Drawing.Size(139, 43);
+            this.btnVisitorsData.TabIndex = 221;
+            this.btnVisitorsData.Text = "All Records";
+            this.btnVisitorsData.UseVisualStyleBackColor = false;
+            this.btnVisitorsData.Click += new System.EventHandler(this.btnVisitorsData_Click);
             // 
             // btnGroupMember
             // 
@@ -625,7 +591,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.btnClear);
@@ -660,8 +625,6 @@
             this.Load += new System.EventHandler(this.ucfrmVisitor_Load);
             ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.visitorBindingSource)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -701,10 +664,6 @@
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnGroupRegister;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.DataGridView dgvVisitors;
         private System.Windows.Forms.Button btnClear;
@@ -715,5 +674,6 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button btnGroupMember;
+        private System.Windows.Forms.Button btnVisitorsData;
     }
 }

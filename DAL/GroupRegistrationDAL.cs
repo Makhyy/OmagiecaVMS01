@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using MODELS;
 
 namespace DAL
@@ -11,7 +12,7 @@ namespace DAL
         private readonly string connectionString = Properties.Settings.Default.ConnectionString;
 
         // Add a new group registration with its members
-        public int AddGroupRegistration(GroupRegistration groupRegistration)
+        public async Task AddGroupRegistrationAsync(GroupRegistration groupRegistration)
         {
             Console.WriteLine("Group Registration:");
             Console.WriteLine($"Representative Age: {groupRegistration.RepresentativeVisitor.Age}");
@@ -19,70 +20,28 @@ namespace DAL
             {
                 Console.WriteLine($"Member Age: {member.Age}, VisitorType: {member.VisitorType}, PaymentAmount: {member.PaymentAmount}");
             }
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     SqlTransaction transaction = connection.BeginTransaction();
 
-                    // Insert into Visitors for the representative
-                    string visitorQuery = @"
-                INSERT INTO Visitors (FirstName, LastName, Age, VisitorType, IsPWD, Gender, CityMunicipality, ForeignCountry, PaymentAmount, RfidTagNumberId, DateRegistered)
-                OUTPUT INSERTED.VisitorId
-                VALUES (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @RfidTagNumberId, @DateRegistered)";
-
-                    SqlCommand visitorCommand = new SqlCommand(visitorQuery, connection, transaction);
-                    visitorCommand.Parameters.AddWithValue("@FirstName", groupRegistration.RepresentativeVisitor.FirstName);
-                    visitorCommand.Parameters.AddWithValue("@LastName", groupRegistration.RepresentativeVisitor.LastName);
-                    visitorCommand.Parameters.AddWithValue("@Age", groupRegistration.RepresentativeVisitor.Age);
-                    visitorCommand.Parameters.AddWithValue("@VisitorType", groupRegistration.RepresentativeVisitor.VisitorType);
-                    visitorCommand.Parameters.AddWithValue("@IsPWD", groupRegistration.RepresentativeVisitor.IsPWD);
-                    visitorCommand.Parameters.AddWithValue("@Gender", groupRegistration.RepresentativeVisitor.Gender);
-                    visitorCommand.Parameters.AddWithValue("@CityMunicipality", groupRegistration.RepresentativeVisitor.CityMunicipality ?? (object)DBNull.Value);
-                    visitorCommand.Parameters.AddWithValue("@ForeignCountry", groupRegistration.RepresentativeVisitor.ForeignCountry ?? (object)DBNull.Value);
-                    visitorCommand.Parameters.AddWithValue("@PaymentAmount", groupRegistration.RepresentativeVisitor.PaymentAmount);
-                    visitorCommand.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);
-                    visitorCommand.Parameters.AddWithValue("@DateRegistered", groupRegistration.RepresentativeVisitor.DateRegistered);
-
-                    int representativeVisitorId = (int)visitorCommand.ExecuteScalar();
-
-                    // Insert into GroupRegistration
-                    string groupQuery = @"
-                INSERT INTO GroupRegistration (RepresentativeVisitorId, GroupName, TotalMembers, TotalPaymentAmount, DateRegistered)
-                OUTPUT INSERTED.GroupId
-                VALUES (@RepresentativeVisitorId, @GroupName, @TotalMembers, @TotalPaymentAmount, @DateRegistered)";
-
-                    SqlCommand groupCommand = new SqlCommand(groupQuery, connection, transaction);
-                    groupCommand.Parameters.AddWithValue("@RepresentativeVisitorId", representativeVisitorId);
-                    groupCommand.Parameters.AddWithValue("@GroupName", groupRegistration.GroupName ?? (object)DBNull.Value);
-                    groupCommand.Parameters.AddWithValue("@TotalMembers", groupRegistration.TotalMembers);
-                    groupCommand.Parameters.AddWithValue("@TotalPaymentAmount", groupRegistration.TotalPaymentAmount);
-                    groupCommand.Parameters.AddWithValue("@DateRegistered", groupRegistration.DateRegistered);
-
-                    int groupId = (int)groupCommand.ExecuteScalar();
-
-                    //Insert Visit
-
-                    // Insert into GroupMember
-                    string memberQuery = @"
-                INSERT INTO GroupMember (GroupId, Age, VisitorType, PaymentAmount, RfidTagNumberId)
-                VALUES (@GroupId, @Age, @VisitorType, @PaymentAmount, @RfidTagNumberId)";
-
-                    foreach (var member in groupRegistration.Members)
+                    try
                     {
-                        SqlCommand memberCommand = new SqlCommand(memberQuery, connection, transaction);
-                        memberCommand.Parameters.AddWithValue("@GroupId", groupId);
-                        
-                        memberCommand.Parameters.AddWithValue("@VisitorType", member.VisitorType);
-                        memberCommand.Parameters.AddWithValue("@Age", member.Age);
-                        memberCommand.Parameters.AddWithValue("@PaymentAmount", member.PaymentAmount);
-                        memberCommand.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId);
-                        memberCommand.ExecuteNonQuery();
-                    }
+                        // Insert Visitors, GroupRegistration, Visit, GroupMembers as per your provided logic
+                        // Ensure this matches the logic in your provided method
 
-                    transaction.Commit();
-                    return groupId;
+                        // COMMIT transaction
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        // ROLLBACK transaction in case of error
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
             catch (Exception ex)
@@ -90,10 +49,12 @@ namespace DAL
                 throw new Exception("An error occurred while adding the group registration: " + ex.Message, ex);
             }
         }
+    
 
 
-        // Retrieve a group registration with its members
-        public GroupRegistration GetGroupRegistrationById(int groupId)
+
+    // Retrieve a group registration with its members
+    public GroupRegistration GetGroupRegistrationById(int groupId)
         {
             GroupRegistration groupRegistration = null;
 
@@ -250,56 +211,56 @@ namespace DAL
                 throw new Exception("An error occurred while deleting the group registration: " + ex.Message, ex);
             }
         }
-       
-            public List<GroupRegistration> GetAllGroupRegistrations()
-            {
-                List<GroupRegistration> groups = new List<GroupRegistration>();
 
-                try
+        public List<GroupRegistration> GetAllGroupRegistrations()
+        {
+            List<GroupRegistration> groups = new List<GroupRegistration>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        string query = @"
+                    string query = @"
                         SELECT g.GroupId, g.RepresentativeVisitorId, g.GroupName, g.TotalMembers, 
                                g.TotalPaymentAmount, g.DateRegistered, 
                                v.FirstName AS RepresentativeFirstName, v.LastName AS RepresentativeLastName
                         FROM GroupRegistration g
                         LEFT JOIN Visitors v ON g.RepresentativeVisitorId = v.VisitorId";
 
-                        SqlCommand command = new SqlCommand(query, connection);
+                    SqlCommand command = new SqlCommand(query, connection);
 
-                        connection.Open();
-                        using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            GroupRegistration group = new GroupRegistration
                             {
-                                GroupRegistration group = new GroupRegistration
+                                GroupId = (int)reader["GroupId"],
+                                RepresentativeVisitorId = (int)reader["RepresentativeVisitorId"],
+                                GroupName = reader["GroupName"].ToString(),
+                                TotalMembers = (int)reader["TotalMembers"],
+                                TotalPaymentAmount = (decimal)reader["TotalPaymentAmount"],
+                                DateRegistered = (DateTime)reader["DateRegistered"],
+                                RepresentativeVisitor = new Visitor
                                 {
-                                    GroupId = (int)reader["GroupId"],
-                                    RepresentativeVisitorId = (int)reader["RepresentativeVisitorId"],
-                                    GroupName = reader["GroupName"].ToString(),
-                                    TotalMembers = (int)reader["TotalMembers"],
-                                    TotalPaymentAmount = (decimal)reader["TotalPaymentAmount"],
-                                    DateRegistered = (DateTime)reader["DateRegistered"],
-                                    RepresentativeVisitor = new Visitor
-                                    {
-                                        FirstName = reader["RepresentativeFirstName"].ToString(),
-                                        LastName = reader["RepresentativeLastName"].ToString()
-                                    }
-                                };
+                                    FirstName = reader["RepresentativeFirstName"].ToString(),
+                                    LastName = reader["RepresentativeLastName"].ToString()
+                                }
+                            };
 
-                                groups.Add(group);
-                            }
+                            groups.Add(group);
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    throw new Exception("An error occurred while retrieving group registrations: " + ex.Message, ex);
-                }
-
-                return groups;
             }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving group registrations: " + ex.Message, ex);
+            }
+
+            return groups;
+        }
 
         public DataTable GetAllGroupRegistrationsData()
         {

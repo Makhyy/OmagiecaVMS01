@@ -153,7 +153,7 @@ namespace OmagiecaVMS01
         }
         private void ClosingTimer_Tick(object sender, EventArgs e)
         {
-            DateTime closingTime = DateTime.Today.AddHours(14).AddMinutes(23); // Adjusted to the desired closing time
+            DateTime closingTime = DateTime.Today.AddHours(17).AddMinutes(56); // Adjusted to the desired closing time
             TimeSpan timeLeft = closingTime - DateTime.Now;
 
             // Debug output to check the time left
@@ -170,7 +170,7 @@ namespace OmagiecaVMS01
                 }
 
                 int remainingVisitors = visitorBLL.GetRemainingVisitorCount();
-                string message = $"Attention: The facility will close in 10 minutes. There are {remainingVisitors} visitors still inside.";
+                string message = $"Attention: The facility will close in 5 minutes. There are {remainingVisitors} visitors still inside.";
 
                 // Play the notification sound just before showing the notification
                 PlayNotificationSound();

@@ -179,7 +179,6 @@ namespace OmagiecaVMS01
             
 
         }
-
         private void ExportToExcelWithTwoSheets(DataGridView dataGridView)
         {
             try
@@ -205,10 +204,14 @@ namespace OmagiecaVMS01
                 Excel.Worksheet tableSheet = (Excel.Worksheet)workbook.Sheets[1];
                 tableSheet.Name = "Visitor Data";
 
-                // Add column headers to Sheet 1
+                // Add column headers to Sheet 1 with background color
                 for (int i = 1; i <= dataGridView.Columns.Count; i++)
                 {
-                    tableSheet.Cells[1, i] = dataGridView.Columns[i - 1].HeaderText;
+                    Excel.Range headerCell = tableSheet.Cells[1, i];
+                    headerCell.Value = dataGridView.Columns[i - 1].HeaderText;
+                    headerCell.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.DarkGreen);
+                    headerCell.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
+                    headerCell.Font.Bold = true;
                 }
 
                 // Add row data to Sheet 1
@@ -220,12 +223,42 @@ namespace OmagiecaVMS01
                     }
                 }
 
-                // Add total visitors row to Sheet 1
+                // Add "Total Visitors" row at the end
                 int totalRow = dataGridView.Rows.Count + 2;
                 tableSheet.Cells[totalRow, 1] = "Total Visitors";
                 tableSheet.Cells[totalRow, 2] = labelTotalRecords.Text.Replace("Total Visitors: ", "");
-                Excel.Range totalRange = tableSheet.Range[tableSheet.Cells[totalRow, 1], tableSheet.Cells[totalRow, 2]];
-                totalRange.Font.Bold = true;
+
+                // Apply formatting to the "Total Visitors" row
+                Excel.Range totalRowRange = tableSheet.Range[
+                    tableSheet.Cells[totalRow, 1],
+                    tableSheet.Cells[totalRow, dataGridView.Columns.Count]
+                ];
+                totalRowRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightGoldenrodYellow);
+                totalRowRange.Font.Bold = true;
+
+                // Format the entire table with borders and alternating row colors
+                Excel.Range tableRange = tableSheet.Range[
+                    tableSheet.Cells[1, 1],
+                    tableSheet.Cells[totalRow, dataGridView.Columns.Count]
+                ];
+                tableRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                tableRange.Borders.Weight = Excel.XlBorderWeight.xlThin;
+
+                // Apply alternating row colors
+                for (int i = 2; i <= dataGridView.Rows.Count + 1; i++)
+                {
+                    Excel.Range rowRange = tableSheet.Range[
+                        tableSheet.Cells[i, 1],
+                        tableSheet.Cells[i, dataGridView.Columns.Count]
+                    ];
+                    if (i % 2 == 0)
+                    {
+                        rowRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightGray);
+                    }
+                }
+
+                // Autofit the columns to ensure content is visible
+                tableSheet.Columns.AutoFit();
 
                 // Sheet 2: Chart View
                 Excel.Worksheet chartSheet = (Excel.Worksheet)workbook.Sheets.Add();
@@ -235,49 +268,35 @@ namespace OmagiecaVMS01
                 chartSheet.Cells[1, 1] = "Visitor Type";
                 chartSheet.Cells[1, 2] = "Visitor Count";
 
-                // Extract chart data from the application chart
                 int row = 2;
                 foreach (var point in chart1.Series[0].Points)
                 {
-                    chartSheet.Cells[row, 1] = point.AxisLabel;  // Visitor type
-                    chartSheet.Cells[row, 2] = point.YValues[0]; // Count
+                    chartSheet.Cells[row, 1] = point.AxisLabel;
+                    chartSheet.Cells[row, 2] = point.YValues[0];
                     row++;
                 }
 
-                // Define chart dimensions
-                double chartWidth = 500; // Width of the chart
-                double chartHeight = 300; // Height of the chart
-
-                // Position the chart dynamically below the data table
-                int dataEndRow = row + 1; // Data ends after all rows are added
-                double chartTop = dataEndRow * chartSheet.Rows[1].Height; // Position below data
-                double chartLeft = 100; // Add some left margin
-
                 // Create and embed the chart in Sheet 2
                 Excel.ChartObjects charts = (Excel.ChartObjects)chartSheet.ChartObjects(Type.Missing);
-                Excel.ChartObject chartObject = charts.Add(chartLeft, chartTop, chartWidth, chartHeight);
+                Excel.ChartObject chartObject = charts.Add(60, 10, 500, 300);
                 Excel.Chart chart = chartObject.Chart;
 
-                // Set the chart's data range
                 Excel.Range chartRange = chartSheet.Range[
                     chartSheet.Cells[2, 1],
                     chartSheet.Cells[row - 1, 2]
                 ];
                 chart.SetSourceData(chartRange);
 
-                // Customize the chart
                 chart.ChartType = Excel.XlChartType.xlColumnClustered;
                 chart.HasTitle = true;
                 chart.ChartTitle.Text = "Visitor Count by Type";
 
-                // Save the workbook
-                string filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "VisitorReport.xlsx");
-                workbook.SaveAs(filePath);
+               
 
                 // Show Excel
                 excelApp.Visible = true;
 
-                MessageBox.Show($"Export successful! File saved to: {filePath}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
 
                 // Cleanup
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(tableSheet);
@@ -290,6 +309,7 @@ namespace OmagiecaVMS01
                 MessageBox.Show($"An error occurred: {ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
 

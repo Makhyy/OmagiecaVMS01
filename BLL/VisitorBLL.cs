@@ -58,11 +58,7 @@ namespace BLL
 
             return (weekStart, weekEnd);
         }
-        public DataTable GetVisitorsForLastCompleteWeek()
-        {
-            var (weekStart, weekEnd) = GetLastCompleteWeekRange();
-            return visitorDAL.GetVisitorsWeeklyReport(weekStart, weekEnd);
-        }
+       
         public DataTable GetVisitorsWeeklyReport()
         {
             DateTime endDate = DateTime.Today; // Today's date

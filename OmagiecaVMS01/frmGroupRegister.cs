@@ -6,15 +6,18 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static OmagiecaVMS01.OmagiecaVMS01DBDataSet2;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace OmagiecaVMS01
 {
     public partial class frmGroupRegister : Form
     {
+        decimal paymentAmount = 0;
         GroupRegistrationBLL groupRegistrationBLL = new GroupRegistrationBLL();
         private RFIDTagBLL rfidTagBLL = new RFIDTagBLL();
 
@@ -86,19 +89,18 @@ namespace OmagiecaVMS01
 
             return members;
         }
+        public async Task AddGroupRegistrationAsync(GroupRegistration groupRegistration)
+        {
+            await groupRegistrationBLL.AddGroupRegistrationAsync(groupRegistration);
+        }
 
         private async void btnSubmitRegistration_Click_1(object sender, EventArgs e)
         {
             // Aggregate payments and validate total
             UpdateTotalPayment();
-            if (decimal.Parse(txtTotalPayment.Text) <= 0)
-            {
-                MessageBox.Show("Total payment amount must be greater than zero.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
 
             // Validate other inputs
-            if (!ValidateInputs(out string validationErrors))
+            if (!ValidateInputFields(out string validationErrors))
             {
                 MessageBox.Show(validationErrors, "Validation Errors", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -107,10 +109,10 @@ namespace OmagiecaVMS01
             try
             {
                 // Build GroupRegistration object
-                var group = CreateGroupRegistration();
+                var group = CreateGroupRegistration(); // Make sure this method returns a valid GroupRegistration object
 
                 // Save group registration asynchronously
-                await Task.Run(() => groupRegistrationBLL.AddGroupRegistration(group));
+                await groupRegistrationBLL.AddGroupRegistrationAsync(group);  // Pass the correct object here (group)
 
                 // Success feedback
                 MessageBox.Show("Group registered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -153,56 +155,55 @@ namespace OmagiecaVMS01
 
         private GroupRegistration CreateGroupRegistration()
         {
-            var registrationDate = DateTime.Now;  // Use this to ensure all date fields are synchronized
-            string groupName = string.IsNullOrWhiteSpace(txtGroupName.Text) ? $"{txtFirstName.Text.Trim()} Group" : txtGroupName.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(txtFirstName.Text) || string.IsNullOrWhiteSpace(txtLastName.Text))
-            {
-                MessageBox.Show("First Name and Last Name must not be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;  // Or handle it more appropriately depending on your application's flow
-            }
-            // Ensure you handle potential exceptions here too
-            decimal representativePayment = GetSafeDecimal(txtPaymentAmount.Text);
-
-            // Retrieve and calculate member payments
+            string groupName = GetGroupName();
+            Visitor representative = CreateRepresentativeVisitor();
             var members = GetGroupMembersFromGrid();
-            decimal membersTotalPayment = members.Sum(member => member.PaymentAmount);
-
-            // Total payment is the sum of representative's payment and all members' payments
-            decimal totalPaymentAmount = representativePayment + membersTotalPayment;
+            decimal totalPayment = CalculateTotalPayment();
 
             return new GroupRegistration
             {
                 GroupName = groupName,
-                RepresentativeVisitor = new Visitor
-                {
-                    FirstName = txtFirstName.Text.Trim(),
-                    LastName = txtLastName.Text.Trim(),
-                    Age = int.TryParse(txtAge.Text, out int age) ? age : 0, // Safely parse age with a fallback
-                    VisitorType = cboVisitorType.SelectedItem.ToString(),
-                    IsPWD = chkIsPWD.Checked,
-                    Gender = cboGender.SelectedItem.ToString(),
-                    CityMunicipality = string.IsNullOrWhiteSpace(txtCityMunicipality.Text) ? null : txtCityMunicipality.Text.Trim(),
-                    ForeignCountry = string.IsNullOrWhiteSpace(txtForeignCountry.Text) ? null : txtForeignCountry.Text.Trim(),
-                    PaymentAmount = GetSafeDecimal(txtPaymentAmount.Text),
-                    RfidTagNumberId = GetSafeRfidTagNumber(),
-                    DateRegistered = registrationDate
-                },
-                Members = GetGroupMembersFromGrid(),
-                TotalPaymentAmount = GetSafeDecimal(txtTotalPayment.Text),
-                DateRegistered = registrationDate
+                RepresentativeVisitor = representative,
+                Members = members,
+                TotalPaymentAmount = totalPayment,
+                DateRegistered = DateTime.Now
             };
         }
-       
 
-        private int GetSafeRfidTagNumber()
+        private string GetGroupName()
         {
-            if (cboRFIDTag.SelectedValue != null && int.TryParse(cboRFIDTag.SelectedValue.ToString(), out int rfidTagNumber))
-            {
-                return rfidTagNumber;
-            }
-            return 0; // Return 0 or another appropriate default value if conversion fails
+            return string.IsNullOrWhiteSpace(txtGroupName.Text)
+                ? $"{txtFirstName.Text.Trim()} Group"
+                : txtGroupName.Text.Trim();
         }
+
+        private Visitor CreateRepresentativeVisitor()
+        {
+            return new Visitor
+            {
+                FirstName = txtFirstName.Text.Trim(),
+                LastName = txtLastName.Text.Trim(),
+                Age = int.Parse(txtAge.Text),
+                VisitorType = cboVisitorType.SelectedItem.ToString(),
+                IsPWD = chkIsPWD.Checked,
+                Gender = cboGender.SelectedItem.ToString(),
+                CityMunicipality = txtCityMunicipality.Text.Trim(),
+                ForeignCountry = txtForeignCountry.Text.Trim(),
+                PaymentAmount = decimal.Parse(txtPaymentAmount.Text),
+                RfidTagNumberId = (int)cboRFIDTag.SelectedValue,
+                DateRegistered = DateTime.Now
+            };
+        }
+
+        private decimal CalculateTotalPayment()
+        {
+            decimal representativePayment = GetSafeDecimal(txtPaymentAmount.Text);
+            decimal membersPayment = GetGroupMembersFromGrid().Sum(member => member.PaymentAmount);
+            return representativePayment + membersPayment;
+        }
+
+
+
         private decimal GetSafeDecimal(string input)
         {
             if (decimal.TryParse(input, out decimal result))
@@ -351,36 +352,23 @@ namespace OmagiecaVMS01
             }
 
         }
-        private bool ValidateInputs(out string validationErrors)
+        private bool ValidateInputFields(out string errors)
         {
-            var errors = new StringBuilder();
+            var errorList = new List<string>();
 
-            // Validate representative fields
             if (string.IsNullOrWhiteSpace(txtFirstName.Text))
-                errors.AppendLine("First Name is required.");
+                errorList.Add("First Name is required.");
             if (string.IsNullOrWhiteSpace(txtLastName.Text))
-                errors.AppendLine("Last Name is required.");
+                errorList.Add("Last Name is required.");
             if (!int.TryParse(txtAge.Text, out int age) || age <= 0)
-                errors.AppendLine("Age must be a valid positive number.");
+                errorList.Add("Valid Age is required.");
             if (cboGender.SelectedItem == null)
-                errors.AppendLine("Gender is required.");
+                errorList.Add("Gender is required.");
             if (!decimal.TryParse(txtPaymentAmount.Text, out _))
-                errors.AppendLine("Payment Amount must be a valid decimal.");
+                errorList.Add("Valid Payment Amount is required.");
 
-            // Validate group members
-            foreach (DataGridViewRow row in dgvMembers.Rows)
-            {
-                if (!row.IsNewRow)
-                {
-                    if (!decimal.TryParse(row.Cells["PaymentAmount"].Value?.ToString(), out _))
-                    {
-                        errors.AppendLine($"Invalid payment amount in row {row.Index + 1}.");
-                    }
-                }
-            }
-
-            validationErrors = errors.ToString();
-            return string.IsNullOrEmpty(validationErrors);
+            errors = string.Join(Environment.NewLine, errorList);
+            return !errorList.Any();
         }
 
         // Clear form fields
@@ -403,7 +391,23 @@ namespace OmagiecaVMS01
         private void UpdateTotalPaymentAndMembers()
         {
             decimal totalPayment = 0;
+            decimal representativePayment = paymentAmount;
+            int representativeVisitor = 1;
             int totalMembers = 0;
+
+          
+
+            if (!string.IsNullOrWhiteSpace(txtFirstName.Text))
+            {
+
+                // lblTotalMembers.Text = "1";
+                totalMembers=representativeVisitor + totalMembers;
+            }
+            if (decimal.TryParse(txtPaymentAmount.Text, out decimal defaultPayment))
+            {
+                totalPayment=totalPayment + defaultPayment; // Start with the default value from the default TextBox
+           txtTotalPayment.Text = defaultPayment.ToString("F2");  // Display the total payment formatted as a fixed-point number
+            }
 
             foreach (DataGridViewRow row in dgvMembers.Rows)
             {
@@ -411,7 +415,7 @@ namespace OmagiecaVMS01
                 {
                     if (decimal.TryParse(row.Cells["PaymentAmount"].Value.ToString(), out decimal paymentAmount))
                     {
-                        totalPayment += paymentAmount;  // Sum up the payment amount
+                        totalPayment += paymentAmount;  // Sum up the payment amount  // Sum up the payment amount
                     }
                     totalMembers++;  // Count each row that is not the new row template
                 }
@@ -491,6 +495,10 @@ namespace OmagiecaVMS01
             this.Close();
 
         }
+        private void ShowError(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
             // Check if textBox1 has text and adjust textBox2's enabled state
@@ -522,6 +530,21 @@ namespace OmagiecaVMS01
             {
                 MessageBox.Show("An error occurred while loading RFID tags: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void txtFirstName_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtFirstName.Text))
+            {
+                
+                  lblTotalMembers.Text = "1";
+            
+            }
+        }
+
+        private void txtPaymentAmount_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

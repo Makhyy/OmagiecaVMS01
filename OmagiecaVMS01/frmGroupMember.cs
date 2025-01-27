@@ -23,10 +23,10 @@ namespace OmagiecaVMS01
             LoadGroupMembers();
             
             dgvGroupMembers.DataSource = groupMemberBLL.GetAllGroupMembers();
-            LoadColorMap();
+           
             InitializeColumnIndex(); // Initialize column index after data is bound
 
-            dgvGroupMembers.CellFormatting += new DataGridViewCellFormattingEventHandler(dgvGroupMembers_CellFormatting);
+           
 
             dgvGroupMembers.Refresh();
         }
@@ -49,17 +49,7 @@ namespace OmagiecaVMS01
         {
 
         }
-        private void LoadColorMap()
-        {
-            try
-            {
-                _colorMap = groupMemberBLL.CreateColorMap();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error creating color map: " + ex.Message);
-            }
-        }
+      
 
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -67,17 +57,6 @@ namespace OmagiecaVMS01
             this.Close();
         }
 
-        private void dgvGroupMembers_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (dgvGroupMembers.Columns[e.ColumnIndex].Name == "GroupId" && e.Value != null)
-            {
-                int groupId = Convert.ToInt32(e.Value);
-                if (_colorMap.ContainsKey(groupId))
-                {
-                    dgvGroupMembers.Rows[e.RowIndex].DefaultCellStyle.BackColor = _colorMap[groupId];
-                    dgvGroupMembers.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = _colorMap[groupId]; // To maintain color on row selection
-                }
-            }
-        }
+       
     }
 }

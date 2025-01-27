@@ -243,7 +243,6 @@
             this.txtRfidTagUID.Location = new System.Drawing.Point(219, 309);
             this.txtRfidTagUID.Margin = new System.Windows.Forms.Padding(2);
             this.txtRfidTagUID.Name = "txtRfidTagUID";
-            this.txtRfidTagUID.ReadOnly = true;
             this.txtRfidTagUID.Size = new System.Drawing.Size(171, 27);
             this.txtRfidTagUID.TabIndex = 225;
             // 
@@ -261,6 +260,8 @@
             // 
             // dgvRFIDTags
             // 
+            this.dgvRFIDTags.AllowUserToResizeColumns = false;
+            this.dgvRFIDTags.AllowUserToResizeRows = false;
             this.dgvRFIDTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvRFIDTags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;

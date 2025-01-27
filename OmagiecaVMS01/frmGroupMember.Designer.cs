@@ -45,7 +45,7 @@
             this.dgvGroupMembers.Size = new System.Drawing.Size(1092, 540);
             this.dgvGroupMembers.TabIndex = 0;
             this.dgvGroupMembers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroupMembers_CellContentClick);
-            this.dgvGroupMembers.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvGroupMembers_CellFormatting);
+          
             // 
             // btnClose
             // 

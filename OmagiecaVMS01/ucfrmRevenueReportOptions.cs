@@ -217,108 +217,135 @@ namespace OmagiecaVMS01
 
         private void ExportToExcel(DataGridView dataGridView)
         {
-            if (dataGridView.Rows.Count == 0)
+            try
             {
-                MessageBox.Show("No data to export.");
-                return;
-            }
-
-            // Initialize Excel application
-            Excel.Application excelApp = new Excel.Application();
-            if (excelApp == null)
-            {
-                MessageBox.Show("Excel is not installed on this system.");
-                return;
-            }
-
-            // Create a new workbook
-            Excel.Workbook workbook = excelApp.Workbooks.Add(Type.Missing);
-
-            // Sheet 1: Revenue Data Table
-            Excel.Worksheet dataSheet = (Excel.Worksheet)workbook.Sheets[1];
-            dataSheet.Name = "Revenue Data";
-
-            // Add column headers to Sheet 1
-            for (int i = 1; i <= dataGridView.Columns.Count; i++)
-            {
-                dataSheet.Cells[1, i] = dataGridView.Columns[i - 1].HeaderText;
-            }
-
-            // Add row data to Sheet 1
-            for (int i = 0; i < dataGridView.Rows.Count; i++)
-            {
-                for (int j = 0; j < dataGridView.Columns.Count; j++)
+                if (dataGridView.Rows.Count == 0)
                 {
-                    dataSheet.Cells[i + 2, j + 1] = dataGridView.Rows[i].Cells[j].Value;
+                    MessageBox.Show("No data to export.");
+                    return;
                 }
-            }
 
-            // Add total revenue row to Sheet 1
-            int totalRow = dataGridView.Rows.Count + 2;
-            dataSheet.Cells[totalRow, 1] = "Total Revenue:";
-            dataSheet.Cells[totalRow, 2] = lblTotalRevenue.Text.Replace("Total Revenue: ", "");
-            Excel.Range totalRange = dataSheet.Range[dataSheet.Cells[totalRow, 1], dataSheet.Cells[totalRow, 2]];
-            totalRange.Font.Bold = true;
-            totalRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Green);
-
-            // Sheet 2: Revenue Chart
-            Excel.Worksheet chartSheet = (Excel.Worksheet)workbook.Sheets.Add();
-            chartSheet.Name = "Revenue Chart";
-
-            // Add chart data to Sheet 2
-            chartSheet.Cells[1, 1] = "Date";
-            chartSheet.Cells[1, 2] = "Revenue";
-
-            // Extract data from the chart series
-            Series series = chartRevenue.Series[0];
-            int row = 2;
-            foreach (var point in series.Points)
-            {
-                if (point.XValue != 0 && point.YValues[0] != 0)
+                // Initialize Excel application
+                Excel.Application excelApp = new Excel.Application();
+                if (excelApp == null)
                 {
-                    DateTime date = DateTime.FromOADate(point.XValue);
-                    chartSheet.Cells[row, 1] = date.ToString("MMM dd, yyyy");
-                    chartSheet.Cells[row, 2] = point.YValues[0];
-                    row++;
+                    MessageBox.Show("Excel is not installed on this system.");
+                    return;
                 }
+
+                // Create a new workbook
+                Excel.Workbook workbook = excelApp.Workbooks.Add(Type.Missing);
+
+                // Sheet 1: Revenue Data Table
+                Excel.Worksheet dataSheet = (Excel.Worksheet)workbook.Sheets[1];
+                dataSheet.Name = "Revenue Data";
+
+                // Add column headers with styling
+                for (int i = 1; i <= dataGridView.Columns.Count; i++)
+                {
+                    Excel.Range headerCell = dataSheet.Cells[1, i];
+                    headerCell.Value = dataGridView.Columns[i - 1].HeaderText;
+                    headerCell.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.DarkGreen);
+                    headerCell.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
+                    headerCell.Font.Bold = true;
+                }
+
+                // Add row data with alternating colors
+                for (int i = 0; i < dataGridView.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dataGridView.Columns.Count; j++)
+                    {
+                        dataSheet.Cells[i + 2, j + 1] = dataGridView.Rows[i].Cells[j].Value;
+                    }
+
+                    Excel.Range rowRange = dataSheet.Range[
+                        dataSheet.Cells[i + 2, 1],
+                        dataSheet.Cells[i + 2, dataGridView.Columns.Count]
+                    ];
+
+                    if (i % 2 == 0)
+                    {
+                        rowRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightGray);
+                    }
+                }
+
+                // Add total revenue row
+                int totalRow = dataGridView.Rows.Count + 2;
+                dataSheet.Cells[totalRow, 1] = "Total Revenue:";
+                dataSheet.Cells[totalRow, 2] = lblTotalRevenue.Text.Replace("Total Revenue: ", "");
+
+                Excel.Range totalRowRange = dataSheet.Range[
+                    dataSheet.Cells[totalRow, 1],
+                    dataSheet.Cells[totalRow, dataGridView.Columns.Count]
+                ];
+                totalRowRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightGoldenrodYellow);
+                totalRowRange.Font.Bold = true;
+
+                // Apply borders to the entire table
+                Excel.Range tableRange = dataSheet.Range[
+                    dataSheet.Cells[1, 1],
+                    dataSheet.Cells[totalRow, dataGridView.Columns.Count]
+                ];
+                tableRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                tableRange.Borders.Weight = Excel.XlBorderWeight.xlThin;
+
+                // Autofit columns for readability
+                dataSheet.Columns.AutoFit();
+
+                // Sheet 2: Revenue Chart
+                Excel.Worksheet chartSheet = (Excel.Worksheet)workbook.Sheets.Add();
+                chartSheet.Name = "Revenue Chart";
+
+                // Add chart data to Sheet 2
+                chartSheet.Cells[1, 1] = "Date";
+                chartSheet.Cells[1, 2] = "Revenue";
+
+                Series series = chartRevenue.Series[0];
+                int row = 2;
+                foreach (var point in series.Points)
+                {
+                    if (point.XValue != 0 && point.YValues[0] != 0)
+                    {
+                        DateTime date = DateTime.FromOADate(point.XValue);
+                        chartSheet.Cells[row, 1] = date.ToString("MMM dd, yyyy");
+                        chartSheet.Cells[row, 2] = point.YValues[0];
+                        row++;
+                    }
+                }
+
+                // Create and embed the chart in Sheet 2
+                Excel.ChartObjects charts = (Excel.ChartObjects)chartSheet.ChartObjects(Type.Missing);
+                Excel.ChartObject chartObject = charts.Add(60, 10, 500, 300);
+                Excel.Chart chart = chartObject.Chart;
+
+                Excel.Range chartRange = chartSheet.Range[
+                    chartSheet.Cells[2, 1],
+                    chartSheet.Cells[row - 1, 2]
+                ];
+                chart.SetSourceData(chartRange);
+
+                chart.ChartType = Excel.XlChartType.xlColumnClustered;
+                chart.HasTitle = true;
+                chart.ChartTitle.Text = "Revenue Over Time";
+
+              
+                // Show Excel
+                excelApp.Visible = true;
+
+               
+
+                // Cleanup
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(dataSheet);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(chartSheet);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
             }
-
-            // Calculate the center position for the chart
-            double centerX = chartSheet.Columns[1].Width * 5; // Adjust based on your column width
-            double centerY = (row - 1) * 15; // Adjust based on your row count
-
-            // Create and embed the chart in Sheet 2
-            Excel.ChartObjects charts = (Excel.ChartObjects)chartSheet.ChartObjects(Type.Missing);
-            Excel.ChartObject chartObject = charts.Add(centerX, centerY, 500, 300); // Adjust size
-            Excel.Chart chart = chartObject.Chart;
-
-            // Set the chart's data range
-            Excel.Range chartRange = chartSheet.Range[
-                chartSheet.Cells[2, 1],
-                chartSheet.Cells[row - 1, 2]
-            ];
-            chart.SetSourceData(chartRange);
-
-            // Customize the chart
-            chart.ChartType = Excel.XlChartType.xlColumnClustered;
-            chart.HasTitle = true;
-            chart.ChartTitle.Text = "Revenue Over Time";
-
-            // Save the workbook
-            string filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "RevenueReport.xlsx");
-            workbook.SaveAs(filePath);
-
-            // Show Excel
-            excelApp.Visible = true;
-
-            MessageBox.Show($"Export successful! File saved to: {filePath}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            // Cleanup
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(dataSheet);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(chartSheet);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
 
 

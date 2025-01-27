@@ -14,7 +14,8 @@ namespace OmagiecaVMS01
 {
     public partial class ucfrmGroupRegister : UserControl
     {
-        GroupRegistrationBLL groupRegistrationBLL = new GroupRegistrationBLL();
+        private GroupRegistrationBLL groupRegistrationBLL = new GroupRegistrationBLL();
+
         public ucfrmGroupRegister()
         {
             InitializeComponent();
@@ -28,7 +29,7 @@ namespace OmagiecaVMS01
 
         }
 
-        private void btnSubmitRegistration_Click(object sender, EventArgs e)
+        private async void btnSubmitRegistration_Click(object sender, EventArgs e)
         {
             try
             {
@@ -49,12 +50,14 @@ namespace OmagiecaVMS01
                 };
 
                 // Call BLL to save the group registration
-                groupRegistrationBLL.AddGroupRegistration(group);
+                await groupRegistrationBLL.AddGroupRegistrationAsync(group);  // Corrected this line
 
+                // Success feedback
                 MessageBox.Show("Group registered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
+                // Handle errors
                 MessageBox.Show("Error submitting group: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

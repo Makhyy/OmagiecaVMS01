@@ -258,7 +258,7 @@ namespace OmagiecaVMS01
             }
         }
 
-
+        /*
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -278,6 +278,7 @@ namespace OmagiecaVMS01
                 MessageBox.Show("An error occurred while searching: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        */
         private void PopulateVisitorTypeAndPayment()
         {
             try
@@ -347,7 +348,7 @@ namespace OmagiecaVMS01
             txtPaymentAmount.SelectedIndex = -1;
             cboRFIDTag.SelectedIndex = -1;
             chkIsPWD.Checked = false;
-            txtSearch.Clear();
+            //txtSearch.Clear();
         }
 
         private void txtAge_TextChanged(object sender, EventArgs e)
@@ -591,7 +592,7 @@ namespace OmagiecaVMS01
         {
 
         }
-
+        /*
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
 
@@ -600,7 +601,7 @@ namespace OmagiecaVMS01
                 LoadVisitors(); // Load all visitors again
             }
         }
-
+        */
         private void label11_Click(object sender, EventArgs e)
         {
 
@@ -615,6 +616,12 @@ namespace OmagiecaVMS01
         {
             frmGroupMember groupMember = new frmGroupMember();
             groupMember.ShowDialog();
+        }
+
+        private void btnVisitorsData_Click(object sender, EventArgs e)
+        {
+            frmVisitorsData visitorsData = new frmVisitorsData();
+            visitorsData.ShowDialog();
         }
     }
 }

@@ -37,6 +37,12 @@
             this.txtTotalPayment = new System.Windows.Forms.TextBox();
             this.btnAddMember = new System.Windows.Forms.Button();
             this.dgvMembers = new System.Windows.Forms.DataGridView();
+            this.Age = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VisitorType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsPWD = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.PaymentAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RfidTagNumberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.remove_btn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panel4 = new System.Windows.Forms.Panel();
             this.txtGroupName = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -66,12 +72,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.Age = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VisitorType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsPWD = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.PaymentAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RfidTagNumberId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.remove_btn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMembers)).BeginInit();
             this.panel4.SuspendLayout();
@@ -136,6 +136,7 @@
             this.txtTotalPayment.ReadOnly = true;
             this.txtTotalPayment.Size = new System.Drawing.Size(113, 27);
             this.txtTotalPayment.TabIndex = 297;
+            this.txtTotalPayment.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnAddMember
             // 
@@ -178,6 +179,51 @@
             this.dgvMembers.TabIndex = 0;
             this.dgvMembers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMembers_CellContentClick);
             this.dgvMembers.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMembers_CellValueChanged);
+            // 
+            // Age
+            // 
+            this.Age.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Age.HeaderText = "Age";
+            this.Age.Name = "Age";
+            this.Age.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Age.Width = 150;
+            // 
+            // VisitorType
+            // 
+            this.VisitorType.HeaderText = "VisitorType";
+            this.VisitorType.Name = "VisitorType";
+            // 
+            // IsPWD
+            // 
+            this.IsPWD.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.IsPWD.HeaderText = "IsPWD";
+            this.IsPWD.Name = "IsPWD";
+            this.IsPWD.Width = 70;
+            // 
+            // PaymentAmount
+            // 
+            this.PaymentAmount.HeaderText = "Payment Amount";
+            this.PaymentAmount.Name = "PaymentAmount";
+            // 
+            // RfidTagNumberId
+            // 
+            this.RfidTagNumberId.HeaderText = "RFID Tag Number";
+            this.RfidTagNumberId.Name = "RfidTagNumberId";
+            // 
+            // remove_btn
+            // 
+            this.remove_btn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            this.remove_btn.DefaultCellStyle = dataGridViewCellStyle4;
+            this.remove_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.remove_btn.HeaderText = "";
+            this.remove_btn.Name = "remove_btn";
+            this.remove_btn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.remove_btn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.remove_btn.Text = "Remove";
+            this.remove_btn.UseColumnTextForButtonValue = true;
             // 
             // panel4
             // 
@@ -312,6 +358,7 @@
             this.txtPaymentAmount.Name = "txtPaymentAmount";
             this.txtPaymentAmount.Size = new System.Drawing.Size(126, 29);
             this.txtPaymentAmount.TabIndex = 298;
+            //this.txtPaymentAmount.TextChanged += new System.EventHandler(this.txtPaymentAmount_TextChanged);
             // 
             // label9
             // 
@@ -430,6 +477,7 @@
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.Size = new System.Drawing.Size(171, 27);
             this.txtFirstName.TabIndex = 286;
+            this.txtFirstName.TextChanged += new System.EventHandler(this.txtFirstName_TextChanged);
             // 
             // groupBox1
             // 
@@ -557,51 +605,6 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(1229, 10);
             this.panel5.TabIndex = 281;
-            // 
-            // Age
-            // 
-            this.Age.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Age.HeaderText = "Age";
-            this.Age.Name = "Age";
-            this.Age.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Age.Width = 150;
-            // 
-            // VisitorType
-            // 
-            this.VisitorType.HeaderText = "VisitorType";
-            this.VisitorType.Name = "VisitorType";
-            // 
-            // IsPWD
-            // 
-            this.IsPWD.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.IsPWD.HeaderText = "IsPWD";
-            this.IsPWD.Name = "IsPWD";
-            this.IsPWD.Width = 70;
-            // 
-            // PaymentAmount
-            // 
-            this.PaymentAmount.HeaderText = "Payment Amount";
-            this.PaymentAmount.Name = "PaymentAmount";
-            // 
-            // RfidTagNumberId
-            // 
-            this.RfidTagNumberId.HeaderText = "RFID Tag Number";
-            this.RfidTagNumberId.Name = "RfidTagNumberId";
-            // 
-            // remove_btn
-            // 
-            this.remove_btn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            this.remove_btn.DefaultCellStyle = dataGridViewCellStyle4;
-            this.remove_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.remove_btn.HeaderText = "";
-            this.remove_btn.Name = "remove_btn";
-            this.remove_btn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.remove_btn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.remove_btn.Text = "Remove";
-            this.remove_btn.UseColumnTextForButtonValue = true;
             // 
             // frmGroupRegister
             // 

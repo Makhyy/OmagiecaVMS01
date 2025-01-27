@@ -89,6 +89,8 @@
             // 
             this.dgvVisitors.AllowUserToAddRows = false;
             this.dgvVisitors.AllowUserToDeleteRows = false;
+            this.dgvVisitors.AllowUserToResizeColumns = false;
+            this.dgvVisitors.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.dgvVisitors.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvVisitors.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;

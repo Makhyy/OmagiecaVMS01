@@ -151,6 +151,8 @@
             // 
             this.dgvVisitorsReport.AllowUserToAddRows = false;
             this.dgvVisitorsReport.AllowUserToDeleteRows = false;
+            this.dgvVisitorsReport.AllowUserToResizeColumns = false;
+            this.dgvVisitorsReport.AllowUserToResizeRows = false;
             this.dgvVisitorsReport.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvVisitorsReport.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgvVisitorsReport.BackgroundColor = System.Drawing.Color.FloralWhite;
@@ -315,7 +317,7 @@
             this.panel3.Controls.Add(this.labelTotalRecords);
             this.panel3.Location = new System.Drawing.Point(7, 40);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(355, 42);
+            this.panel3.Size = new System.Drawing.Size(300, 42);
             this.panel3.TabIndex = 312;
             // 
             // labelTotalRecords

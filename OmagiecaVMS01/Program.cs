@@ -52,7 +52,7 @@ namespace OmagiecaVMS01
             */
             
 
-            Application.Run(new frmLogin());
+            Application.Run(new frmAdmin());
 }
 }
 }
