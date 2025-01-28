@@ -165,7 +165,10 @@ namespace OmagiecaVMS01
             {
                 CurrentSession.Logout(); // Clear the current session
                 this.DialogResult = DialogResult.OK; // Set the DialogResult to OK to indicate a logout
-                this.Close(); // Close the receptionist form
+                this.Hide(); // Close the current main form (receptionist/admin form)
+                frmLogin frmLogin = new frmLogin();
+                frmLogin.ShowDialog();
+                this.Close();
             }
         }
 

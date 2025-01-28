@@ -102,10 +102,6 @@ namespace BLL
 
             return group;
         }
-
-
-      
-
         public DataTable GetAllGroupRegistrations()
         {
             return groupRegistrationDAL.GetAllGroupRegistrationsData();

@@ -939,10 +939,10 @@ namespace DAL
             {
                 // Using DATEDIFF to filter entries from today
                 string query = @"
-           SELECT COUNT(*) 
-           FROM Visitors
-           WHERE VisitorStatus = 'Entered'
-           AND DATEDIFF(day, DateRegistered, GETDATE()) = 0"; // Only include records where the difference in days is 0
+          SELECT COUNT(*) 
+  FROM Visit
+  WHERE VisitStatusId = '2'
+           "; // Only include records where the difference in days is 0
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -967,9 +967,8 @@ namespace DAL
                 // Using DATEDIFF to filter entries from today
                 string query = @"
            SELECT COUNT(*) 
-           FROM Visitors
-           WHERE VisitorStatus = 'Exited'
-           AND DATEDIFF(day, DateRegistered, GETDATE()) = 0"; // Only include records where the difference in days is 0
+  FROM Visit
+  WHERE VisitStatusId = '3'"; // Only include records where the difference in days is 0
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 

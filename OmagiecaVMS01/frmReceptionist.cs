@@ -130,12 +130,16 @@ namespace OmagiecaVMS01
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
+
             // Prompt the user to confirm they want to log out
             if (MessageBox.Show("Are you sure you want to log out?", "Logout Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                CurrentSession.Logout();
+                CurrentSession.Logout(); // Clear the current session
                 this.DialogResult = DialogResult.OK; // Set the DialogResult to OK to indicate a logout
-                this.Close(); // Close the receptionist form
+                this.Hide(); // Close the current main form (receptionist/admin form)
+                frmLogin frmLogin = new frmLogin();
+                frmLogin.ShowDialog();
+                this.Close();
             }
         }
 
