@@ -14,6 +14,7 @@ namespace DAL
         // Add a new group registration with its members
         public async Task AddGroupRegistrationAsync(GroupRegistration groupRegistration)
         {
+            int visitStatusId = 1;
             Console.WriteLine("Group Registration:");
             Console.WriteLine($"Representative Age: {groupRegistration.RepresentativeVisitor.Age}");
             foreach (var member in groupRegistration.Members)
@@ -30,15 +31,110 @@ namespace DAL
 
                     try
                     {
-                        // Insert Visitors, GroupRegistration, Visit, GroupMembers as per your provided logic
-                        // Ensure this matches the logic in your provided method
+                        // Insert group members
+                        string insertVisitQuery = @"
+    INSERT INTO [dbo].[Visit] 
+        ([VisitorId], [RfidTagNumberId], [VisitStatusId]) 
+    OUTPUT INSERTED.VisitId
+    VALUES 
+        (@VisitorId, @RfidTagNumberId, 1);"; // Assuming '1' means 'Registered'
 
-                        // COMMIT transaction
+                        // Insert the representative visitor
+                        string insertVisitorQuery = @"
+                    INSERT INTO [dbo].[Visitors] 
+                        ([FirstName], [LastName], [Age], [VisitorType], [IsPWD], [Gender], [CityMunicipality], [ForeignCountry], [PaymentAmount], [RfidTagNumberId], [DateRegistered], [VisitorStatus])
+                    OUTPUT INSERTED.VisitorId
+                    VALUES
+                        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @RfidTagNumberId, @DateRegistered, @VisitorStatus)";
+
+                        int representativeVisitorId;
+                        using (SqlCommand cmd = new SqlCommand(insertVisitorQuery, connection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@FirstName", groupRegistration.RepresentativeVisitor.FirstName);
+                            cmd.Parameters.AddWithValue("@LastName", groupRegistration.RepresentativeVisitor.LastName);
+                            cmd.Parameters.AddWithValue("@Age", groupRegistration.RepresentativeVisitor.Age);
+                            cmd.Parameters.AddWithValue("@VisitorType", groupRegistration.RepresentativeVisitor.VisitorType);
+                            cmd.Parameters.AddWithValue("@IsPWD", groupRegistration.RepresentativeVisitor.IsPWD);
+                            cmd.Parameters.AddWithValue("@Gender", groupRegistration.RepresentativeVisitor.Gender);
+                            cmd.Parameters.AddWithValue("@CityMunicipality", (object)groupRegistration.RepresentativeVisitor.CityMunicipality ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ForeignCountry", (object)groupRegistration.RepresentativeVisitor.ForeignCountry ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@PaymentAmount", groupRegistration.RepresentativeVisitor.PaymentAmount);
+                            cmd.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);
+                            cmd.Parameters.AddWithValue("@DateRegistered", groupRegistration.RepresentativeVisitor.DateRegistered);
+                            cmd.Parameters.AddWithValue("@VisitorStatus", "Registered");
+
+                            representativeVisitorId = (int)await cmd.ExecuteScalarAsync();
+                        }
+                       
+                        using (SqlCommand visitCmd = new SqlCommand(insertVisitQuery, connection, transaction))
+                        {
+                            visitCmd.Parameters.AddWithValue("@VisitorId", representativeVisitorId);
+                            visitCmd.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);
+                            visitCmd.Parameters.AddWithValue("@VisitStatusId", visitStatusId); // Use the dynamically fetched VisitStatusId
+
+                            await visitCmd.ExecuteScalarAsync();
+                        }
+
+
+                        // Insert the group registration
+                        string insertGroupRegistrationQuery = @"
+                    INSERT INTO [dbo].[GroupRegistration]
+                        ([RepresentativeVisitorId], [GroupName], [TotalMembers], [TotalPaymentAmount], [DateRegistered])
+                    OUTPUT INSERTED.GroupId
+                    VALUES
+                        (@RepresentativeVisitorId, @GroupName, @TotalMembers, @TotalPaymentAmount, @DateRegistered)";
+
+                        int groupId;
+                        using (SqlCommand cmd = new SqlCommand(insertGroupRegistrationQuery, connection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@RepresentativeVisitorId", representativeVisitorId);
+                            cmd.Parameters.AddWithValue("@GroupName", groupRegistration.GroupName);
+                            cmd.Parameters.AddWithValue("@TotalMembers", groupRegistration.TotalMembers);
+                            cmd.Parameters.AddWithValue("@TotalPaymentAmount", groupRegistration.TotalPaymentAmount);
+                            cmd.Parameters.AddWithValue("@DateRegistered", groupRegistration.DateRegistered);
+
+                            groupId = (int)await cmd.ExecuteScalarAsync();
+                        }
+
+                       
+                        string insertGroupMemberQuery = @"
+    INSERT INTO [dbo].[GroupMember] 
+        ([GroupId], [Age], [VisitorType], [IsPWD], [PaymentAmount], [RfidTagNumberId], [VisitId]) 
+    VALUES 
+        (@GroupId, @Age, @VisitorType, @IsPWD, @PaymentAmount, @RfidTagNumberId, @VisitId);";
+
+                        foreach (var member in groupRegistration.Members)
+                        {
+                            int visitId;
+                            using (SqlCommand visitCmd = new SqlCommand(insertVisitQuery, connection, transaction))
+                            {
+                                visitCmd.Parameters.AddWithValue("@VisitorId", representativeVisitorId); // Ensure VisitorId is correct
+                                visitCmd.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId);
+
+                                visitId = (int)await visitCmd.ExecuteScalarAsync();
+                            }
+
+                            using (SqlCommand memberCmd = new SqlCommand(insertGroupMemberQuery, connection, transaction))
+                            {
+                                memberCmd.Parameters.AddWithValue("@GroupId", groupId);
+                                memberCmd.Parameters.AddWithValue("@Age", member.Age);
+                                memberCmd.Parameters.AddWithValue("@VisitorType", member.VisitorType);
+                                memberCmd.Parameters.AddWithValue("@IsPWD", member.IsPWD);
+                                memberCmd.Parameters.AddWithValue("@PaymentAmount", member.PaymentAmount);
+                                memberCmd.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId);
+                                memberCmd.Parameters.AddWithValue("@VisitId", visitId); // Now VisitId is properly set
+
+                                await memberCmd.ExecuteNonQueryAsync();
+                            }
+                        }
+
+
+                        // Commit the transaction
                         transaction.Commit();
                     }
                     catch
                     {
-                        // ROLLBACK transaction in case of error
+                        // Rollback the transaction in case of an error
                         transaction.Rollback();
                         throw;
                     }
@@ -49,12 +145,13 @@ namespace DAL
                 throw new Exception("An error occurred while adding the group registration: " + ex.Message, ex);
             }
         }
-    
 
 
 
-    // Retrieve a group registration with its members
-    public GroupRegistration GetGroupRegistrationById(int groupId)
+
+
+        // Retrieve a group registration with its members
+        public GroupRegistration GetGroupRegistrationById(int groupId)
         {
             GroupRegistration groupRegistration = null;
 

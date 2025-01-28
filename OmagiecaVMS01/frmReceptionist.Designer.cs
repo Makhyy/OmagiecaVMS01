@@ -225,10 +225,10 @@
             // lblCurrentUser
             // 
             this.lblCurrentUser.AutoSize = true;
-            this.lblCurrentUser.Font = new System.Drawing.Font("Segoe UI Semilight", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrentUser.Font = new System.Drawing.Font("Segoe UI Semilight", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCurrentUser.Location = new System.Drawing.Point(7, 59);
             this.lblCurrentUser.Name = "lblCurrentUser";
-            this.lblCurrentUser.Size = new System.Drawing.Size(75, 20);
+            this.lblCurrentUser.Size = new System.Drawing.Size(83, 20);
             this.lblCurrentUser.TabIndex = 51;
             this.lblCurrentUser.Text = "Username";
             this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);

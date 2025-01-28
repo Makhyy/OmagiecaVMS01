@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OmagiecaVMS01
@@ -17,15 +14,24 @@ namespace OmagiecaVMS01
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            while (true) // Loop to allow re-login
+            // Show Splash Screen
+            using (SplashScreen splash = new SplashScreen())
+            {
+                splash.ShowDialog(); // Block until splash screen closes
+            }
+
+            // Login Loop: Allows re-login if user logs out
+            while (true)
             {
                 using (frmLogin loginForm = new frmLogin())
                 {
+                    // Show the login form
                     if (loginForm.ShowDialog() != DialogResult.OK)
                     {
-                        break; // Exit if login was not successful or was closed
+                        break; // Exit the application if login fails or is closed
                     }
 
+                    // Determine which form to show based on user role
                     Form mainForm = null;
                     if (loginForm.UserRole == "Admin")
                     {
@@ -38,60 +44,17 @@ namespace OmagiecaVMS01
 
                     if (mainForm != null)
                     {
-                        // Show the main form and wait for it to be closed
-                        mainForm.ShowDialog();
-
-                        // If the user logged out, restart the login form by continuing the loop
-                        // If the form was closed for any other reason, exit the application
-                        if (mainForm.DialogResult != DialogResult.OK)
+                        // Show the main form and wait until it's closed
+                        if (mainForm.ShowDialog() != DialogResult.OK)
                         {
-                            break;
+                            break; // Exit if the main form was closed without logging out
                         }
                     }
                 }
             }
-            Application.Exit(); // Ensure the application exits completely when the loop ends
+
+            // Ensure the application exits completely
+            Application.Exit();
         }
     }
 }
-
-/* while (true) // Loop to allow re-login
-             {
-                 using (frmLogin loginForm = new frmLogin())
-                 {
-                     if (loginForm.ShowDialog() != DialogResult.OK)
-                     {
-                         break; // Exit if login was not successful or was closed
-                     }
-
-                     Form mainForm = null;
-                     if (loginForm.UserRole == "Admin")
-                     {
-                         mainForm = new frmAdmin();
-                     }
-                     else if (loginForm.UserRole == "Receptionist")
-                     {
-                         mainForm = new frmReceptionist();
-                     }
-
-                     if (mainForm != null)
-                     {
-                         if (mainForm.ShowDialog() != DialogResult.OK)
-                         {
-                             break; // Exit the application if the main form is closed without logging out
-                         }
-                     }
-                 }
-             }
-             Application.Exit(); // Ensure the application exits completely when the loop ends
-         }
-     }
-   }
-*/
-
-/*
-            Application.Run(new frmAdmin());
-}
-}
-}
-*/

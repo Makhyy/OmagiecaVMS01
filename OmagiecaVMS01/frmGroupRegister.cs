@@ -19,6 +19,9 @@ namespace OmagiecaVMS01
     {
         decimal paymentAmount = 0;
         GroupRegistrationBLL groupRegistrationBLL = new GroupRegistrationBLL();
+        
+        private PaymentBLL paymentBLL;
+        private VisitorBLL visitorBLL;
         private RFIDTagBLL rfidTagBLL = new RFIDTagBLL();
 
         private VisitorBLL _visitorBLL = new VisitorBLL();
@@ -103,6 +106,11 @@ namespace OmagiecaVMS01
             if (!ValidateInputFields(out string validationErrors))
             {
                 MessageBox.Show(validationErrors, "Validation Errors", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (dgvMembers.Rows.Count == 0 || dgvMembers.Rows.Cast<DataGridViewRow>().All(row => row.IsNewRow))
+            {
+                MessageBox.Show("You must add at least one member to the group.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
