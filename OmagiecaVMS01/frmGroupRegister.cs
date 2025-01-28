@@ -19,7 +19,7 @@ namespace OmagiecaVMS01
     {
         decimal paymentAmount = 0;
         GroupRegistrationBLL groupRegistrationBLL = new GroupRegistrationBLL();
-        
+
         private PaymentBLL paymentBLL;
         private VisitorBLL visitorBLL;
         private RFIDTagBLL rfidTagBLL = new RFIDTagBLL();
@@ -139,7 +139,7 @@ namespace OmagiecaVMS01
             frmAddmember addMemberForm = new frmAddmember();
             if (addMemberForm.ShowDialog() == DialogResult.OK)
             {
-                int rfidTag = addMemberForm.RfidTagNumberId;  
+                int rfidTag = addMemberForm.RfidTagNumberId;
 
                 if (!decimal.TryParse(addMemberForm.PaymentAmount.ToString(), out decimal paymentAmount))
                 {
@@ -153,7 +153,7 @@ namespace OmagiecaVMS01
                     addMemberForm.VisitorType,
                     addMemberForm.IsPWD,
                     paymentAmount,
-                    rfidTag  
+                    rfidTag
 
 
                 );
@@ -403,18 +403,18 @@ namespace OmagiecaVMS01
             int representativeVisitor = 1;
             int totalMembers = 0;
 
-          
+
 
             if (!string.IsNullOrWhiteSpace(txtFirstName.Text))
             {
 
                 // lblTotalMembers.Text = "1";
-                totalMembers=representativeVisitor + totalMembers;
+                totalMembers = representativeVisitor + totalMembers;
             }
             if (decimal.TryParse(txtPaymentAmount.Text, out decimal defaultPayment))
             {
-                totalPayment=totalPayment + defaultPayment; // Start with the default value from the default TextBox
-           txtTotalPayment.Text = defaultPayment.ToString("F2");  // Display the total payment formatted as a fixed-point number
+                totalPayment = totalPayment + defaultPayment; // Start with the default value from the default TextBox
+                txtTotalPayment.Text = defaultPayment.ToString("F2");  // Display the total payment formatted as a fixed-point number
             }
 
             foreach (DataGridViewRow row in dgvMembers.Rows)
@@ -441,7 +441,7 @@ namespace OmagiecaVMS01
             }
         }
 
-       
+
         private void UpdateTotalMembers()
         {
             int totalMembers = dgvMembers.Rows.Cast<DataGridViewRow>()
@@ -457,45 +457,45 @@ namespace OmagiecaVMS01
 
         private void chkIsPWD_CheckedChanged(object sender, EventArgs e)
         {
-                try
+            try
+            {
+                if (decimal.TryParse(txtPaymentAmount.Text, out decimal originalAmount))
                 {
-                    if (decimal.TryParse(txtPaymentAmount.Text, out decimal originalAmount))
+                    string visitorType = cboVisitorType.SelectedItem?.ToString();
+
+                    if (string.IsNullOrEmpty(visitorType))
                     {
-                        string visitorType = cboVisitorType.SelectedItem?.ToString();
+                        MessageBox.Show("Please select a visitor type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
-                        if (string.IsNullOrEmpty(visitorType))
-                        {
-                            MessageBox.Show("Please select a visitor type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-
-                        // Call the BLL to get the PWD discount for the selected visitor type
-                        PaymentBLL paymentBLL = new PaymentBLL();
-                        decimal pwdDiscount = paymentBLL.GetPWDDiscount(visitorType);
+                    // Call the BLL to get the PWD discount for the selected visitor type
+                    PaymentBLL paymentBLL = new PaymentBLL();
+                    decimal pwdDiscount = paymentBLL.GetPWDDiscount(visitorType);
 
 
 
-                        if (chkIsPWD.Checked)
-                        {
-                            decimal discountedAmount = originalAmount - pwdDiscount;
-                            if (discountedAmount < 0) discountedAmount = 0;
-                            txtPaymentAmount.Text = discountedAmount.ToString("F2");
-                        }
-                        else
-                        {
-                            PopulateVisitorTypeAndPayment(); // Restore original amount if unchecked
-                        }
+                    if (chkIsPWD.Checked)
+                    {
+                        decimal discountedAmount = originalAmount - pwdDiscount;
+                        if (discountedAmount < 0) discountedAmount = 0;
+                        txtPaymentAmount.Text = discountedAmount.ToString("F2");
                     }
                     else
                     {
-                        MessageBox.Show("Invalid payment amount.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        PopulateVisitorTypeAndPayment(); // Restore original amount if unchecked
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show($"An error occurred while applying the PWD discount: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Invalid payment amount.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while applying the PWD discount: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -544,16 +544,15 @@ namespace OmagiecaVMS01
         {
             if (!string.IsNullOrWhiteSpace(txtFirstName.Text))
             {
-                
-                  lblTotalMembers.Text = "1";
-            
+
+                lblTotalMembers.Text = "1";
+
             }
         }
 
         private void txtPaymentAmount_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
     }
 }
-

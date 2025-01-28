@@ -65,7 +65,7 @@ namespace DAL
 
                             representativeVisitorId = (int)await cmd.ExecuteScalarAsync();
                         }
-                       
+
                         using (SqlCommand visitCmd = new SqlCommand(insertVisitQuery, connection, transaction))
                         {
                             visitCmd.Parameters.AddWithValue("@VisitorId", representativeVisitorId);
@@ -96,7 +96,7 @@ namespace DAL
                             groupId = (int)await cmd.ExecuteScalarAsync();
                         }
 
-                       
+
                         string insertGroupMemberQuery = @"
     INSERT INTO [dbo].[GroupMember] 
         ([GroupId], [Age], [VisitorType], [IsPWD], [PaymentAmount], [RfidTagNumberId], [VisitId]) 
