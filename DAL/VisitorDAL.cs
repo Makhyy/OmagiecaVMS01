@@ -201,12 +201,13 @@ namespace DAL
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"UPDATE Visitors SET
-                         FirstName = @FirstName, LastName = @LastName, Age = @Age, 
-                         VisitorType = @VisitorType, IsPWD = @IsPWD, Gender = @Gender, 
-                         CityMunicipality = @CityMunicipality, ForeignCountry = @ForeignCountry,
-                         PaymentAmount = @PaymentAmount, RfidTagNumberId = @RfidTagNumberId,  
-                         VisitorStatus = @VisitorStatus, UserAccountId = @UserAccountId
-                         WHERE VisitorId = @VisitorId";
+                 FirstName = @FirstName, LastName = @LastName, Age = @Age, 
+                 VisitorType = @VisitorType, IsPWD = @IsPWD, Gender = @Gender, 
+                 CityMunicipality = @CityMunicipality, ForeignCountry = @ForeignCountry,
+                 PaymentAmount = @PaymentAmount,   
+                  UserAccountId = @UserAccountId,
+                 GroupId = @GroupId
+                 WHERE VisitorId = @VisitorId";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -214,22 +215,21 @@ namespace DAL
                     command.Parameters.AddWithValue("@FirstName", visitor.FirstName);
                     command.Parameters.AddWithValue("@LastName", visitor.LastName);
                     command.Parameters.AddWithValue("@Age", visitor.Age);
-                    command.Parameters.AddWithValue("@VisitorType", visitor.VisitorType);
-                    command.Parameters.AddWithValue("@IsPWD", visitor.IsPWD);
+                    command.Parameters.AddWithValue("@VisitorType", visitor.VisitorType); // Ensure this is the correct data type (int)
+                    command.Parameters.AddWithValue("@IsPWD", (object)visitor.IsPWD ?? DBNull.Value);
                     command.Parameters.AddWithValue("@Gender", visitor.Gender);
                     command.Parameters.AddWithValue("@CityMunicipality", visitor.CityMunicipality ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@ForeignCountry", visitor.ForeignCountry ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@PaymentAmount", visitor.PaymentAmount);
-                    command.Parameters.AddWithValue("@RfidTagNumberId", visitor.RfidTagNumberId);
                     
-                    command.Parameters.AddWithValue("@UserAccountId", visitor.UserAccountId ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@UserAccountId", (object)visitor.UserAccountId ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@GroupId", (object)visitor.GroupId ?? DBNull.Value);
 
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
             }
         }
-
 
         public List<Visitor> SearchVisitors(string keyword, int? userAccountId = null)
         {
@@ -246,7 +246,7 @@ namespace DAL
                      OR LastName LIKE @Keyword
                      OR CityMunicipality LIKE @Keyword
                      OR ForeignCountry LIKE @Keyword
-                     OR VisitorStatus LIKE @Keyword)
+                    
                     AND (@UserAccountId IS NULL OR UserAccountId = @UserAccountId)";
 
                     SqlCommand command = new SqlCommand(query, connection);
@@ -992,10 +992,10 @@ namespace DAL
             {
                 // Optimized query to count remaining visitors (entered not exited)
                 string query = @"
-SELECT SUM(CASE WHEN VisitorStatus = 'Entered' THEN 1 ELSE 0 END) -
-       SUM(CASE WHEN VisitorStatus = 'Exited' THEN 1 ELSE 0 END) AS RemainingVisitors
-FROM Visitors
-WHERE DATEDIFF(day, DateRegistered, GETDATE()) = 0";
+SELECT SUM(CASE WHEN VisitStatusId = '2' THEN 1 ELSE 0 END) -
+       SUM(CASE WHEN VisitStatusId = '3' THEN 1 ELSE 0 END) AS RemainingVisitors
+FROM Visit";
+
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 

@@ -68,7 +68,6 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
             this.btnVisitorsData = new System.Windows.Forms.Button();
-            this.btnGroupMember = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.omagiecaVMS01DBDataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.visitorBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).BeginInit();
@@ -543,7 +542,6 @@
             // 
             this.panel6.BackColor = System.Drawing.Color.OldLace;
             this.panel6.Controls.Add(this.btnVisitorsData);
-            this.panel6.Controls.Add(this.btnGroupMember);
             this.panel6.Controls.Add(this.label9);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(0, 48);
@@ -560,30 +558,13 @@
             this.btnVisitorsData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVisitorsData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVisitorsData.ForeColor = System.Drawing.Color.White;
-            this.btnVisitorsData.Location = new System.Drawing.Point(1112, 203);
+            this.btnVisitorsData.Location = new System.Drawing.Point(1112, 129);
             this.btnVisitorsData.Name = "btnVisitorsData";
             this.btnVisitorsData.Size = new System.Drawing.Size(139, 43);
             this.btnVisitorsData.TabIndex = 221;
             this.btnVisitorsData.Text = "All Records";
             this.btnVisitorsData.UseVisualStyleBackColor = false;
             this.btnVisitorsData.Click += new System.EventHandler(this.btnVisitorsData_Click);
-            // 
-            // btnGroupMember
-            // 
-            this.btnGroupMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGroupMember.BackColor = System.Drawing.Color.DimGray;
-            this.btnGroupMember.FlatAppearance.BorderSize = 2;
-            this.btnGroupMember.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.btnGroupMember.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGroupMember.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGroupMember.ForeColor = System.Drawing.Color.White;
-            this.btnGroupMember.Location = new System.Drawing.Point(1112, 121);
-            this.btnGroupMember.Name = "btnGroupMember";
-            this.btnGroupMember.Size = new System.Drawing.Size(139, 56);
-            this.btnGroupMember.TabIndex = 220;
-            this.btnGroupMember.Text = "Group Members";
-            this.btnGroupMember.UseVisualStyleBackColor = false;
-            this.btnGroupMember.Click += new System.EventHandler(this.btnGroupMember_Click);
             // 
             // ucfrmVisitor
             // 
@@ -673,7 +654,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Button btnGroupMember;
         private System.Windows.Forms.Button btnVisitorsData;
     }
 }

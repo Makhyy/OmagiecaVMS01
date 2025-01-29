@@ -196,38 +196,65 @@ namespace OmagiecaVMS01
         {
             try
             {
-                if (dgvVisitors.SelectedRows.Count == 0)
+                if (dgvVisitors.SelectedRows.Count == 0 || dgvVisitors.SelectedRows[0].Cells["VisitorId"].Value == null)
                 {
-                    MessageBox.Show("Please select a visitor to update.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please select a valid visitor to update.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+               
+
+                if (!int.TryParse(txtAge.Text, out int age))
+                {
+                    MessageBox.Show("Invalid age format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (!decimal.TryParse(txtPaymentAmount.Text, out decimal paymentAmount))
+                {
+                    MessageBox.Show("Invalid payment amount format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string visitorType = cboVisitorType.SelectedItem?.ToString() ?? string.Empty;
+                string gender = cboGender.SelectedItem?.ToString() ?? string.Empty;
+                string cityMunicipality = string.IsNullOrWhiteSpace(txtCityMunicipality.Text) ? null : txtCityMunicipality.Text;
+                string foreignCountry = string.IsNullOrWhiteSpace(txtForeignCountry.Text) ? null : txtForeignCountry.Text;
+
+                int? rfidTagNumberId = cboRFIDTag.SelectedValue as int?;
+                if (rfidTagNumberId == null)
+                {
+                    MessageBox.Show("Please select an RFID Tag.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 Visitor visitor = new Visitor
                 {
                     VisitorId = Convert.ToInt32(dgvVisitors.SelectedRows[0].Cells["VisitorId"].Value),
-                    FirstName = txtFirstName.Text,
-                    LastName = txtLastName.Text,
-                    Age = int.Parse(txtAge.Text),
-                    VisitorType = cboVisitorType.SelectedItem.ToString(),
+                    FirstName = txtFirstName.Text.Trim(),
+                    LastName = txtLastName.Text.Trim(),
+                    Age = age,
+                    VisitorType = visitorType,
                     IsPWD = chkIsPWD.Checked,
-                    Gender = cboGender.SelectedItem.ToString(),
-                    CityMunicipality = txtCityMunicipality.Text,
-                    ForeignCountry = txtForeignCountry.Text,
-                    PaymentAmount = decimal.Parse(txtPaymentAmount.Text),
-                    RfidTagNumberId = Convert.ToInt32(cboRFIDTag.SelectedValue),
-                   UserAccountId = CurrentSession.UserAccountId,  // Ensure this is valid or handled if null
-                    
+                    Gender = gender,
+                    CityMunicipality = cityMunicipality,
+                    ForeignCountry = foreignCountry,
+                    PaymentAmount = paymentAmount,
+                    RfidTagNumberId = rfidTagNumberId,
+                    UserAccountId = CurrentSession.UserAccountId
                 };
 
-                visitorBLL.UpdateVisitor(visitor);
+               // visitorBLL.UpdateVisitor(visitor);
                 MessageBox.Show("Visitor updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadVisitors(); // Refresh the visitor grid
+                LoadVisitors();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred while updating the visitor: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -493,33 +520,45 @@ namespace OmagiecaVMS01
 
                 DataGridViewRow selectedRow = dgvVisitors.CurrentRow;
 
+                // Clear the inputs first to avoid any old data lingering
+                ClearInputs();
+
                 txtFirstName.Text = selectedRow.Cells["FirstName"].Value?.ToString() ?? string.Empty;
                 txtLastName.Text = selectedRow.Cells["LastName"].Value?.ToString() ?? string.Empty;
                 txtAge.Text = selectedRow.Cells["Age"].Value?.ToString() ?? string.Empty;
                 chkIsPWD.Checked = selectedRow.Cells["IsPWD"].Value != null && (bool)selectedRow.Cells["IsPWD"].Value;
 
-                if (cboGender.Items.Contains(selectedRow.Cells["Gender"].Value?.ToString()))
+                // Set Gender if found in combo box
+                string gender = selectedRow.Cells["Gender"].Value?.ToString();
+                if (!string.IsNullOrEmpty(gender) && cboGender.Items.Contains(gender))
                 {
-                    cboGender.SelectedItem = selectedRow.Cells["Gender"].Value?.ToString();
+                    cboGender.SelectedItem = gender;
                 }
-
 
                 txtCityMunicipality.Text = selectedRow.Cells["CityMunicipality"].Value?.ToString() ?? string.Empty;
                 txtForeignCountry.Text = selectedRow.Cells["ForeignCountry"].Value?.ToString() ?? string.Empty;
 
+                // Set Visitor Type if exists and is valid
                 if (dgvVisitors.Columns.Contains("VisitorType") && selectedRow.Cells["VisitorType"].Value != null)
                 {
-                    cboVisitorType.SelectedValue = selectedRow.Cells["VisitorType"].Value;
+                    var visitorTypeValue = selectedRow.Cells["VisitorType"].Value;
+                    if (cboVisitorType.Items.Contains(visitorTypeValue))
+                    {
+                        cboVisitorType.SelectedValue = visitorTypeValue;
+                    }
                 }
-
 
                 txtPaymentAmount.Text = selectedRow.Cells["PaymentAmount"].Value?.ToString() ?? string.Empty;
 
+                // Set RFIDTag if exists and is valid
                 if (dgvVisitors.Columns.Contains("RfidTagNumberId") && selectedRow.Cells["RfidTagNumberId"].Value != null)
                 {
-                    cboRFIDTag.SelectedValue = selectedRow.Cells["RfidTagNumberId"].Value;
+                    var rfidTagValue = selectedRow.Cells["RfidTagNumberId"].Value;
+                    if (cboRFIDTag.Items.Contains(rfidTagValue))
+                    {
+                        cboRFIDTag.SelectedValue = rfidTagValue;
+                    }
                 }
-
             }
             catch (Exception ex)
             {
@@ -527,6 +566,7 @@ namespace OmagiecaVMS01
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -621,8 +661,7 @@ namespace OmagiecaVMS01
 
         private void btnGroupMember_Click(object sender, EventArgs e)
         {
-            frmGroupMember groupMember = new frmGroupMember();
-            groupMember.ShowDialog();
+            
         }
 
         private void btnVisitorsData_Click(object sender, EventArgs e)

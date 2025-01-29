@@ -94,7 +94,7 @@ namespace OmagiecaVMS01
                 }
                 catch (Exception ex)
                 {
-                    ShowErrorTimedMessage("Error updating visitor status: " + ex.Message, 1500);
+                    ShowErrorTimedMessage("Visitor is not Registered!: " , 1500);
                     SendCommandToArduino("RED_ON");  // Ensure red light in case of any exception
                 }
             }

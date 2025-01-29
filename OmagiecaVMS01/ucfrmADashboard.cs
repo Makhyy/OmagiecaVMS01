@@ -138,7 +138,7 @@ namespace OmagiecaVMS01
                     return;
                 }
 
-                int count = visitorBLL.GetRemainingVisitorCount();
+                int count = visitorBLL.GetDailyEnteredVisitorCount();
                 lblDailyRemainingVisitors.Text = count.ToString();
             }
             catch (Exception ex)

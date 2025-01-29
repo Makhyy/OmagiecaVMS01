@@ -118,7 +118,7 @@ namespace DAL
             SELECT 
                 v.VisitorId, 
                 rt.RfidTagNumber, 
-                v. VisitorStatus, 
+               
                 vis.EntryTime, 
                 vis.ExitTime
             FROM Visitors v

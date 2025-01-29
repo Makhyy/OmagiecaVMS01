@@ -131,5 +131,11 @@ namespace OmagiecaVMS01
                 (dgvVisitorsData.DataSource as DataTable).DefaultView.RowFilter = "ForeignCountry IS NOT NULL AND CityMunicipality IS NULL";
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            frmGroupMember groupMember = new frmGroupMember();
+            groupMember.ShowDialog();
+        }
     }
 }

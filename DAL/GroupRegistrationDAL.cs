@@ -42,10 +42,10 @@ namespace DAL
                         // Insert the representative visitor
                         string insertVisitorQuery = @"
                     INSERT INTO [dbo].[Visitors] 
-                        ([FirstName], [LastName], [Age], [VisitorType], [IsPWD], [Gender], [CityMunicipality], [ForeignCountry], [PaymentAmount], [RfidTagNumberId], [DateRegistered], [VisitorStatus])
+                        ([FirstName], [LastName], [Age], [VisitorType], [IsPWD], [Gender], [CityMunicipality], [ForeignCountry], [PaymentAmount], [RfidTagNumberId], [DateRegistered])
                     OUTPUT INSERTED.VisitorId
                     VALUES
-                        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @RfidTagNumberId, @DateRegistered, @VisitorStatus)";
+                        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @RfidTagNumberId, @DateRegistered";
 
                         int representativeVisitorId;
                         using (SqlCommand cmd = new SqlCommand(insertVisitorQuery, connection, transaction))
@@ -61,7 +61,7 @@ namespace DAL
                             cmd.Parameters.AddWithValue("@PaymentAmount", groupRegistration.RepresentativeVisitor.PaymentAmount);
                             cmd.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);
                             cmd.Parameters.AddWithValue("@DateRegistered", groupRegistration.RepresentativeVisitor.DateRegistered);
-                            cmd.Parameters.AddWithValue("@VisitorStatus", "Registered");
+                            
 
                             representativeVisitorId = (int)await cmd.ExecuteScalarAsync();
                         }
