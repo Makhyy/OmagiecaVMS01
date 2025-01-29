@@ -69,7 +69,7 @@ namespace DAL
                         using (SqlCommand visitCmd = new SqlCommand(insertVisitQuery, connection, transaction))
                         {
                             visitCmd.Parameters.AddWithValue("@VisitorId", representativeVisitorId);
-                            visitCmd.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);
+                           // visitCmd.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);
                             visitCmd.Parameters.AddWithValue("@VisitStatusId", visitStatusId); // Use the dynamically fetched VisitStatusId
 
                             await visitCmd.ExecuteScalarAsync();
@@ -96,12 +96,15 @@ namespace DAL
                             groupId = (int)await cmd.ExecuteScalarAsync();
                         }
 
+                        // Query to retrieve the RfidTagNumberId based on RfidTagNumber
+                        string selectRfidTagNumberIdQuery = "SELECT RfidTagNumberId FROM [dbo].[RFIDTag] WHERE RfidTagNumber = @RfidTagNumber;";
 
+                        // Make sure insertGroupMemberQuery is defined here (before usage)
                         string insertGroupMemberQuery = @"
-    INSERT INTO [dbo].[GroupMember] 
-        ([GroupId], [Age], [VisitorType], [IsPWD], [PaymentAmount], [RfidTagNumberId], [VisitId]) 
-    VALUES 
-        (@GroupId, @Age, @VisitorType, @IsPWD, @PaymentAmount, @RfidTagNumberId, @VisitId);";
+INSERT INTO [dbo].[GroupMember] 
+    ([GroupId], [Age], [VisitorType], [IsPWD], [PaymentAmount], [RfidTagNumberId], [VisitId]) 
+VALUES 
+    (@GroupId, @Age, @VisitorType, @IsPWD, @PaymentAmount, @RfidTagNumberId, @VisitId);";
 
                         foreach (var member in groupRegistration.Members)
                         {
@@ -109,7 +112,7 @@ namespace DAL
                             using (SqlCommand visitCmd = new SqlCommand(insertVisitQuery, connection, transaction))
                             {
                                 visitCmd.Parameters.AddWithValue("@VisitorId", representativeVisitorId); // Ensure VisitorId is correct
-                                visitCmd.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId);
+                                visitCmd.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId); // Ensure correct parameter name
 
                                 visitId = (int)await visitCmd.ExecuteScalarAsync();
                             }
@@ -121,12 +124,14 @@ namespace DAL
                                 memberCmd.Parameters.AddWithValue("@VisitorType", member.VisitorType);
                                 memberCmd.Parameters.AddWithValue("@IsPWD", member.IsPWD);
                                 memberCmd.Parameters.AddWithValue("@PaymentAmount", member.PaymentAmount);
-                                memberCmd.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId);
-                                memberCmd.Parameters.AddWithValue("@VisitId", visitId); // Now VisitId is properly set
+                                memberCmd.Parameters.AddWithValue("@RfidTagNumberId", member.RfidTagNumberId); // Correct parameter
+                                memberCmd.Parameters.AddWithValue("@VisitId", visitId); // Correct VisitId
 
                                 await memberCmd.ExecuteNonQueryAsync();
                             }
                         }
+
+
 
 
                         // Commit the transaction
@@ -146,6 +151,68 @@ namespace DAL
             }
         }
 
+        public void AssignRFIDTag(int visitorId, int rfidTagNumber)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"UPDATE RFIDTag 
+                             SET VisitorId = @VisitorId, 
+                                 RfidStatus = @RfidStatus
+                             WHERE RfidTagNumberId = @RfidTagNumberId AND RfidStatus = 'Available'"; // Ensuring current status allows update
+
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@VisitorId", visitorId);
+                    command.Parameters.AddWithValue("@RfidStatus", "InUse"); // Set to a valid status
+                    command.Parameters.AddWithValue("@RfidTagNumberId", rfidTagNumber);
+
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new InvalidOperationException("RFID tag is not available for assignment or does not exist.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while assigning the RFID tag: " + ex.Message, ex);
+            }
+        }
+
+        public void UnassignRFIDTags(int visitorId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = @"
+                UPDATE RFIDTag 
+                SET VisitorId = NULL, 
+                    RfidStatus = 'Available' 
+                WHERE VisitorId = @VisitorId AND RfidStatus = 'InUse'";
+
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@VisitorId", visitorId);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                    {
+                        // Log a warning if no tags were unassigned
+                        Console.WriteLine($"No RFID tags were unassigned for VisitorId {visitorId}.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception details
+                    Console.WriteLine($"Error in UnassignRFIDTags: {ex.Message}");
+                    throw; // Re-throw the exception to the caller
+                }
+            }
+        }
 
 
 
@@ -202,7 +269,7 @@ namespace DAL
                                     Age = (int)reader["Age"],
                                     VisitorType = reader["VisitorType"].ToString(),
                                     PaymentAmount = (decimal)reader["PaymentAmount"],
-                                    RfidTagNumberId = (int)reader["RfidTagNumberId"]
+                                    RfidTagNumberId = (int)reader["RfidTagNumber"]
                                 });
                             }
                         }

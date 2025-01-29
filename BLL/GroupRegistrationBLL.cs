@@ -10,6 +10,9 @@ namespace BLL
     public class GroupRegistrationBLL
     {
         private GroupRegistrationDAL groupRegistrationDAL;
+        private VisitorDAL _visitorDAL;
+        private RFIDTagBLL rfidTagBLL;
+        private VisitDAL _visitDAL;
 
         public GroupRegistrationBLL()
         {
@@ -45,9 +48,37 @@ namespace BLL
         */
         public async Task AddGroupRegistrationAsync(GroupRegistration groupRegistration)
         {
+          
             await groupRegistrationDAL.AddGroupRegistrationAsync(groupRegistration);
         }
+        public void RegisterVisitor(Visitor visitor, int rfidTagNumber)
+        {
+            try
+            {
+                if (visitor == null)
+                    throw new ArgumentNullException(nameof(visitor), "Visitor object cannot be null.");
+                // Assign the current logged-in user's ID
+                visitor.UserAccountId = CurrentSession.UserAccountId;
+                // Ensure UserAccountId is valid
+                if (visitor.UserAccountId <= 0)
+                    throw new ArgumentException("Invalid UserAccountId. Please ensure a user is logged in.");
+                // Validate visitor data
+                ValidateVisitor(visitor);
 
+                // Check if RFID Tag is valid
+                if (!_visitorDAL.IsRfidTagValid(rfidTagNumber))
+                    throw new ArgumentException("Invalid RFID Tag Number. The tag does not exist or is not available.");
+
+                // Add visitor and log visit in a single transactional method
+                int visitorId = _visitorDAL.AddVisitorAndLogVisit(visitor);
+                // Assign RFID Tag after successfully adding the visitor and logging the visit
+                _visitorDAL.AssignRFIDTag(visitorId, rfidTagNumber);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while registering the visitor: " + ex.Message, ex);
+            }
+        }
 
         // Update an Existing Group Registration
         public void UpdateGroupRegistration(GroupRegistration groupRegistration)
@@ -106,5 +137,43 @@ namespace BLL
         {
             return groupRegistrationDAL.GetAllGroupRegistrationsData();
         }
+        private void ValidateVisitor(Visitor visitor)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(visitor.FirstName))
+                {
+                    throw new Exception("First Name is required.");
+                }
+
+                if (string.IsNullOrWhiteSpace(visitor.LastName))
+                {
+                    throw new Exception("Last Name is required.");
+                }
+
+                if (visitor.Age <= 0 || visitor.Age > 120)
+                {
+                    throw new Exception("Age must be between 1 and 120.");
+                }
+
+                if (visitor.PaymentAmount < 0)
+                {
+                    throw new Exception("Payment Amount cannot be negative.");
+                }
+
+
+                if (visitor.RfidTagNumberId < 0)
+                {
+                    throw new Exception("Invalid RFID Tag Number.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Wrap and rethrow the validation exception with additional context
+                throw new Exception("Visitor validation failed: " + ex.Message, ex);
+            }
+        }
+
     }
 }

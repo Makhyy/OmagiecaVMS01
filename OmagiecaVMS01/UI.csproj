@@ -384,6 +384,7 @@
     <EmbeddedResource Include="ucfrmVisitorStatus.resx">
       <DependentUpon>ucfrmVisitorStatus.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="OmagiecaVMS01DBDataSet2.xsc">
       <DependentUpon>OmagiecaVMS01DBDataSet2.xsd</DependentUpon>
     </None>
