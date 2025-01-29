@@ -28,6 +28,7 @@ namespace OmagiecaVMS01
         public ucfrmVisitor()
         {
             InitializeComponent();
+            SetPermissions();
             LoadVisitors();
             LoadAvailableRFIDTagsToDisplay();
             //LoadRFIDTags();
@@ -50,8 +51,14 @@ namespace OmagiecaVMS01
            
 
         }
+        private void SetPermissions()
+        {
+            if (CurrentSession.UserRole == "Receptionist")
+            {
+                btnDelete.Visible = false; // Hide the Delete button for Receptionist
+            }
+        }
 
-      
         private void visitorBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
             this.Validate();

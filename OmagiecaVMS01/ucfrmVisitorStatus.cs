@@ -29,10 +29,11 @@ namespace OmagiecaVMS01
             dgvVisitors.Columns["PaymentAmount"].Visible = false;
             dgvVisitors.Columns["UserAccountId"].Visible = false;
             dgvVisitors.Columns["DateRegistered"].Visible = false;
+            dgvVisitors.Columns["GroupId"].Visible = false;
 
 
 
-          
+
         }
 
         private void LoadVisitors()

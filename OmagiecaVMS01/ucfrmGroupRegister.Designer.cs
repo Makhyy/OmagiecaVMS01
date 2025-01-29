@@ -455,6 +455,7 @@
             this.button2.TabIndex = 270;
             this.button2.Text = "Add Member";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // dgvMembers
             // 

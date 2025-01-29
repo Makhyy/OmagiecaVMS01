@@ -120,12 +120,31 @@ namespace OmagiecaVMS01
             // Check if textBox2 has text and adjust textBox1's enabled state
             txtCityMunicipality.Enabled = string.IsNullOrEmpty(txtForeignCountry.Text);
         }
+        private bool IsDuplicateEntry(string value)
+        {
+            foreach (DataGridViewRow row in dgvMembers.Rows)
+            {
+                if (!row.IsNewRow) // Ignore the new row placeholder
+                {
+                    if (row.Cells["Column1"].Value != null && row.Cells["Column1"].Value.ToString() == value)
+                    {
+                        return true; // Duplicate found
+                    }
+                }
+            }
+            return false; // No duplicate found
+        }
         private void txtForeignCountry_TextChanged(object sender, EventArgs e)
         {
 
         }
 
         private void txtCityMunicipality_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
         {
 
         }

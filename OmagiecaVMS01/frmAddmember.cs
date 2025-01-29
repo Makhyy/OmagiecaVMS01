@@ -40,6 +40,7 @@ namespace OmagiecaVMS01
            // LoadAvailableRFIDTagsToDisplay();
             Close();
         }
+        
         private void PopulateVisitorTypeAndPayment()
         {
             try
