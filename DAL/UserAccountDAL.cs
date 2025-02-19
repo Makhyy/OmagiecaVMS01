@@ -155,7 +155,7 @@ namespace DAL
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = @"UPDATE UserAccount 
+                string query = @"UPDATE UserAccount, 
                          SET FirstName = @FirstName, 
                              LastName = @LastName, 
                              Age = @Age, 

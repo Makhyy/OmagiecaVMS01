@@ -117,10 +117,10 @@ namespace OmagiecaVMS01
             try
             {
                 // Build GroupRegistration object
-                var group = CreateGroupRegistration(); // Make sure this method returns a valid GroupRegistration object
+               // var group = CreateGroupRegistration(); // Make sure this method returns a valid GroupRegistration object
 
                 // Save group registration asynchronously
-                await groupRegistrationBLL.AddGroupRegistrationAsync(group);  // Pass the correct object here (group)
+                //await groupRegistrationBLL.AddGroupRegistrationAsync(group);  // Pass the correct object here (group)
 
                 // Success feedback
                 MessageBox.Show("Group registered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);

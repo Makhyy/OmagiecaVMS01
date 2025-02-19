@@ -41,12 +41,13 @@ namespace DAL
 
                         // Insert the representative visitor
                         string insertVisitorQuery = @"
-                    INSERT INTO [dbo].[Visitors] 
-                        ([FirstName], [LastName], [Age], [VisitorType], [IsPWD], [Gender], [CityMunicipality], [ForeignCountry], [PaymentAmount], [RfidTagNumberId], [DateRegistered])
-                    OUTPUT INSERTED.VisitorId
-                    VALUES
-                        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @RfidTagNumberId, @DateRegistered";
+    INSERT INTO [dbo].[Visitors] 
+        ([FirstName], [LastName], [Age], [VisitorType], [IsPWD], [Gender], [CityMunicipality], [ForeignCountry], [PaymentAmount], [RfidTagNumberId], [DateRegistered])
+    OUTPUT INSERTED.VisitorId
+    VALUES
+        (@FirstName, @LastName, @Age, @VisitorType, @IsPWD, @Gender, @CityMunicipality, @ForeignCountry, @PaymentAmount, @RfidTagNumberId, @DateRegistered);";
 
+                        // Ensure to add the parameter for RfidTagNumberId here
                         int representativeVisitorId;
                         using (SqlCommand cmd = new SqlCommand(insertVisitorQuery, connection, transaction))
                         {
@@ -59,12 +60,12 @@ namespace DAL
                             cmd.Parameters.AddWithValue("@CityMunicipality", (object)groupRegistration.RepresentativeVisitor.CityMunicipality ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@ForeignCountry", (object)groupRegistration.RepresentativeVisitor.ForeignCountry ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@PaymentAmount", groupRegistration.RepresentativeVisitor.PaymentAmount);
-                            cmd.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);
+                            cmd.Parameters.AddWithValue("@RfidTagNumberId", groupRegistration.RepresentativeVisitor.RfidTagNumberId);  // This line ensures the parameter is passed
                             cmd.Parameters.AddWithValue("@DateRegistered", groupRegistration.RepresentativeVisitor.DateRegistered);
-                            
 
                             representativeVisitorId = (int)await cmd.ExecuteScalarAsync();
                         }
+
 
                         using (SqlCommand visitCmd = new SqlCommand(insertVisitQuery, connection, transaction))
                         {
